@@ -11,53 +11,51 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
   const [error, setError] = useState<string>('');
 
   const parseXML = (xmlText: string): { notes: string[], level: number, parentContent?: string }[] => {
-    try {
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(xmlText, "text/xml");
-      const result: { notes: string[], level: number, parentContent?: string }[] = [];
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xmlText, "text/xml");
+    const result: { notes: string[], level: number, parentContent?: string }[] = [];
 
-      const processNote = (noteElement: Element, level: number, parentContent?: string) => {
-        const content = noteElement.querySelector("content")?.textContent?.trim();
-        if (!content) return;
+    const processNote = (noteElement: Element, level: number, parentContent?: string) => {
+      if (!noteElement) return;
 
-        const note = [content];
-        const attrs = ['time', 'youtube', 'url', 'url-text', 'discussion'];
+      const contentEl = noteElement.querySelector("content");
+      const content = contentEl?.textContent?.replace(/^\[CDATA\[|\]\]$/g, '')?.trim();
 
-        attrs.forEach(attr => {
-          const value = noteElement.getAttribute(attr);
-          if (value) {
-            if (attr === 'discussion' && value === 'true') {
-              note.push('[discussion=true]');
-            } else if (attr === 'url-text') {
-              note.push(`[url_display_text=${value}]`);
-            } else {
-              note.push(`[${attr}=${value}]`);
-            }
+      if (!content) return;
+
+      const note = [content];
+      const attrs = ['time', 'youtube', 'url', 'url-text', 'discussion'];
+
+      attrs.forEach(attr => {
+        const value = noteElement.getAttribute(attr);
+        if (value) {
+          if (attr === 'discussion' && value === 'true') {
+            note.push('[discussion=true]');
+          } else if (attr === 'url-text') {
+            note.push(`[url_display_text=${value}]`);
+          } else {
+            note.push(`[${attr}=${value}]`);
           }
-        });
-
-        result.push({ notes: note, level, parentContent });
-
-        const children = noteElement.getElementsByTagName("children")[0];
-        if (children) {
-          Array.from(children.getElementsByTagName("note")).forEach(child => {
-            processNote(child, level + 1, content);
-          });
         }
-      };
+      });
 
-      const notes = xmlDoc.getElementsByTagName("notes")[0];
-      if (notes) {
-        Array.from(notes.getElementsByTagName("note")).forEach(note => {
-          processNote(note, 0);
-        });
+      result.push({ notes: note, level, parentContent });
+
+      const children = noteElement.querySelector('children');
+      if (children) {
+        const childNotes = children.querySelectorAll(':scope > note');
+        childNotes.forEach(child => processNote(child, level + 1, content));
       }
+    };
 
-      return result;
-    } catch (error) {
-      console.error("Error parsing XML:", error);
-      throw error;
+    const notes = xmlDoc.getElementsByTagName("notes")[0];
+    if (notes) {
+      Array.from(notes.getElementsByTagName("note")).forEach(note => {
+        processNote(note, 0);
+      });
     }
+
+    return result;
   };
 
   const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
