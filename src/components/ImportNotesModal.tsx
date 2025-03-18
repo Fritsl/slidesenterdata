@@ -42,17 +42,17 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
     };
 
     log('Starting XML parsing');
-    
+
     try {
       const parser = new DOMParser();
       const xmlDoc = parser.parseFromString(xmlText, "text/xml");
       const result: { notes: string[], level: number, parentContent?: string }[] = [];
-      
+
       const processNote = (noteElement: Element, level: number, parentContent?: string) => {
         const content = noteElement.getElementsByTagName("content")[0]?.textContent || '';
         if (content) {
           result.push({ notes: [content], level, parentContent });
-          
+
           const children = noteElement.getElementsByTagName("children")[0];
           if (children) {
             Array.from(children.getElementsByTagName("note")).forEach(child => {
@@ -61,21 +61,21 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
           }
         }
       };
-      
+
       const notes = xmlDoc.getElementsByTagName("notes")[0];
       if (notes) {
         Array.from(notes.getElementsByTagName("note")).forEach(note => {
           processNote(note, 0);
         });
       }
-      
+
       log('Parsed notes', result);
       return result;
     } catch (error) {
       log('XML parsing failed', error);
       throw error;
     }
-    
+
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xmlText, "text/xml");
 
@@ -103,7 +103,7 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
       const youtube = noteElement.getAttribute("youtube") || '';
       const url = noteElement.getAttribute("url") || '';
       const urlDisplayText = noteElement.getAttribute("url_display_text") || '';
-      
+
       log('Processing note', { id, content, level });
 
       const note = ['•'.padStart((level * 2) + 1, ' ')];
@@ -144,7 +144,7 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
             logEl.textContent = msg + '\n' + (logEl.textContent || '').slice(0, 500);
           }
         };
-        
+
         log('Starting XML import process...');
         log('Raw XML text: ' + text.substring(0, 100) + '...');
 
@@ -156,10 +156,7 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
           try {
             await importNotes(parsedNotes);
             console.log('Import completed successfully');
-            // Reset state after successful import
-            store.resetState();
-            // Force close any open menus
-            document.body.click();
+            //onClose(); //Removed as onClose is already called in the finally block.
           } catch (err) {
             console.error('Import failed:', err);
             throw err;
