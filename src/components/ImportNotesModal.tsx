@@ -32,7 +32,7 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
   const store = useNoteStore();
   const importNotes = store.importNotes;
 
-  const parseXML = (xmlText: string): { notes: string[], level: number }[] => {
+  const parseXML = (xmlText: string): { notes: string[], level: number, parentContent?: string }[] => {
     const log = (msg: string, data?: any) => {
       const logEl = document.getElementById('debug-log');
       if (logEl) {
@@ -46,16 +46,27 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
     try {
       const parser = new DOMParser();
       const xmlDoc = parser.parseFromString(xmlText, "text/xml");
+      const result: { notes: string[], level: number, parentContent?: string }[] = [];
       
-      const notes = xmlDoc.getElementsByTagName("note");
-      const result: { notes: string[], level: number }[] = [];
-      
-      for (let i = 0; i < notes.length; i++) {
-        const note = notes[i];
-        const content = note.getElementsByTagName("content")[0]?.textContent || '';
+      const processNote = (noteElement: Element, level: number, parentContent?: string) => {
+        const content = noteElement.getElementsByTagName("content")[0]?.textContent || '';
         if (content) {
-          result.push({ notes: [content], level: 0 });
+          result.push({ notes: [content], level, parentContent });
+          
+          const children = noteElement.getElementsByTagName("children")[0];
+          if (children) {
+            Array.from(children.getElementsByTagName("note")).forEach(child => {
+              processNote(child, level + 1, content);
+            });
+          }
         }
+      };
+      
+      const notes = xmlDoc.getElementsByTagName("notes")[0];
+      if (notes) {
+        Array.from(notes.getElementsByTagName("note")).forEach(note => {
+          processNote(note, 0);
+        });
       }
       
       log('Parsed notes', result);
