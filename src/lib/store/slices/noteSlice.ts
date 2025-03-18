@@ -142,7 +142,7 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
         id: noteId,
         content: content,
         children: [],
-        isEditing: true,
+        isEditing: false,
         unsavedContent: '',
         user_id: user.id,
         project_id: projectId,
