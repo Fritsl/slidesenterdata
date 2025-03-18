@@ -565,22 +565,21 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
       const contentToIdMap = new Map<string, string>();
       const processedContent = new Set<string>();
       
-      // First pass: Create root level notes (level 0)
-      for (const { notes, level } of parsedNotes) {
-        if (level === 0) {
-          for (const content of notes) {
-            if (!content || typeof content !== 'string') continue;
-            const trimmedContent = content.trim();
-            if (!trimmedContent || processedContent.has(trimmedContent)) continue;
-            
-            console.log('Creating root note:', trimmedContent);
-            const addNoteResponse = await get().addNote(null, trimmedContent);
-            if (!addNoteResponse?.id) throw new Error('Failed to create note');
-            
-            contentToIdMap.set(trimmedContent, addNoteResponse.id);
-            processedContent.add(trimmedContent);
-            log('Created root note', addNoteResponse);
-          }
+      // First pass: Create all notes and track their IDs
+      for (const { notes, level, parentContent } of parsedNotes) {
+        for (const content of notes) {
+          if (!content || typeof content !== 'string') continue;
+          const trimmedContent = content.trim();
+          if (!trimmedContent || processedContent.has(trimmedContent)) continue;
+          
+          const parentId = parentContent ? contentToIdMap.get(parentContent) : null;
+          console.log(`Creating ${level === 0 ? 'root' : 'child'} note:`, trimmedContent, 'parent:', parentContent);
+          const addNoteResponse = await get().addNote(parentId, trimmedContent);
+          if (!addNoteResponse?.id) throw new Error('Failed to create note');
+          
+          contentToIdMap.set(trimmedContent, addNoteResponse.id);
+          processedContent.add(trimmedContent);
+          log(`Created ${level === 0 ? 'root' : 'child'} note`, addNoteResponse);
         }
       }
 
