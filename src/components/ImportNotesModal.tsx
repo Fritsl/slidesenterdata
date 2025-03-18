@@ -14,10 +14,16 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
   const parseXML = (xmlText: string): { notes: string[], level: number, parentContent?: string }[] => {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xmlText, "text/xml");
+    
+    // Check for parsing errors
+    const parseError = xmlDoc.querySelector('parsererror');
+    if (parseError) {
+      throw new Error('Invalid XML format');
+    }
+
     const result: { notes: string[], level: number, parentContent?: string }[] = [];
-    
     const xmlns = xmlDoc.documentElement.getAttribute('xmlns');
-    
+
     const getElements = (parent: Element, tagName: string): Element[] => {
       if (xmlns) {
         return Array.from(parent.getElementsByTagNameNS(xmlns, tagName));
@@ -25,7 +31,7 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
       return Array.from(parent.getElementsByTagName(tagName));
     };
 
-    const processNote = (noteElement: Element, level: number, parentContent?: string) => {
+    const processNote = (noteElement: Element, level: number = 0, parentContent?: string) => {
       const [contentElement] = getElements(noteElement, 'content');
       const content = contentElement?.textContent?.trim();
       
@@ -56,12 +62,23 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
       }
     };
 
-    const [notesElement] = getElements(xmlDoc.documentElement, 'notes');
+    // Get project title and notes
+    const notesElement = xmlDoc.documentElement;
     if (!notesElement) {
+      throw new Error('Invalid XML structure: missing root element');
+    }
+
+    const [notesContainer] = getElements(notesElement, 'notes');
+    if (!notesContainer) {
       throw new Error('Invalid XML structure: missing notes element');
     }
 
-    getElements(notesElement, 'note').forEach(note => processNote(note, 0));
+    const notes = getElements(notesContainer, 'note');
+    if (notes.length === 0) {
+      throw new Error('No notes found in XML');
+    }
+
+    notes.forEach(note => processNote(note));
 
     if (result.length === 0) {
       throw new Error('No valid notes found in XML');
@@ -77,11 +94,6 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
 
       const text = await file.text();
       const notes = parseXML(text);
-      
-      if (notes.length === 0) {
-        throw new Error('No valid notes to import');
-      }
-      
       await importNotes(notes);
       onClose();
     } catch (error) {
