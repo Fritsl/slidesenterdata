@@ -19,7 +19,7 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
       if (!noteElement) return;
 
       const contentEl = noteElement.querySelector("content");
-      const content = contentEl?.textContent?.replace(/^\[CDATA\[|\]\]$/g, '')?.trim();
+      const content = contentEl?.textContent?.trim();
 
       if (!content) return;
 
