@@ -568,9 +568,20 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
       // First pass: Create all notes and track their IDs
       for (const { notes, level, parentContent } of parsedNotes) {
         for (const content of notes) {
-          if (!content || typeof content !== 'string' || content.startsWith('[') || content.includes('console.log')) continue;
+          if (!content || typeof content !== 'string') continue;
           const trimmedContent = content.trim();
-          if (!trimmedContent || processedContent.has(trimmedContent) || trimmedContent.startsWith('{') || trimmedContent.startsWith('[')) continue;
+          
+          // Filter out debug messages and invalid content
+          if (!trimmedContent 
+              || processedContent.has(trimmedContent)
+              || trimmedContent.startsWith('{')
+              || trimmedContent.startsWith('[')
+              || trimmedContent.startsWith('"')
+              || trimmedContent.includes('console.log')
+              || trimmedContent.includes('Created root note')
+              || trimmedContent.includes('Import completed')
+              || trimmedContent.includes('Starting')
+              || /^[\[\]{}",]+$/.test(trimmedContent)) continue;
           
           const parentId = parentContent ? contentToIdMap.get(parentContent) : null;
           const addNoteResponse = await get().addNote(parentId, trimmedContent);
