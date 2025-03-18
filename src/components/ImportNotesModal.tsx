@@ -6,65 +6,43 @@ interface ImportNotesModalProps {
   onClose: () => void;
 }
 
-interface XMLNote {
-  $: {
-    id?: string;
-    discussion?: string;
-    time?: string;
-    youtube?: string;
-    url?: string;
-    url_display_text?: string;
-  };
-  content: string[];
-  children?: { note: XMLNote[] };
-}
-
-interface XMLProject {
-  project: {
-    title: string[];
-    notes: { note: XMLNote[] };
-  };
-}
-
 export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
-  const [text, setText] = useState('');
-  const [isImporting, setIsImporting] = useState(false);
-  const store = useNoteStore();
-  const importNotes = store.importNotes;
+  const importNotes = useNoteStore().importNotes;
+  const [error, setError] = useState<string>('');
 
   const parseXML = (xmlText: string): { notes: string[], level: number, parentContent?: string }[] => {
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlText, "text/xml");
-    const result: { notes: string[], level: number, parentContent?: string }[] = [];
+    try {
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(xmlText, "text/xml");
+      const result: { notes: string[], level: number, parentContent?: string }[] = [];
 
-    const processNote = (noteElement: Element, level: number, parentContent?: string) => {
-      const content = noteElement.querySelector("content")?.textContent?.trim();
-      if (!content) return;
+      const processNote = (noteElement: Element, level: number, parentContent?: string) => {
+        const content = noteElement.querySelector("content")?.textContent?.trim();
+        if (!content) return;
 
-      const note = [content];
-      const attrs = ['time', 'youtube', 'url', 'url-text', 'discussion'];
-      
-      attrs.forEach(attr => {
-        const value = noteElement.getAttribute(attr);
-        if (value) {
-          if (attr === 'discussion' && value === 'true') {
-            note.push('[discussion=true]');
-          } else if (attr === 'url-text') {
-            note.push(`[url_display_text=${value}]`);
-          } else {
-            note.push(`[${attr}=${value}]`);
+        const note = [content];
+        const attrs = ['time', 'youtube', 'url', 'url-text', 'discussion'];
+
+        attrs.forEach(attr => {
+          const value = noteElement.getAttribute(attr);
+          if (value) {
+            if (attr === 'discussion' && value === 'true') {
+              note.push('[discussion=true]');
+            } else if (attr === 'url-text') {
+              note.push(`[url_display_text=${value}]`);
+            } else {
+              note.push(`[${attr}=${value}]`);
+            }
           }
-        }
-      });
+        });
 
-      result.push({ notes: note, level, parentContent });
+        result.push({ notes: note, level, parentContent });
 
-          const children = noteElement.getElementsByTagName("children")[0];
-          if (children) {
-            Array.from(children.getElementsByTagName("note")).forEach(child => {
-              processNote(child, level + 1, content);
-            });
-          }
+        const children = noteElement.getElementsByTagName("children")[0];
+        if (children) {
+          Array.from(children.getElementsByTagName("note")).forEach(child => {
+            processNote(child, level + 1, content);
+          });
         }
       };
 
@@ -77,94 +55,49 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
 
       return result;
     } catch (error) {
+      console.error("Error parsing XML:", error);
       throw error;
     }
   };
 
-  const handleImport = async () => {
+  const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
-      setIsImporting(true);
-      if (text.trim().startsWith('<?xml')) {
-        const parsedNotes = parseXML(text);
-        if (parsedNotes && parsedNotes.length > 0) {
-          const uniqueNotes = Array.from(new Set(parsedNotes.map(note => JSON.stringify(note))))
-            .map(str => JSON.parse(str));
-          await importNotes(uniqueNotes);
-        } else {
-          throw new Error("No valid notes found in XML");
-        }
-      } else {
-        const lines = text.split('\n').filter(line => line.trim());
-        if (lines.length > 0) {
-          await importNotes([{ notes: lines, level: 0 }]);
-        } else {
-          throw new Error("No valid notes found in text");
-        }
-      }
+      const file = e.target.files?.[0];
+      if (!file) return;
+
+      const text = await file.text();
+      const notes = parseXML(text);
+      await importNotes(notes);
       onClose();
     } catch (error) {
-      console.error('Error importing notes:', error instanceof Error ? error.message : error);
-      alert(`Failed to import notes: ${error instanceof Error ? error.message : 'Unknown error occurred'}`);
-    } finally {
-      setIsImporting(false);
+      console.error("Error during import:", error);
+      setError(error instanceof Error ? error.message : 'Import failed');
     }
   };
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
         <div className="flex items-center justify-between p-4 border-b">
           <h2 className="text-lg font-semibold text-gray-900">Import Notes</h2>
-          <button
-            onClick={onClose}
-            className="p-1 hover:bg-gray-100 rounded-full transition-colors"
-          >
+          <button onClick={onClose} className="p-1 hover:bg-gray-100 rounded-full transition-colors">
             <X className="w-5 h-5 text-gray-500" />
           </button>
         </div>
         <div className="p-4">
-          <div className="mb-4">
-            <h3 className="font-medium text-gray-700 mb-2">Import Format</h3>
-            <div className="space-y-2 text-sm text-gray-600">
-              <div className="p-3 bg-gray-50 rounded-lg">
-                <strong>Bullet Format:</strong>
-                <br/>• Each line starts with (•)
-                <br/>• Use spaces for indentation
-              </div>
-              <div className="p-3 bg-blue-50 rounded-lg border border-blue-100">
-                <strong>XML Format:</strong>
-                <br/>• Paste XML exported from this app
-                <br/>• Starts with &lt;?xml version="1.0"&gt;
-              </div>
+          <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+            <div className="flex flex-col items-center justify-center pt-5 pb-6">
+              <Upload className="w-10 h-10 text-gray-400 mb-3" />
+              <p className="mb-2 text-sm text-gray-500">
+                <span className="font-semibold">Click to upload</span> or drag and drop
+              </p>
+              <p className="text-xs text-gray-500">XML files only</p>
             </div>
-          </div>
-          <div className="flex-1 p-4 flex flex-col min-h-0">
-            <textarea
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              className="w-full h-48 font-mono text-sm p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-              placeholder="• Main note
-  • Sub-note
-    • Sub-sub-note
-• Another main note"
-            />
-          </div>
-        </div>
-        <div className="p-4 border-t bg-gray-50 flex justify-end gap-2">
-          <button
-            onClick={onClose}
-            className="px-4 py-2 text-gray-600 hover:text-gray-800"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={handleImport}
-            disabled={!text.trim() || isImporting}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-          >
-            <Upload className="w-4 h-4" />
-            {isImporting ? 'Importing...' : 'Import Notes'}
-          </button>
+            <input type="file" className="hidden" accept=".xml" onChange={handleImport} />
+          </label>
+          {error && (
+            <p className="mt-2 text-sm text-red-600">{error}</p>
+          )}
         </div>
       </div>
     </div>
