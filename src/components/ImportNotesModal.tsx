@@ -29,9 +29,7 @@ interface XMLProject {
 export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
   const [text, setText] = useState('');
   const [isImporting, setIsImporting] = useState(false);
-  const { importNotes } = useNoteStore((state) => ({
-    importNotes: state.importNotes
-  }));
+  const importNotes = useNoteStore((state) => state.importNotes);
 
   const parseXML = (xmlText: string): { notes: string[], level: number }[] => {
     const parser = new DOMParser();
