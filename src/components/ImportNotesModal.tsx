@@ -121,11 +121,21 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
           </button>
         </div>
         <div className="p-4">
-          <p className="text-sm text-gray-600 mb-4">
-            Paste your notes below in either:<br/>
-            • Bullet format: Each line starts with (•) and uses spaces for indentation<br/>
-            • XML format: Exported from this app's XML export feature
-          </p>
+          <div className="mb-4">
+            <h3 className="font-medium text-gray-700 mb-2">Import Format</h3>
+            <div className="space-y-2 text-sm text-gray-600">
+              <div className="p-3 bg-gray-50 rounded-lg">
+                <strong>Bullet Format:</strong>
+                <br/>• Each line starts with (•)
+                <br/>• Use spaces for indentation
+              </div>
+              <div className="p-3 bg-blue-50 rounded-lg border border-blue-100">
+                <strong>XML Format:</strong>
+                <br/>• Paste XML exported from this app
+                <br/>• Starts with &lt;?xml version="1.0"&gt;
+              </div>
+            </div>
+          </div>
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
