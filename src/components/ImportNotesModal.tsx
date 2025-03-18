@@ -125,15 +125,17 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
               </div>
             </div>
           </div>
-          <textarea
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            className="w-full h-96 font-mono text-sm p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-            placeholder="• Main note
+          <div className="flex-1 p-4 flex flex-col min-h-0">
+            <textarea
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              className="w-full h-96 font-mono text-sm p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+              placeholder="• Main note
   • Sub-note
     • Sub-sub-note
 • Another main note"
-          />
+            />
+          </div>
         </div>
         <div className="p-4 border-t bg-gray-50 flex justify-end gap-2">
           <button
