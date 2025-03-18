@@ -114,7 +114,7 @@ export const createProjectSlice: StateCreator<Store> = (set, get) => ({
         console.error('Failed to load notes:', error);
         set({ notes: [] });
       }
-      
+
     } catch (error) {
       throw handleDatabaseError(error, 'Failed to switch project');
     }
