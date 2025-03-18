@@ -539,21 +539,19 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
   },
 
   importNotes: async (parsedNotes: { notes: string[], level: number }[]) => {
-    const parentMap = new Map<number, string>();
-    
-    for (const { notes, level } of parsedNotes) {
-      if (!Array.isArray(notes) || notes.length === 0) continue;
-      
-      const content = notes.join(' ').trim();
-      if (!content) continue;
+    // Create all notes in a single batch
+    const notesToCreate = parsedNotes
+      .filter(({ notes }) => Array.isArray(notes) && notes.length > 0)
+      .map(({ notes }) => ({
+        content: notes.join(' ').trim(),
+        parent_id: null
+      }))
+      .filter(note => note.content);
 
-      const parentId = level === 0 ? null : parentMap.get(level - 1) || null;
-      const newNote = await get().addNote(parentId);
-      
-      if (newNote?.id) {
-        await get().updateNote(newNote.id, content);
-        parentMap.set(level, newNote.id);
-      }
+    // Add all notes at once to avoid UI popping
+    for (const note of notesToCreate) {
+      const { content, parent_id } = note;
+      const newNote = await get().addNote(parent_id, content);
     }
   }
 });
