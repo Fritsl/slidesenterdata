@@ -567,15 +567,42 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
           if (!note.notes?.[0] || processedContent.has(note.notes[0])) continue;
           
           const parentId = note.parentContent ? contentToIdMap.get(note.parentContent) : undefined;
-          console.log('Creating note:', { content: note.notes[0], parentId });
-          const response = await get().addNote(parentId, note.notes[0]);
+          const mainContent = note.notes[0];
+          let time = null;
+          let youtube = null;
+          let url = null;
+          let urlDisplayText = null;
+          let isDiscussion = false;
+
+          // Process metadata from additional notes
+          for (const metaNote of note.notes.slice(1)) {
+            if (metaNote.startsWith('[time=')) {
+              time = metaNote.slice(6, -1);
+            } else if (metaNote.startsWith('[youtube=')) {
+              youtube = metaNote.slice(9, -1);
+            } else if (metaNote.startsWith('[url=')) {
+              url = metaNote.slice(5, -1);
+            } else if (metaNote.startsWith('[url_display_text=')) {
+              urlDisplayText = metaNote.slice(17, -1);
+            } else if (metaNote === '[discussion=true]') {
+              isDiscussion = true;
+            }
+          }
+
+          console.log('Creating note:', { content: mainContent, parentId, time, youtube, url, isDiscussion });
+          const response = await get().addNote(parentId, mainContent);
           
           if (response?.id) {
-            console.log('Created note:', { id: response.id, content: note.notes[0] });
-            contentToIdMap.set(note.notes[0], response.id);
-            processedContent.add(note.notes[0]);
+            if (time) await get().toggleTime(response.id, time);
+            if (youtube) await get().setYoutubeUrl(response.id, youtube);
+            if (isDiscussion) await get().toggleDiscussion(response.id, true);
+            if (url) await get().setUrl(response.id, url, urlDisplayText);
+            
+            console.log('Created note:', { id: response.id, content: mainContent });
+            contentToIdMap.set(mainContent, response.id);
+            processedContent.add(mainContent);
           } else {
-            console.error('Failed to create note:', { content: note.notes[0], parentId });
+            console.error('Failed to create note:', { content: mainContent, parentId });
           }
         }
       } catch (error) {
