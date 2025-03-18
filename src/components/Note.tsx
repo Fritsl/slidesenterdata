@@ -29,12 +29,13 @@ export const Note: React.FC<NoteProps> = ({ note, level, onError }) => {
     isDragging,
     isDragOver,
     isParentTarget,
+    dropZone,
     handleDragStart,
     handleDragEnd,
     handleDragOver,
     handleDragLeave,
     handleDrop
-  } = useDragDrop(note, onError);
+  } = useDragDrop(note, onError); // Assumed useDragDrop now returns dropZone
 
   useClickOutside(noteRef, () => {
     if (isSelected) {
@@ -60,8 +61,8 @@ export const Note: React.FC<NoteProps> = ({ note, level, onError }) => {
           ${LEVEL_COLORS[Math.min(level, LEVEL_COLORS.length - 1)]} 
           ${isDragging ? 'opacity-50' : ''}
           ${isDragOver ? (isParentTarget ? 'border-r-4 border-green-500' : 'border-2 border-blue-500') : ''}
-          isSelected ? 'ring-2 ring-blue-500' : ''
-        }`}
+          ${isSelected ? 'ring-2 ring-blue-500' : ''}
+        `}
       >
         <div className="w-full">
           <div className="flex flex-col gap-2">
@@ -113,6 +114,14 @@ export const Note: React.FC<NoteProps> = ({ note, level, onError }) => {
           </div>
         </div>
       </div>
+
+      {isDragOver && !isParentTarget && (
+        <div className="absolute inset-x-0 h-1 bg-blue-400 transition-all duration-200" 
+             style={{ 
+               top: dropZone === 'above' ? '-2px' : 'auto',
+               bottom: dropZone === 'below' ? '-2px' : 'auto',
+             }} />
+      )}
 
       {isMoveMenuOpen && (
         <MoveToMenu
