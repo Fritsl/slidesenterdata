@@ -602,35 +602,39 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
             processedContent.add(trimmedContent);
           }
         }
-      }e;
-
-      // Clean up any leftover code
-      return { success: true };
-        for (const { notes, level, parentContent } of parsedNotes) {
-          if (level === currentLevel && parentContent) {
-            const parentId = contentToIdMap.get(parentContent);
-            if (!parentId) continue;
-
-            for (const content of notes) {
-              if (!content || typeof content !== 'string') continue;
-              const trimmedContent = content.trim();
-              if (!trimmedContent || processedContent.has(trimmedContent)) continue;
-
-              console.log(`Creating level ${currentLevel} note:`, trimmedContent, 'parent:', parentContent);
-              const addNoteResponse = await get().addNote(parentId, trimmedContent);
-              if (!addNoteResponse?.id) throw new Error('Failed to create note');
-
-              contentToIdMap.set(trimmedContent, addNoteResponse.id);
-              processedContent.add(trimmedContent);
-              log('Created child note', addNoteResponse);
-            }
-          }
-          if (level > currentLevel) hasMoreLevels = true;
-        }
-        currentLevel++;
       }
 
+      // Process notes by level and maintain hierarchy
+      for (const level of Object.keys(notesByLevel).sort((a, b) => Number(a) - Number(b))) {
+        for (const { notes, parentContent } of notesByLevel[level]) {
+          for (const content of notes) {
+            if (!content || typeof content !== 'string') continue;
+            const trimmedContent = content.trim();
+            
+            if (!trimmedContent 
+                || processedContent.has(trimmedContent)
+                || trimmedContent.startsWith('{')
+                || trimmedContent.startsWith('[')
+                || trimmedContent.startsWith('"')
+                || trimmedContent.includes('console.log')
+                || trimmedContent.includes('Created root note')
+                || trimmedContent.includes('Import completed')
+                || trimmedContent.includes('Starting')
+                || /^[\[\]{}",]+$/.test(trimmedContent)) continue;
+            
+            const parentId = parentContent ? contentToIdMap.get(parentContent) : null;
+            const addNoteResponse = await get().addNote(parentId, trimmedContent);
+            if (!addNoteResponse?.id) throw new Error('Failed to create note');
+            
+            contentToIdMap.set(trimmedContent, addNoteResponse.id);
+            processedContent.add(trimmedContent);
+            log('Created note', addNoteResponse);
+          }
+        }
+      }
+      
       log('Import completed');
+      return { success: true };
     } catch (error) {
       log('Error importing notes:', error);
       throw error;
