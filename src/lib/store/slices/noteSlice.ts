@@ -555,6 +555,10 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
     };
 
     try {
+      if (!parsedNotes || parsedNotes.length === 0) {
+        throw new Error('No valid notes to import');
+      }
+
       set({ isImporting: true }); // Set import flag before starting import
       log('Starting importNotes');
 
@@ -562,10 +566,20 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
 
       for (const { notes, level, parentContent } of parsedNotes) {
         for (const content of notes) {
-          console.log('Creating note with content:', content, 'parent:', parentContent);
+          if (!content || typeof content !== 'string') continue;
+          
+          const trimmedContent = content.trim();
+          if (!trimmedContent) continue;
+          
+          console.log('Creating note with content:', trimmedContent, 'parent:', parentContent);
           const parentId = parentContent ? contentToIdMap.get(parentContent) : null;
-          const addNoteResponse = await get().addNote(parentId, content);
-          contentToIdMap.set(content, addNoteResponse.id);
+          const addNoteResponse = await get().addNote(parentId, trimmedContent);
+          
+          if (!addNoteResponse || !addNoteResponse.id) {
+            throw new Error('Failed to create note');
+          }
+          
+          contentToIdMap.set(trimmedContent, addNoteResponse.id);
           log('Note creation response', addNoteResponse);
         }
       }
