@@ -99,7 +99,7 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden">
         <div className="flex items-center justify-between p-4 border-b">
           <h2 className="text-lg font-semibold text-gray-900">Import Notes</h2>
           <button
@@ -128,7 +128,7 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
-            className="w-full h-96 font-mono text-sm p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full h-96 font-mono text-sm p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
             placeholder="• Main note
   • Sub-note
     • Sub-sub-note
