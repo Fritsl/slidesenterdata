@@ -559,29 +559,59 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
         throw new Error('No valid notes to import');
       }
 
-      set({ isImporting: true }); // Set import flag before starting import
+      set({ isImporting: true });
       log('Starting importNotes');
 
       const contentToIdMap = new Map<string, string>();
-
-      for (const { notes, level, parentContent } of parsedNotes) {
-        for (const content of notes) {
-          if (!content || typeof content !== 'string') continue;
-          
-          const trimmedContent = content.trim();
-          if (!trimmedContent) continue;
-          
-          console.log('Creating note with content:', trimmedContent, 'parent:', parentContent);
-          const parentId = parentContent ? contentToIdMap.get(parentContent) : null;
-          const addNoteResponse = await get().addNote(parentId, trimmedContent);
-          
-          if (!addNoteResponse || !addNoteResponse.id) {
-            throw new Error('Failed to create note');
+      const processedContent = new Set<string>();
+      
+      // First pass: Create root level notes (level 0)
+      for (const { notes, level } of parsedNotes) {
+        if (level === 0) {
+          for (const content of notes) {
+            if (!content || typeof content !== 'string') continue;
+            const trimmedContent = content.trim();
+            if (!trimmedContent || processedContent.has(trimmedContent)) continue;
+            
+            console.log('Creating root note:', trimmedContent);
+            const addNoteResponse = await get().addNote(null, trimmedContent);
+            if (!addNoteResponse?.id) throw new Error('Failed to create note');
+            
+            contentToIdMap.set(trimmedContent, addNoteResponse.id);
+            processedContent.add(trimmedContent);
+            log('Created root note', addNoteResponse);
           }
-          
-          contentToIdMap.set(trimmedContent, addNoteResponse.id);
-          log('Note creation response', addNoteResponse);
         }
+      }
+
+      // Second pass: Create child notes level by level
+      let currentLevel = 1;
+      let hasMoreLevels = true;
+
+      while (hasMoreLevels) {
+        hasMoreLevels = false;
+        for (const { notes, level, parentContent } of parsedNotes) {
+          if (level === currentLevel && parentContent) {
+            const parentId = contentToIdMap.get(parentContent);
+            if (!parentId) continue;
+
+            for (const content of notes) {
+              if (!content || typeof content !== 'string') continue;
+              const trimmedContent = content.trim();
+              if (!trimmedContent || processedContent.has(trimmedContent)) continue;
+
+              console.log(`Creating level ${currentLevel} note:`, trimmedContent, 'parent:', parentContent);
+              const addNoteResponse = await get().addNote(parentId, trimmedContent);
+              if (!addNoteResponse?.id) throw new Error('Failed to create note');
+
+              contentToIdMap.set(trimmedContent, addNoteResponse.id);
+              processedContent.add(trimmedContent);
+              log('Created child note', addNoteResponse);
+            }
+          }
+          if (level > currentLevel) hasMoreLevels = true;
+        }
+        currentLevel++;
       }
 
       log('Import completed');
