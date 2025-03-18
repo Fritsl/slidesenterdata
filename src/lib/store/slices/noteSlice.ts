@@ -628,15 +628,15 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
             
             contentToIdMap.set(trimmedContent, addNoteResponse.id);
             processedContent.add(trimmedContent);
-            log('Created note', addNoteResponse);
+            console.log('Created note', addNoteResponse);
           }
         }
       }
       
-      log('Import completed');
+      console.log('Import completed');
       return { success: true };
     } catch (error) {
-      log('Error importing notes:', error);
+      console.log('Error importing notes:', error);
       throw error;
     } finally {
       set({ isImporting: false }); // Reset import flag after import
