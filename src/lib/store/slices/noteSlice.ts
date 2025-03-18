@@ -591,8 +591,8 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
       console.log('Import completed successfully');
       return { success: true };
     } catch (error) {
-      console.error('Error during import:', error);
-      throw error;
+      console.error('Error during import:', error instanceof Error ? error.stack : error);
+      throw new Error(`Import failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       set({ isImporting: false });
     }
