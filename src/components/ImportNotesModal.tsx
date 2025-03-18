@@ -33,22 +33,46 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
   const importNotes = store.importNotes;
 
   const parseXML = (xmlText: string): { notes: string[], level: number }[] => {
+    const log = (msg: string, data?: any) => {
+      const logEl = document.getElementById('debug-log');
+      if (logEl) {
+        const message = data ? `${msg}: ${JSON.stringify(data)}` : msg;
+        logEl.textContent = message + '\n' + (logEl.textContent || '');
+      }
+    };
+
+    log('Starting XML parsing');
+    log('Full XML content', xmlText);
+    
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xmlText, "text/xml");
 
     if (xmlDoc.getElementsByTagName("parsererror").length > 0) {
-      throw new Error("Invalid XML format");
+      const error = xmlDoc.getElementsByTagName("parsererror")[0].textContent;
+      log('XML Parse Error', error);
+      throw new Error("Invalid XML format: " + error);
     }
 
     const result: { notes: string[], level: number }[] = [];
+    log('XML parsed successfully');
 
     const processNote = (noteElement: Element, level: number) => {
+      const log = (msg: string, data?: any) => {
+        const logEl = document.getElementById('debug-log');
+        if (logEl) {
+          const message = data ? `${msg}: ${JSON.stringify(data)}` : msg;
+          logEl.textContent = message + '\n' + (logEl.textContent || '');
+        }
+      };
+
       const id = noteElement.getAttribute("id") || '';
       const content = noteElement.getElementsByTagName("content")[0]?.textContent || '';
       const time = noteElement.getAttribute("time") || '';
       const youtube = noteElement.getAttribute("youtube") || '';
       const url = noteElement.getAttribute("url") || '';
       const urlDisplayText = noteElement.getAttribute("url_display_text") || '';
+      
+      log('Processing note', { id, content, level });
 
       const note = ['•'.padStart((level * 2) + 1, ' ')];
       note.push(content);

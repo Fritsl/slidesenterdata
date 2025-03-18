@@ -16,21 +16,21 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
   moveNote: async (id: string, parentId: string | null, position: number, level: number) => {
     try {
       const currentLevel = Math.max(0, level);
-      
+
       // Validate position
       const siblings = get().notes.filter(n => n.parent_id === parentId);
       const maxPosition = siblings.length;
       const safePosition = Math.max(0, Math.min(position, maxPosition));
-      
+
       await database.notes.move(id, parentId, safePosition);
-      
+
       // Reload notes to get updated structure
       const user = await database.auth.getCurrentUser();
       const projectId = await database.projects.getCurrentProjectId();
       if (!projectId) return;
 
       const notes = await database.notes.loadNotes(user.id, projectId);
-      
+
       // Update expanded states using the same level
       console.log('Setting expanded states with level:', level);
 
@@ -89,7 +89,7 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
         .select('project_id')
         .eq('id', id)
         .single();
-      
+
       console.log('Retrieved note data:', { note, noteError });
 
       if (noteError) throw noteError;
@@ -117,7 +117,7 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
             : p
         )
       }));
-      
+
       console.log('Note deletion completed successfully in store');
     } catch (error) {
       console.error('Error in deleteNote:', {
@@ -380,7 +380,7 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
         .order('position');
 
       if (error) throw error;
-      
+
       set(state => {
         const updateNoteImages = (notes: Store['notes']): Store['notes'] => {
           return notes.map(note => {
@@ -525,7 +525,7 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
   printNotes: () => {
     const { notes, expandedNotes } = get();
     let result = '';
-    
+
     const formatNote = (note: Store['notes'][0], level = 0) => {
       const indent = '  '.repeat(level);
       result += `${indent}• ${note.content || 'Empty note...'}\n`;
@@ -533,14 +533,14 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
         note.children.forEach(child => formatNote(child, level + 1));
       }
     };
-    
+
     notes.forEach(note => formatNote(note));
     return result;
   },
 
   importNotes: async (parsedNotes: { notes: string[], level: number }[]) => {
     console.log('Starting importNotes with:', parsedNotes);
-    
+
     try {
       // Create all notes in a single batch
       const notesToCreate = parsedNotes
@@ -549,14 +549,10 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
           if (!valid) console.log('Filtered out invalid note:', notes);
           return valid;
         })
-        .map(({ notes }) => {
-          const content = notes.join(' ').trim();
-          console.log('Processing note content:', content);
-          return {
-            content,
-            parent_id: null
-          };
-        })
+        .map(({ notes }) => ({
+          content: notes.join(' ').trim().replace(/^[•]\s*/, ''),
+          parent_id: null
+        }))
         .filter(note => {
           const valid = Boolean(note.content);
           if (!valid) console.log('Filtered out empty note');
@@ -570,14 +566,15 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
         const { content, parent_id } = note;
         console.log('Creating note:', { content, parent_id });
         try {
-          const newNote = await get().addNote(parent_id, content);
+          const newNote = await get().addNote(parent_id); //Removed content parameter
+          newNote.content = content; // Set content after creation
           console.log('Successfully created note:', newNote);
         } catch (err) {
           console.error('Failed to create note:', err);
           throw err;
         }
       }
-      
+
       console.log('Import completed successfully');
     } catch (err) {
       console.error('Import failed:', err);
