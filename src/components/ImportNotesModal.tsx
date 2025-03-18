@@ -48,9 +48,10 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
       }
     };
 
-    const notes = xmlDoc.getElementsByTagName("notes")[0];
-    if (notes) {
-      Array.from(notes.getElementsByTagName("note")).forEach(note => {
+    const notesElement = xmlDoc.querySelector("project > notes");
+    if (notesElement) {
+      const rootNotes = notesElement.querySelectorAll(":scope > note");
+      rootNotes.forEach(note => {
         processNote(note, 0);
       });
     }
