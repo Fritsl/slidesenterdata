@@ -565,36 +565,44 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
       const contentToIdMap = new Map<string, string>();
       const processedContent = new Set<string>();
       
-      // First pass: Create all notes and track their IDs
-      for (const { notes, level, parentContent } of parsedNotes) {
-        for (const content of notes) {
-          if (!content || typeof content !== 'string') continue;
-          const trimmedContent = content.trim();
-          
-          // Filter out debug messages and invalid content
-          if (!trimmedContent 
-              || processedContent.has(trimmedContent)
-              || trimmedContent.startsWith('{')
-              || trimmedContent.startsWith('[')
-              || trimmedContent.startsWith('"')
-              || trimmedContent.includes('console.log')
-              || trimmedContent.includes('Created root note')
-              || trimmedContent.includes('Import completed')
-              || trimmedContent.includes('Starting')
-              || /^[\[\]{}",]+$/.test(trimmedContent)) continue;
-          
-          const parentId = parentContent ? contentToIdMap.get(parentContent) : null;
-          const addNoteResponse = await get().addNote(parentId, trimmedContent);
-          if (!addNoteResponse?.id) throw new Error('Failed to create note');
-          
-          contentToIdMap.set(trimmedContent, addNoteResponse.id);
-          processedContent.add(trimmedContent);
-        }
-      }
+      // Process notes level by level, starting with root notes
+      const notesByLevel = parsedNotes.reduce((acc, note) => {
+        acc[note.level] = acc[note.level] || [];
+        acc[note.level].push(note);
+        return acc;
+      }, {});
 
-      // Second pass: Create child notes level by level
-      let currentLevel = 1;
-      let hasMoreLevels = true;
+      const maxLevel = Math.max(...Object.keys(notesByLevel).map(Number));
+      
+      for (let level = 0; level <= maxLevel; level++) {
+        const notesAtLevel = notesByLevel[level] || [];
+        
+        for (const { notes, parentContent } of notesAtLevel) {
+          for (const content of notes) {
+            if (!content || typeof content !== 'string') continue;
+            const trimmedContent = content.trim();
+            
+            // Filter out debug messages and invalid content
+            if (!trimmedContent 
+                || processedContent.has(trimmedContent)
+                || trimmedContent.startsWith('{')
+                || trimmedContent.startsWith('[')
+                || trimmedContent.startsWith('"')
+                || trimmedContent.includes('console.log')
+                || trimmedContent.includes('Created root note')
+                || trimmedContent.includes('Import completed')
+                || trimmedContent.includes('Starting')
+                || /^[\[\]{}",]+$/.test(trimmedContent)) continue;
+            
+            const parentId = parentContent ? contentToIdMap.get(parentContent) : null;
+            const addNoteResponse = await get().addNote(parentId, trimmedContent);
+            if (!addNoteResponse?.id) throw new Error('Failed to create note');
+            
+            contentToIdMap.set(trimmedContent, addNoteResponse.id);
+            processedContent.add(trimmedContent);
+          }
+        }
+      }e;
 
       while (hasMoreLevels) {
         hasMoreLevels = false;
