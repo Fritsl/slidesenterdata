@@ -539,7 +539,7 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
     return result;
   },
 
-  importNotes: async (parsedNotes: { notes: string[], level: number }[]) => {
+  importNotes: async (parsedNotes: { notes: string[], level: number, parentContent?: string }[]) => {
     const log = (msg: string, data?: any) => {
       const logEl = document.getElementById('debug-log');
       if (logEl) {
@@ -551,14 +551,16 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
     try {
       log('Starting importNotes');
 
-      // Create all notes directly with content
-      for (const { notes, level } of parsedNotes) {
-        const content = notes.join(' ').trim().replace(/^[•]\s*/, '');
-        if (!content) continue;
+      const contentToIdMap = new Map<string, string>();
 
-        log('Creating note with content', content);
-        const addNoteResponse = await get().addNote(null, content);
-        log('Note creation response', addNoteResponse);
+      for (const { notes, level, parentContent } of parsedNotes) {
+        for (const content of notes) {
+          console.log('Creating note with content:', content, 'parent:', parentContent);
+          const parentId = parentContent ? contentToIdMap.get(parentContent) : null;
+          const addNoteResponse = await get().addNote(parentId, content);
+          contentToIdMap.set(content, addNoteResponse.id);
+          log('Note creation response', addNoteResponse);
+        }
       }
 
       log('Import completed');
