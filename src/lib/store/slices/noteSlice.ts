@@ -546,31 +546,31 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
   },
 
   importNotes: async (parsedNotes: { notes: string[], level: number, parentContent?: string }[]) => {
-    const log = (msg: string, data?: any) => {
-      const logEl = document.getElementById('debug-log');
-      if (logEl) {
-        const message = data ? `${msg}: ${JSON.stringify(data, null, 2)}` : msg;
-        logEl.textContent = message + '\n' + (logEl.textContent || '');
-      }
-    };
-
     try {
       if (!parsedNotes || parsedNotes.length === 0) {
         throw new Error('No valid notes to import');
       }
 
       set({ isImporting: true });
-      log('Starting importNotes');
-
+      
       const contentToIdMap = new Map<string, string>();
       const processedContent = new Set<string>();
       
-      // Process notes level by level, starting with root notes
-      const notesByLevel = parsedNotes.reduce((acc, note) => {
-        acc[note.level] = acc[note.level] || [];
-        acc[note.level].push(note);
-        return acc;
-      }, {});
+      // Sort notes by level to ensure parents are created before children
+      const sortedNotes = [...parsedNotes].sort((a, b) => a.level - b.level);
+      
+      // Process each note
+      for (const note of sortedNotes) {
+        if (processedContent.has(note.notes[0])) continue;
+        
+        const parentId = note.parentContent ? contentToIdMap.get(note.parentContent) : undefined;
+        const noteId = await supabase.createNote(note.notes[0], parentId);
+        
+        if (noteId) {
+          contentToIdMap.set(note.notes[0], noteId);
+          processedContent.add(note.notes[0]);
+        }
+      };
 
       const maxLevel = Math.max(...Object.keys(notesByLevel).map(Number));
       

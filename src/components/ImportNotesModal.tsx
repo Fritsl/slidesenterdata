@@ -33,15 +33,6 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
   const importNotes = store.importNotes;
 
   const parseXML = (xmlText: string): { notes: string[], level: number, parentContent?: string }[] => {
-    const log = (msg: string, data?: any) => {
-      const logEl = document.getElementById('debug-log');
-      if (logEl) {
-        const message = data ? `${msg}: ${JSON.stringify(data, null, 2)}` : msg;
-        logEl.textContent = message + '\n' + (logEl.textContent || '');
-      }
-    };
-
-    log('Starting XML parsing');
 
     try {
       const parser = new DOMParser();
@@ -50,8 +41,21 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
 
       const processNote = (noteElement: Element, level: number, parentContent?: string) => {
         const content = noteElement.getElementsByTagName("content")[0]?.textContent || '';
+        const time = noteElement.getAttribute("time") || '';
+        const youtube = noteElement.getAttribute("youtube") || '';
+        const url = noteElement.getAttribute("url") || '';
+        const urlDisplayText = noteElement.getAttribute("url_display_text") || '';
+        const discussion = noteElement.getAttribute("discussion") === "true";
+
         if (content) {
-          result.push({ notes: [content], level, parentContent });
+          const note = [content];
+          if (time) note.push(`[time=${time}]`);
+          if (youtube) note.push(`[youtube=${youtube}]`);
+          if (url) note.push(`[url=${url}]`);
+          if (urlDisplayText) note.push(`[url_display_text=${urlDisplayText}]`);
+          if (discussion) note.push(`[discussion=true]`);
+
+          result.push({ notes: note, level, parentContent });
 
           const children = noteElement.getElementsByTagName("children")[0];
           if (children) {
@@ -69,100 +73,25 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
         });
       }
 
-      log('Parsed notes', result);
       return result;
     } catch (error) {
-      log('XML parsing failed', error);
       throw error;
     }
-
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlText, "text/xml");
-
-    if (xmlDoc.getElementsByTagName("parsererror").length > 0) {
-      const error = xmlDoc.getElementsByTagName("parsererror")[0].textContent;
-      log('XML Parse Error', error);
-      throw new Error("Invalid XML format: " + error);
-    }
-
-    const result: { notes: string[], level: number }[] = [];
-    log('XML parsed successfully');
-
-    const processNote = (noteElement: Element, level: number) => {
-      const log = (msg: string, data?: any) => {
-        const logEl = document.getElementById('debug-log');
-        if (logEl) {
-          const message = data ? `${msg}: ${JSON.stringify(data)}` : msg;
-          logEl.textContent = message + '\n' + (logEl.textContent || '');
-        }
-      };
-
-      const id = noteElement.getAttribute("id") || '';
-      const content = noteElement.getElementsByTagName("content")[0]?.textContent || '';
-      const time = noteElement.getAttribute("time") || '';
-      const youtube = noteElement.getAttribute("youtube") || '';
-      const url = noteElement.getAttribute("url") || '';
-      const urlDisplayText = noteElement.getAttribute("url_display_text") || '';
-
-      log('Processing note', { id, content, level });
-
-      const note = ['•'.padStart((level * 2) + 1, ' ')];
-      note.push(content);
-      if (time) note.push(`[time=${time}]`);
-      if (youtube) note.push(`[youtube=${youtube}]`);
-      if (url) note.push(`[url=${url}]`);
-      if (urlDisplayText) note.push(`[url_display_text=${urlDisplayText}]`);
-
-      result.push({ notes: note, level });
-
-      const children = noteElement.getElementsByTagName("children")[0];
-      if (children) {
-        Array.from(children.getElementsByTagName("note")).forEach(child => {
-          processNote(child, level + 1);
-        });
-      }
-    };
-
-    const notes = xmlDoc.getElementsByTagName("notes")[0];
-    if (notes) {
-      Array.from(notes.getElementsByTagName("note")).forEach(note => {
-        processNote(note, 0);
-      });
-    }
-
-    return result;
   };
 
   const handleImport = async () => {
     try {
       setIsImporting(true);
       if (text.trim().startsWith('<?xml')) {
-        // Handle XML import
-        const logEl = document.getElementById('debug-log');
-        const log = (msg: string) => {
-          if (logEl) {
-            logEl.textContent = msg + '\n' + (logEl.textContent || '').slice(0, 500);
-          }
-        };
-
-        log('Starting XML import process...');
-        log('Raw XML text: ' + text.substring(0, 100) + '...');
-
         const parsedNotes = parseXML(text);
-        // Use JSON.stringify to avoid console truncation
-        console.log('Full parsed notes:', JSON.stringify(parsedNotes, null, 2));
-
         if (parsedNotes && parsedNotes.length > 0) {
           const uniqueNotes = Array.from(new Set(parsedNotes.map(note => JSON.stringify(note))))
             .map(str => JSON.parse(str));
-          console.log('Attempting to import', uniqueNotes.length, 'unique notes');
           await importNotes(uniqueNotes);
         } else {
-          console.error('No valid notes found in parsed XML');
           throw new Error("No valid notes found in XML");
         }
       } else {
-        // Handle regular bullet-point import
         const lines = text.split('\n').filter(line => line.trim());
         if (lines.length > 0) {
           await importNotes([{ notes: lines, level: 0 }]);
