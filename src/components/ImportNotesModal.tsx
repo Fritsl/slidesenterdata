@@ -145,6 +145,10 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
           try {
             await importNotes(parsedNotes);
             console.log('Import completed successfully');
+            // Reset state after successful import
+            store.resetState();
+            // Force close any open menus
+            document.body.click();
           } catch (err) {
             console.error('Import failed:', err);
             throw err;
