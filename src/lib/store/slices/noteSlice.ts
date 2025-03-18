@@ -552,33 +552,36 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
       }
 
       try {
-    set({ isImporting: true });
-      
-    const contentToIdMap = new Map<string, string>();
-    const processedContent = new Set<string>();
-      
-    // Sort notes by level to ensure parents are created before children
-    const sortedNotes = [...parsedNotes].sort((a, b) => a.level - b.level);
-      
-    console.log('Starting import of sorted notes:', sortedNotes);
-      
-    // Process each note
-    for (const note of sortedNotes) {
-      if (!note.notes?.[0] || processedContent.has(note.notes[0])) continue;
+        set({ isImporting: true });
         
-      const parentId = note.parentContent ? contentToIdMap.get(note.parentContent) : undefined;
-      console.log('Creating note:', { content: note.notes[0], parentId });
-      const response = await get().addNote(parentId, note.notes[0]);
+        const contentToIdMap = new Map<string, string>();
+        const processedContent = new Set<string>();
         
-      if (response?.id) {
-        console.log('Created note:', { id: response.id, content: note.notes[0] });
-        contentToIdMap.set(note.notes[0], response.id);
-        processedContent.add(note.notes[0]);
-      } else {
-        console.error('Failed to create note:', { content: note.notes[0], parentId });
+        // Sort notes by level to ensure parents are created before children
+        const sortedNotes = [...parsedNotes].sort((a, b) => a.level - b.level);
+        
+        console.log('Starting import of sorted notes:', sortedNotes);
+        
+        // Process each note
+        for (const note of sortedNotes) {
+          if (!note.notes?.[0] || processedContent.has(note.notes[0])) continue;
+          
+          const parentId = note.parentContent ? contentToIdMap.get(note.parentContent) : undefined;
+          console.log('Creating note:', { content: note.notes[0], parentId });
+          const response = await get().addNote(parentId, note.notes[0]);
+          
+          if (response?.id) {
+            console.log('Created note:', { id: response.id, content: note.notes[0] });
+            contentToIdMap.set(note.notes[0], response.id);
+            processedContent.add(note.notes[0]);
+          } else {
+            console.error('Failed to create note:', { content: note.notes[0], parentId });
+          }
+        }
+      } catch (error) {
+        console.error('Error during import:', error);
+        throw error;
       }
-    }
-      };
 
       const maxLevel = Math.max(...Object.keys(notesByLevel).map(Number));
       
