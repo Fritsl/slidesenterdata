@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { X, Upload } from 'lucide-react';
 import { useNoteStore } from '../store';
@@ -16,44 +17,60 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
     const result: { notes: string[], level: number, parentContent?: string }[] = [];
 
     const processNote = (noteElement: Element, level: number, parentContent?: string) => {
-      if (!noteElement) return;
-
-      const contentEl = noteElement.querySelector("content");
-      const content = contentEl?.textContent?.trim();
-
+      const content = noteElement.querySelector('content')?.textContent?.trim();
       if (!content) return;
 
       const note = [content];
-      const attrs = ['time', 'youtube', 'url', 'url-text', 'discussion'];
 
-      attrs.forEach(attr => {
-        const value = noteElement.getAttribute(attr);
-        if (value) {
-          if (attr === 'discussion' && value === 'true') {
-            note.push('[discussion=true]');
-          } else if (attr === 'url-text') {
-            note.push(`[url_display_text=${value}]`);
-          } else {
-            note.push(`[${attr}=${value}]`);
-          }
-        }
-      });
+      // Handle attributes
+      const attrs = {
+        'time': noteElement.getAttribute('time'),
+        'youtube': noteElement.getAttribute('youtube'),
+        'url': noteElement.getAttribute('url'),
+        'url-text': noteElement.getAttribute('url-text'),
+        'discussion': noteElement.getAttribute('discussion')
+      };
+
+      if (attrs.discussion === 'true') {
+        note.push('[discussion=true]');
+      }
+      if (attrs.time) {
+        note.push(`[time=${attrs.time}]`);
+      }
+      if (attrs.youtube) {
+        note.push(`[youtube=${attrs.youtube}]`);
+      }
+      if (attrs.url) {
+        note.push(`[url=${attrs.url}]`);
+      }
+      if (attrs['url-text']) {
+        note.push(`[url_display_text=${attrs['url-text']}]`);
+      }
 
       result.push({ notes: note, level, parentContent });
 
+      // Process children
       const children = noteElement.querySelector('children');
       if (children) {
         const childNotes = children.querySelectorAll(':scope > note');
-        childNotes.forEach(child => processNote(child, level + 1, content));
+        childNotes.forEach(child => {
+          processNote(child, level + 1, content);
+        });
       }
     };
 
-    const notesElement = xmlDoc.querySelector("project > notes");
-    if (notesElement) {
-      const rootNotes = notesElement.querySelectorAll(":scope > note");
-      rootNotes.forEach(note => {
-        processNote(note, 0);
-      });
+    const notes = xmlDoc.querySelector('project > notes');
+    if (!notes) {
+      throw new Error('Invalid XML structure: missing notes element');
+    }
+
+    const rootNotes = notes.querySelectorAll(':scope > note');
+    rootNotes.forEach(note => {
+      processNote(note, 0);
+    });
+
+    if (result.length === 0) {
+      throw new Error('No valid notes found in XML');
     }
 
     return result;
@@ -66,10 +83,15 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
 
       const text = await file.text();
       const notes = parseXML(text);
+      
+      if (notes.length === 0) {
+        throw new Error('No valid notes to import');
+      }
+      
       await importNotes(notes);
       onClose();
     } catch (error) {
-      console.error("Error during import:", error);
+      console.error('Error during import:', error);
       setError(error instanceof Error ? error.message : 'Import failed');
     }
   };
