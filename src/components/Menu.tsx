@@ -11,6 +11,8 @@ import { TimedNotesView } from './TimedNotesView';
 import { MenuItems } from './MenuItems';
 import { ProjectList } from './ProjectList';
 import { DeletedProjectList } from './DeletedProjectList';
+// Placeholder component - replace with actual implementation
+import { ImportNotesModal } from './ImportNotesModal';
 
 interface MenuProps {
   onSignOut: () => void;
@@ -29,6 +31,7 @@ export function Menu({ onSignOut }: MenuProps) {
   const [showExportModal, setShowExportModal] = useState(false);
   const [showNewProjectModal, setShowNewProjectModal] = useState(false);
   const [showTimedNotesModal, setShowTimedNotesModal] = useState(false);
+  const [showImportModal, setShowImportModal] = useState(false); // Added import modal state
   const projectsMenuRef = useRef<HTMLDivElement>(null);
   const trashMenuRef = useRef<HTMLDivElement>(null);
   const [isLoadingProjects, setIsLoadingProjects] = useState(false);
@@ -40,6 +43,7 @@ export function Menu({ onSignOut }: MenuProps) {
           setIsOpen(false);
           setShowProjectsMenu(false);
           setShowTrashMenu(false);
+          setShowImportModal(false); // Added to close import modal on click outside
         }
       }
     };
@@ -108,12 +112,13 @@ export function Menu({ onSignOut }: MenuProps) {
           }}
           onPrint={() => setIsPrintModalOpen(true)}
           onExport={() => setShowExportModal(true)}
+          onImport={() => setShowImportModal(true)} // Added import handler
           onSignOut={onSignOut}
           onClose={() => setIsOpen(false)}
           userEmail={user?.email}
         />
       )}
-      
+
       {showProjectsMenu && (
         <div 
           ref={projectsMenuRef}
@@ -136,7 +141,7 @@ export function Menu({ onSignOut }: MenuProps) {
           />
         </div>
       )}
-      
+
       {showTrashMenu && (
         <div 
           ref={trashMenuRef}
@@ -161,14 +166,14 @@ export function Menu({ onSignOut }: MenuProps) {
           />
         </div>
       )}
-      
+
       {isPrintModalOpen && (
         <PrintAllNotes
           notes={notes}
           onClose={() => setIsPrintModalOpen(false)}
         />
       )}
-      
+
       {showExportModal && (
         <ExportXMLModal
           notes={notes}
@@ -176,7 +181,13 @@ export function Menu({ onSignOut }: MenuProps) {
           onClose={() => setShowExportModal(false)}
         />
       )}
-      
+
+      {showImportModal && (
+        <ImportNotesModal
+          onClose={() => setShowImportModal(false)}
+        />
+      )}
+
       {projectToDelete && (
         <DeleteProjectModal
           projectTitle={projectToDelete.title}
@@ -184,7 +195,7 @@ export function Menu({ onSignOut }: MenuProps) {
           onCancel={() => setProjectToDelete(null)}
         />
       )}
-      
+
       {showNewProjectModal && (
         <NewProjectModal
           onClose={() => setShowNewProjectModal(false)}
@@ -197,7 +208,7 @@ export function Menu({ onSignOut }: MenuProps) {
           }}
         />
       )}
-      
+
       {showTimedNotesModal && (
         <TimedNotesView onClose={() => setShowTimedNotesModal(false)} />
       )}
