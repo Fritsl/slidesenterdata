@@ -1,0 +1,216 @@
+Import completed
+Created root note: {
+  "id": "57ef2a50-fd1f-455e-8767-3edf81858b95",
+  "content": "Another parent in the root with no children",
+  "children": [],
+  "isEditing": false,
+  "unsavedContent": "",
+  "user_id": "c888c6a3-8250-42b0-8156-bd4803158e6f",
+  "project_id": "02dddc1d-832f-4c97-881a-25ae8fc393b7",
+  "is_discussion": false,
+  "parent_id": null,
+  "images": []
+}
+Created root note: {
+  "id": "495532e3-e1f4-4c93-a889-e162556cc5ac",
+  "content": "A single gran child",
+  "children": [],
+  "isEditing": false,
+  "unsavedContent": "",
+  "user_id": "c888c6a3-8250-42b0-8156-bd4803158e6f",
+  "project_id": "02dddc1d-832f-4c97-881a-25ae8fc393b7",
+  "is_discussion": false,
+  "parent_id": null,
+  "images": []
+}
+Created root note: {
+  "id": "787ebb43-4931-4d63-ad83-3f22d02884e2",
+  "content": "Cghild 2",
+  "children": [],
+  "isEditing": false,
+  "unsavedContent": "",
+  "user_id": "c888c6a3-8250-42b0-8156-bd4803158e6f",
+  "project_id": "02dddc1d-832f-4c97-881a-25ae8fc393b7",
+  "is_discussion": false,
+  "parent_id": null,
+  "images": []
+}
+Created root note: {
+  "id": "a299f758-7f69-4a41-b8bf-02454face57e",
+  "content": "Child 1",
+  "children": [],
+  "isEditing": false,
+  "unsavedContent": "",
+  "user_id": "c888c6a3-8250-42b0-8156-bd4803158e6f",
+  "project_id": "02dddc1d-832f-4c97-881a-25ae8fc393b7",
+  "is_discussion": false,
+  "parent_id": null,
+  "images": []
+}
+Created root note: {
+  "id": "87e752af-7e72-41d9-994a-c436de5738d3",
+  "content": "Child",
+  "children": [],
+  "isEditing": false,
+  "unsavedContent": "",
+  "user_id": "c888c6a3-8250-42b0-8156-bd4803158e6f",
+  "project_id": "02dddc1d-832f-4c97-881a-25ae8fc393b7",
+  "is_discussion": false,
+  "parent_id": null,
+  "images": []
+}
+Created root note: {
+  "id": "05d218b1-cc9f-4620-b0e1-9d84b0c5ecb1",
+  "content": "Parent",
+  "children": [],
+  "isEditing": false,
+  "unsavedContent": "",
+  "user_id": "c888c6a3-8250-42b0-8156-bd4803158e6f",
+  "project_id": "02dddc1d-832f-4c97-881a-25ae8fc393b7",
+  "is_discussion": false,
+  "parent_id": null,
+  "images": []
+}
+Starting importNotes
+Parsed notes: [
+  {
+    "notes": [
+      "Parent"
+    ],
+    "level": 0
+  },
+  {
+    "notes": [
+      "Child"
+    ],
+    "level": 1,
+    "parentContent": "Parent"
+  },
+  {
+    "notes": [
+      "Child 1"
+    ],
+    "level": 2,
+    "parentContent": "Child"
+  },
+  {
+    "notes": [
+      "Cghild 2"
+    ],
+    "level": 2,
+    "parentContent": "Child"
+  },
+  {
+    "notes": [
+      "A single gran child"
+    ],
+    "level": 3,
+    "parentContent": "Cghild 2"
+  },
+  {
+    "notes": [
+      "A single gran child"
+    ],
+    "level": 2,
+    "parentContent": "Child"
+  },
+  {
+    "notes": [
+      "Child 1"
+    ],
+    "level": 1,
+    "parentContent": "Parent"
+  },
+  {
+    "notes": [
+      "Cghild 2"
+    ],
+    "level": 1,
+    "parentContent": "Parent"
+  },
+  {
+    "notes": [
+      "A single gran child"
+    ],
+    "level": 2,
+    "parentContent": "Cghild 2"
+  },
+  {
+    "notes": [
+      "A single gran child"
+    ],
+    "level": 1,
+    "parentContent": "Parent"
+  },
+  {
+    "notes": [
+      "Child"
+    ],
+    "level": 0
+  },
+  {
+    "notes": [
+      "Child 1"
+    ],
+    "level": 1,
+    "parentContent": "Child"
+  },
+  {
+    "notes": [
+      "Cghild 2"
+    ],
+    "level": 1,
+    "parentContent": "Child"
+  },
+  {
+    "notes": [
+      "A single gran child"
+    ],
+    "level": 2,
+    "parentContent": "Cghild 2"
+  },
+  {
+    "notes": [
+      "A single gran child"
+    ],
+    "level": 1,
+    "parentContent": "Child"
+  },
+  {
+    "notes": [
+      "Child 1"
+    ],
+    "level": 0
+  },
+  {
+    "notes": [
+      "Cghild 2"
+    ],
+    "level": 0
+  },
+  {
+    "notes": [
+      "A single gran child"
+    ],
+    "level": 1,
+    "parentContent": "Cghild 2"
+  },
+  {
+    "notes": [
+      "A single gran child"
+    ],
+    "level": 0
+  },
+  {
+    "notes": [
+      "Another parent in the root with no children"
+    ],
+    "level": 0
+  }
+]
+Starting XML parsing
+Raw XML text: <?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="https://aiworkshop.dev/notes/1.0">
+  <title><...
+Starting XML import process...
+Logging initialized...
