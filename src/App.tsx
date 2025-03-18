@@ -82,6 +82,9 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black">
+      <div id="debug-log" className="bg-black text-green-400 p-2 font-mono text-sm whitespace-pre overflow-x-auto">
+        Logging initialized...
+      </div>
       <header className="bg-gray-950 shadow-lg sticky top-0 z-10 border-b border-gray-800">
         <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
           <EditableTitle onError={handleError} />

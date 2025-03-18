@@ -82,8 +82,15 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
       setIsImporting(true);
       if (text.trim().startsWith('<?xml')) {
         // Handle XML import
-        console.log('Starting XML import process');
-        console.log('Raw XML text:', text.substring(0, 100) + '...');
+        const logEl = document.getElementById('debug-log');
+        const log = (msg: string) => {
+          if (logEl) {
+            logEl.textContent = msg + '\n' + (logEl.textContent || '').slice(0, 500);
+          }
+        };
+        
+        log('Starting XML import process...');
+        log('Raw XML text: ' + text.substring(0, 100) + '...');
 
         const parsedNotes = parseXML(text);
         console.log('Parsed notes:', parsedNotes);
