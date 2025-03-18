@@ -539,19 +539,49 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
   },
 
   importNotes: async (parsedNotes: { notes: string[], level: number }[]) => {
-    // Create all notes in a single batch
-    const notesToCreate = parsedNotes
-      .filter(({ notes }) => Array.isArray(notes) && notes.length > 0)
-      .map(({ notes }) => ({
-        content: notes.join(' ').trim(),
-        parent_id: null
-      }))
-      .filter(note => note.content);
+    console.log('Starting importNotes with:', parsedNotes);
+    
+    try {
+      // Create all notes in a single batch
+      const notesToCreate = parsedNotes
+        .filter(({ notes }) => {
+          const valid = Array.isArray(notes) && notes.length > 0;
+          if (!valid) console.log('Filtered out invalid note:', notes);
+          return valid;
+        })
+        .map(({ notes }) => {
+          const content = notes.join(' ').trim();
+          console.log('Processing note content:', content);
+          return {
+            content,
+            parent_id: null
+          };
+        })
+        .filter(note => {
+          const valid = Boolean(note.content);
+          if (!valid) console.log('Filtered out empty note');
+          return valid;
+        });
 
-    // Add all notes at once to avoid UI popping
-    for (const note of notesToCreate) {
-      const { content, parent_id } = note;
-      const newNote = await get().addNote(parent_id, content);
+      console.log('Prepared notes for creation:', notesToCreate);
+
+      // Add all notes at once to avoid UI popping
+      for (const note of notesToCreate) {
+        const { content, parent_id } = note;
+        console.log('Creating note:', { content, parent_id });
+        try {
+          const newNote = await get().addNote(parent_id, content);
+          console.log('Successfully created note:', newNote);
+        } catch (err) {
+          console.error('Failed to create note:', err);
+          throw err;
+        }
+      }
+      
+      console.log('Import completed successfully');
+    } catch (err) {
+      console.error('Import failed:', err);
+      throw err;
     }
   }
 });

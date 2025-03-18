@@ -82,10 +82,23 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
       setIsImporting(true);
       if (text.trim().startsWith('<?xml')) {
         // Handle XML import
+        console.log('Starting XML import process');
+        console.log('Raw XML text:', text.substring(0, 100) + '...');
+        
         const parsedNotes = parseXML(text);
+        console.log('Parsed notes:', parsedNotes);
+        
         if (parsedNotes && parsedNotes.length > 0) {
-          await importNotes(parsedNotes);
+          console.log('Attempting to import', parsedNotes.length, 'notes');
+          try {
+            await importNotes(parsedNotes);
+            console.log('Import completed successfully');
+          } catch (err) {
+            console.error('Import failed:', err);
+            throw err;
+          }
         } else {
+          console.error('No valid notes found in parsed XML');
           throw new Error("No valid notes found in XML");
         }
       } else {
