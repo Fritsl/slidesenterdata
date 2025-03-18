@@ -15,14 +15,23 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xmlText, "text/xml");
     const result: { notes: string[], level: number, parentContent?: string }[] = [];
+    
+    const xmlns = xmlDoc.documentElement.getAttribute('xmlns');
+    
+    const getElements = (parent: Element, tagName: string): Element[] => {
+      if (xmlns) {
+        return Array.from(parent.getElementsByTagNameNS(xmlns, tagName));
+      }
+      return Array.from(parent.getElementsByTagName(tagName));
+    };
 
     const processNote = (noteElement: Element, level: number, parentContent?: string) => {
-      const content = noteElement.querySelector('content')?.textContent?.trim();
+      const [contentElement] = getElements(noteElement, 'content');
+      const content = contentElement?.textContent?.trim();
+      
       if (!content) return;
 
       const note = [content];
-
-      // Handle attributes
       const attrs = {
         'time': noteElement.getAttribute('time'),
         'youtube': noteElement.getAttribute('youtube'),
@@ -31,43 +40,28 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
         'discussion': noteElement.getAttribute('discussion')
       };
 
-      if (attrs.discussion === 'true') {
-        note.push('[discussion=true]');
-      }
-      if (attrs.time) {
-        note.push(`[time=${attrs.time}]`);
-      }
-      if (attrs.youtube) {
-        note.push(`[youtube=${attrs.youtube}]`);
-      }
-      if (attrs.url) {
-        note.push(`[url=${attrs.url}]`);
-      }
-      if (attrs['url-text']) {
-        note.push(`[url_display_text=${attrs['url-text']}]`);
-      }
+      if (attrs.discussion === 'true') note.push('[discussion=true]');
+      if (attrs.time) note.push(`[time=${attrs.time}]`);
+      if (attrs.youtube) note.push(`[youtube=${attrs.youtube}]`);
+      if (attrs.url) note.push(`[url=${attrs.url}]`);
+      if (attrs['url-text']) note.push(`[url_display_text=${attrs['url-text']}]`);
 
       result.push({ notes: note, level, parentContent });
 
-      // Process children
-      const children = noteElement.querySelector('children');
+      const [children] = getElements(noteElement, 'children');
       if (children) {
-        const childNotes = children.querySelectorAll(':scope > note');
-        childNotes.forEach(child => {
+        getElements(children, 'note').forEach(child => {
           processNote(child, level + 1, content);
         });
       }
     };
 
-    const notes = xmlDoc.querySelector('project > notes');
-    if (!notes) {
+    const [notesElement] = getElements(xmlDoc.documentElement, 'notes');
+    if (!notesElement) {
       throw new Error('Invalid XML structure: missing notes element');
     }
 
-    const rootNotes = notes.querySelectorAll(':scope > note');
-    rootNotes.forEach(note => {
-      processNote(note, 0);
-    });
+    getElements(notesElement, 'note').forEach(note => processNote(note, 0));
 
     if (result.length === 0) {
       throw new Error('No valid notes found in XML');
