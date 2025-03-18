@@ -52,10 +52,15 @@ function App() {
   }, [notes, expandOneLevel]);
 
   React.useEffect(() => {
-    if (!isLoading && !authError) {
-      loadNotes().catch(handleError);
+    if (!isLoading && !authError && user) {
+      loadNotes().catch(error => {
+        // Ignore initial auth session errors that resolve themselves
+        if (!(error instanceof Error && error.message.includes('Auth session missing'))) {
+          handleError(error);
+        }
+      });
     }
-  }, [isLoading, authError, loadNotes, handleError]);
+  }, [isLoading, authError, user, loadNotes, handleError]);
 
   if (!user) {
     return <AuthForm />;
