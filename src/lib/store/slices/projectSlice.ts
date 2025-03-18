@@ -120,12 +120,17 @@ export const createProjectSlice: StateCreator<Store> = (set, get) => ({
     }
   },
 
-  deleteProject: async (id: string) => {
+  deleteProject: async (projectId: string) => {
     try {
-      await database.projects.delete(id);
+      const { error } = await supabase
+        .from('settings')
+        .update({ deleted_at: new Date().toISOString() })
+        .eq('id', projectId);
+
+      if (error) throw error;
 
       const currentProjectId = await database.projects.getCurrentProjectId();
-      if (currentProjectId === id) {
+      if (currentProjectId === projectId) {
         const user = await database.auth.getCurrentUser();
         const remainingProjects = await database.projects.loadProjects(user.id);
 
