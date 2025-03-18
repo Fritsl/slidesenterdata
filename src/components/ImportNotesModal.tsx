@@ -39,44 +39,42 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
     };
 
     const processNote = (noteElement: Element, level: number, parentContent?: string) => {
-    const content = getElement(noteElement, 'content')?.textContent?.trim() || '';
-    const attributes: string[] = [];
-    
-    // Process attributes
-    if (noteElement.getAttribute('time')) {
-      attributes.push(`[time=${noteElement.getAttribute('time')}]`);
-    }
-    if (noteElement.getAttribute('discussion') === 'true') {
-      attributes.push('[discussion=true]');
-    }
-    if (noteElement.getAttribute('youtube')) {
-      attributes.push(`[youtube=${noteElement.getAttribute('youtube')}]`);
-    }
-    if (noteElement.getAttribute('url')) {
-      attributes.push(`[url=${noteElement.getAttribute('url')}]`);
-    }
-    if (noteElement.getAttribute('url-text')) {
-      attributes.push(`[url_display_text=${noteElement.getAttribute('url-text')}]`);
-    }
-
-    // Add note with content and attributes
-    result.push({
-      notes: [content, ...attributes],
-      level,
-      parentContent
-    });
-
-    // Process children
-    const childrenElement = getElement(noteElement, 'children');
-    if (childrenElement) {
-      const childNotes = getElements(childrenElement, 'note');
-      childNotes.forEach(childNote => {
-        processNote(childNote, level + 1, content);
-      });
-    }
-      // Get content element with namespace awareness
       const contentElement = getElement(noteElement, 'content');
-      const content = contentElement?.textContent?.trim();
+      const content = contentElement?.textContent?.trim() || '';
+      const attributes: string[] = [];
+      
+      // Process attributes
+      if (noteElement.getAttribute('time')) {
+        attributes.push(`[time=${noteElement.getAttribute('time')}]`);
+      }
+      if (noteElement.getAttribute('discussion') === 'true') {
+        attributes.push('[discussion=true]');
+      }
+      if (noteElement.getAttribute('youtube')) {
+        attributes.push(`[youtube=${noteElement.getAttribute('youtube')}]`);
+      }
+      if (noteElement.getAttribute('url')) {
+        attributes.push(`[url=${noteElement.getAttribute('url')}]`);
+      }
+      if (noteElement.getAttribute('url-text')) {
+        attributes.push(`[url_display_text=${noteElement.getAttribute('url-text')}]`);
+      }
+
+      // Add note with content and attributes
+      result.push({
+        notes: [content, ...attributes],
+        level,
+        parentContent
+      });
+
+      // Process children
+      const childrenElement = getElement(noteElement, 'children');
+      if (childrenElement) {
+        const childNotes = getElements(childrenElement, 'note');
+        childNotes.forEach(childNote => {
+          processNote(childNote, level + 1, content);
+        });
+      }
       
       if (!content) return;
 
