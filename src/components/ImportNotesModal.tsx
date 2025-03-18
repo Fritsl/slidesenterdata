@@ -149,18 +149,14 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
         log('Raw XML text: ' + text.substring(0, 100) + '...');
 
         const parsedNotes = parseXML(text);
-        console.log('Parsed notes:', parsedNotes);
+        // Use JSON.stringify to avoid console truncation
+        console.log('Full parsed notes:', JSON.stringify(parsedNotes, null, 2));
 
         if (parsedNotes && parsedNotes.length > 0) {
-          console.log('Attempting to import', parsedNotes.length, 'notes');
-          try {
-            await importNotes(parsedNotes);
-            console.log('Import completed successfully');
-            //onClose(); //Removed as onClose is already called in the finally block.
-          } catch (err) {
-            console.error('Import failed:', err);
-            throw err;
-          }
+          const uniqueNotes = Array.from(new Set(parsedNotes.map(note => JSON.stringify(note))))
+            .map(str => JSON.parse(str));
+          console.log('Attempting to import', uniqueNotes.length, 'unique notes');
+          await importNotes(uniqueNotes);
         } else {
           console.error('No valid notes found in parsed XML');
           throw new Error("No valid notes found in XML");
