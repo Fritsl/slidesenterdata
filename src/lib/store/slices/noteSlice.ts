@@ -12,6 +12,7 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
   currentLevel: 0,
   canExpandMore: false,
   canCollapseMore: false,
+  isImporting: false, // Added import flag
 
   moveNote: async (id: string, parentId: string | null, position: number, level: number) => {
     try {
@@ -142,7 +143,7 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
         id: noteId,
         content: content,
         children: [],
-        isEditing: false,
+        isEditing: false, // Default to not editing
         unsavedContent: '',
         user_id: user.id,
         project_id: projectId,
@@ -150,6 +151,11 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
         parent_id: parentId,
         images: []
       };
+
+      // Set isEditing to true only for manual note creation
+      if (!get().isImporting) {
+        newNote.isEditing = true;
+      }
 
       set(state => {
         if (!parentId) {
@@ -549,6 +555,7 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
     };
 
     try {
+      set({ isImporting: true }); // Set import flag before starting import
       log('Starting importNotes');
 
       const contentToIdMap = new Map<string, string>();
@@ -565,8 +572,17 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
 
       log('Import completed');
     } catch (error) {
-      log('Import failed', error);
+      log('Error importing notes:', error);
       throw error;
+    } finally {
+      set({ isImporting: false }); // Reset import flag after import
     }
   }
 });
+
+export interface Store {
+  notes: Note[];
+  title: string;
+  isEditMode: boolean;
+  isImporting: boolean; // Added import flag
+}
