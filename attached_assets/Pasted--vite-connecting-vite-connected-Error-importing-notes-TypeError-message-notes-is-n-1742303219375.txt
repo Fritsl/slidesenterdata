@@ -1,0 +1,14 @@
+[vite] connecting...
+[vite] connected.
+Error importing notes: 
+TypeError {}
+message: "notes is not iterable"
+stack: "TypeError: notes is not iterable↵ at addNotesRecursively (https://64672c0b-c77a-4f2c-bf3a-44ee3af5a886-00-ia50j25ir648.picard.replit.dev:5173/src/lib/store/slices/noteSlice.ts:451:29)↵ at importNotes (https://64672c0b-c77a-4f2c-bf3a-44ee3af5a886-00-ia50j25ir648.picard.replit.dev:5173/src/lib/store/slices/noteSlice.ts:460:13)↵ at handleImport (https://64672c0b-c77a-4f2c-bf3a-44ee3af5a886-00-ia50j25ir648.picard.replit.dev:5173/src/components/ImportNotesModal.tsx:69:15)↵ at HTMLUnknownElement.callCallback2 (https://64672c0b-c77a-4f2c-bf3a-44ee3af5a886-00-ia50j25ir648.picard.replit.dev:5173/node_modules/.vite/deps/react-dom_client.js?v=8dba9669:3674:22)↵ at Object.invokeGuardedCallbackDev (https://64672c0b-c77a-4f2c-bf3a-44ee3af5a886-00-ia50j25ir648.picard.replit.dev:5173/node_modules/.vite/deps/react-dom_client.js?v=8dba9669:3699:24)↵ at invokeGuardedCallback (https://64672c0b-c77a-4f2c-bf3a-44ee3af5a886-00-ia50j25ir648.picard.replit.dev:5173/node_modules/.vite/deps/react-dom_client.js?v=8dba9669:3733:39)↵ at invokeGuardedCallbackAndCatchFirstError (https://64672c0b-c77a-4f2c-bf3a-44ee3af5a886-00-ia50j25ir648.picard.replit.dev:5173/node_modules/.vite/deps/react-dom_client.js?v=8dba9669:3736:33)↵ at executeDispatch (https://64672c0b-c77a-4f2c-bf3a-44ee3af5a886-00-ia50j25ir648.picard.replit.dev:5173/node_modules/.vite/deps/react-dom_client.js?v=8dba9669:7014:11)↵ at processDispatchQueueItemsInOrder (https://64672c0b-c77a-4f2c-bf3a-44ee3af5a886-00-ia50j25ir648.picard.replit.dev:5173/node_modules/.vite/deps/react-dom_client.js?v=8dba9669:7034:15)↵ at processDispatchQueue (https://64672c0b-c77a-4f2c-bf3a-44ee3af5a886-00-ia50j25ir648.picard.replit.dev:5173/node_modules/.vite/deps/react-dom_client.js?v=8dba9669:7043:13)"
+get stack: ƒ ()
+set stack: ƒ ()
+[[Prototype]]: Object
+
+at t.value (https://64672c0b-c77a-4f2c-bf3a-44ee3af5a886-00-ia50j25ir648.picard.replit.dev:5173/__replco/static/devtools/eruda/3.2.3/eruda.js:2:17465)
+at new t (https://64672c0b-c77a-4f2c-bf3a-44ee3af5a886-00-ia50j25ir648.picard.replit.dev:5173/__replco/static/devtools/eruda/3.2.3/eruda.js:2:12630)
+at t.value (https://64672c0b-c77a-4f2c-bf3a-44ee3af5a886-00-ia50j25ir648.picard.replit.dev:5173/__replco/static/devtools/eruda/3.2.3/eruda.js:2:32766)
+at https://64672c0b-c77a-4f2c-bf3a-44ee3af5a886-00-ia50j25ir648.picard.replit.dev:5173/__replco/static/devtools/eruda/3.2.3/eruda.js:2:34400
