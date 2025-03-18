@@ -43,13 +43,16 @@ export const createProjectSlice: StateCreator<Store> = (set, get) => ({
   permanentlyDeleteProject: async (projectId: string) => {
     try {
       const { error } = await supabase.rpc('permanently_delete_project', {
-        project_id: projectId
+        p_project_id: projectId
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Database error deleting project:', error);
+        throw new Error('Failed to delete project: ' + error.message);
+      }
     } catch (error) {
       console.error('Error permanently deleting project:', error);
-      throw error;
+      throw new Error('Failed to delete project. Please try again.');
     }
   },
 
