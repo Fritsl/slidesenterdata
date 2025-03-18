@@ -14,30 +14,40 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
   const parseXML = (xmlText: string): { notes: string[], level: number, parentContent?: string }[] => {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xmlText, "text/xml");
-    
-    // Check for parsing errors
-    const parseError = xmlDoc.querySelector('parsererror');
-    if (parseError) {
-      throw new Error('Invalid XML format');
-    }
-
     const result: { notes: string[], level: number, parentContent?: string }[] = [];
-    const xmlns = xmlDoc.documentElement.getAttribute('xmlns');
-
-    const getElements = (parent: Element, tagName: string): Element[] => {
+    
+    // Get the namespace from the document
+    const xmlns = xmlDoc.documentElement.getAttribute('xmlns') || null;
+    
+    // Helper function to get elements with proper namespace handling
+    const getElements = (parent: Element, selector: string): Element[] => {
       if (xmlns) {
-        return Array.from(parent.getElementsByTagNameNS(xmlns, tagName));
+        // Use getElementsByTagNameNS for precise namespace handling
+        const allElements = parent.getElementsByTagNameNS(xmlns, selector);
+        return Array.from(allElements);
+      } else {
+        // If no namespace, use getElementsByTagName
+        const allElements = parent.getElementsByTagName(selector);
+        return Array.from(allElements);
       }
-      return Array.from(parent.getElementsByTagName(tagName));
+    };
+    
+    // Helper function to get a single element with namespace awareness
+    const getElement = (parent: Element, selector: string): Element | null => {
+      const elements = getElements(parent, selector);
+      return elements.length > 0 ? elements[0] : null;
     };
 
-    const processNote = (noteElement: Element, level: number = 0, parentContent?: string) => {
-      const [contentElement] = getElements(noteElement, 'content');
+    const processNote = (noteElement: Element, level: number, parentContent?: string) => {
+      // Get content element with namespace awareness
+      const contentElement = getElement(noteElement, 'content');
       const content = contentElement?.textContent?.trim();
       
       if (!content) return;
 
       const note = [content];
+
+      // Handle attributes
       const attrs = {
         'time': noteElement.getAttribute('time'),
         'youtube': noteElement.getAttribute('youtube'),
@@ -46,39 +56,47 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
         'discussion': noteElement.getAttribute('discussion')
       };
 
-      if (attrs.discussion === 'true') note.push('[discussion=true]');
-      if (attrs.time) note.push(`[time=${attrs.time}]`);
-      if (attrs.youtube) note.push(`[youtube=${attrs.youtube}]`);
-      if (attrs.url) note.push(`[url=${attrs.url}]`);
-      if (attrs['url-text']) note.push(`[url_display_text=${attrs['url-text']}]`);
+      if (attrs.discussion === 'true') {
+        note.push('[discussion=true]');
+      }
+      if (attrs.time) {
+        note.push(`[time=${attrs.time}]`);
+      }
+      if (attrs.youtube) {
+        note.push(`[youtube=${attrs.youtube}]`);
+      }
+      if (attrs.url) {
+        note.push(`[url=${attrs.url}]`);
+      }
+      if (attrs['url-text']) {
+        note.push(`[url_display_text=${attrs['url-text']}]`);
+      }
 
       result.push({ notes: note, level, parentContent });
 
-      const [children] = getElements(noteElement, 'children');
+      // Process children with namespace awareness
+      const children = getElement(noteElement, 'children');
       if (children) {
-        getElements(children, 'note').forEach(child => {
+        const childNotes = getElements(children, 'note');
+        childNotes.forEach(child => {
           processNote(child, level + 1, content);
         });
       }
     };
 
-    // Get project title and notes
-    const notesElement = xmlDoc.documentElement;
+    // Get notes element with namespace awareness
+    const projectElement = xmlDoc.documentElement;
+    const notesElement = getElement(projectElement, 'notes');
+    
     if (!notesElement) {
-      throw new Error('Invalid XML structure: missing root element');
-    }
-
-    const [notesContainer] = getElements(notesElement, 'notes');
-    if (!notesContainer) {
       throw new Error('Invalid XML structure: missing notes element');
     }
 
-    const notes = getElements(notesContainer, 'note');
-    if (notes.length === 0) {
-      throw new Error('No notes found in XML');
-    }
-
-    notes.forEach(note => processNote(note));
+    // Get root notes with namespace awareness
+    const rootNotes = getElements(notesElement, 'note');
+    rootNotes.forEach(note => {
+      processNote(note, 0);
+    });
 
     if (result.length === 0) {
       throw new Error('No valid notes found in XML');
@@ -94,6 +112,11 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
 
       const text = await file.text();
       const notes = parseXML(text);
+      
+      if (notes.length === 0) {
+        throw new Error('No valid notes to import');
+      }
+      
       await importNotes(notes);
       onClose();
     } catch (error) {
