@@ -604,8 +604,8 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
         }
       }e;
 
-      while (hasMoreLevels) {
-        hasMoreLevels = false;
+      // Clean up any leftover code
+      return { success: true };
         for (const { notes, level, parentContent } of parsedNotes) {
           if (level === currentLevel && parentContent) {
             const parentId = contentToIdMap.get(parentContent);
