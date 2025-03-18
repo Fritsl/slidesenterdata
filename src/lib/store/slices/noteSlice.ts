@@ -15,12 +15,14 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
 
   moveNote: async (id: string, parentId: string | null, position: number, level: number) => {
     try {
-      // Maintain the current level without incrementing
       const currentLevel = Math.max(0, level);
-      console.log('moveNote - Initial state:', { id, parentId, position, level });
-      console.log('Current level before move:', level);
-
-      await database.notes.move(id, parentId, position);
+      
+      // Validate position
+      const siblings = get().notes.filter(n => n.parent_id === parentId);
+      const maxPosition = siblings.length;
+      const safePosition = Math.max(0, Math.min(position, maxPosition));
+      
+      await database.notes.move(id, parentId, safePosition);
       
       // Reload notes to get updated structure
       const user = await database.auth.getCurrentUser();
