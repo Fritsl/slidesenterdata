@@ -556,55 +556,54 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
         
         const contentToIdMap = new Map<string, string>();
         const processedContent = new Set<string>();
-        
-        // Sort notes by level to ensure parents are created before children
-        const sortedNotes = [...parsedNotes].sort((a, b) => a.level - b.level);
-        
-        console.log('Starting import of sorted notes:', sortedNotes);
-        
-        // Process each note
-        for (const note of sortedNotes) {
-          if (!note.notes?.[0] || processedContent.has(note.notes[0])) continue;
+
+        // Function to process a note and its children recursively
+        const processNote = async (note: any, parentId?: string) => {
+          if (!note.content) return;
           
-          const parentId = note.parentContent ? contentToIdMap.get(note.parentContent) : undefined;
-          const mainContent = note.notes[0];
-          let time = null;
-          let youtube = null;
-          let url = null;
-          let urlDisplayText = null;
-          let isDiscussion = false;
+          const content = note.content;
+          if (processedContent.has(content)) return;
 
-          // Process metadata from additional notes
-          for (const metaNote of note.notes.slice(1)) {
-            if (metaNote.startsWith('[time=')) {
-              time = metaNote.slice(6, -1);
-            } else if (metaNote.startsWith('[youtube=')) {
-              youtube = metaNote.slice(9, -1);
-            } else if (metaNote.startsWith('[url=')) {
-              url = metaNote.slice(5, -1);
-            } else if (metaNote.startsWith('[url_display_text=')) {
-              urlDisplayText = metaNote.slice(17, -1);
-            } else if (metaNote === '[discussion=true]') {
-              isDiscussion = true;
-            }
-          }
+          console.log('Creating note:', { 
+            content, 
+            parentId,
+            time: note.time,
+            youtube: note.youtube,
+            url: note.url,
+            isDiscussion: note.discussion === 'true'
+          });
 
-          console.log('Creating note:', { content: mainContent, parentId, time, youtube, url, isDiscussion });
-          const response = await get().addNote(parentId, mainContent);
+          const response = await get().addNote(parentId, content);
           
           if (response?.id) {
-            if (time) await get().toggleTime(response.id, time);
-            if (youtube) await get().setYoutubeUrl(response.id, youtube);
-            if (isDiscussion) await get().toggleDiscussion(response.id, true);
-            if (url) await get().setUrl(response.id, url, urlDisplayText);
+            if (note.time) await get().toggleTime(response.id, note.time);
+            if (note.youtube) await get().setYoutubeUrl(response.id, note.youtube);
+            if (note.discussion === 'true') await get().toggleDiscussion(response.id, true);
+            if (note.url) await get().setUrl(response.id, note.url, note['url-text']);
             
-            console.log('Created note:', { id: response.id, content: mainContent });
-            contentToIdMap.set(mainContent, response.id);
-            processedContent.add(mainContent);
+            contentToIdMap.set(content, response.id);
+            processedContent.add(content);
+
+            // Process children if they exist
+            if (note.children?.note) {
+              const children = Array.isArray(note.children.note) ? note.children.note : [note.children.note];
+              for (const child of children) {
+                await processNote(child, response.id);
+              }
+            }
           } else {
-            console.error('Failed to create note:', { content: mainContent, parentId });
+            console.error('Failed to create note:', { content, parentId });
           }
+        };
+
+        // Start processing from root notes
+        const rootNotes = Array.isArray(parsedNotes.note) ? parsedNotes.note : [parsedNotes.note];
+        for (const note of rootNotes) {
+          await processNote(note);
         }
+
+        console.log('Import completed successfully');
+        return { success: true };
       } catch (error) {
         console.error('Error during import:', error);
         throw error;
