@@ -83,10 +83,19 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
       if (text.trim().startsWith('<?xml')) {
         // Handle XML import
         const parsedNotes = parseXML(text);
-        await importNotes(parsedNotes);
+        if (parsedNotes && parsedNotes.length > 0) {
+          await importNotes(parsedNotes);
+        } else {
+          throw new Error("No valid notes found in XML");
+        }
       } else {
         // Handle regular bullet-point import
-        await importNotes([{ notes: text.split('\n'), level: 0 }]);
+        const lines = text.split('\n').filter(line => line.trim());
+        if (lines.length > 0) {
+          await importNotes([{ notes: lines, level: 0 }]);
+        } else {
+          throw new Error("No valid notes found in text");
+        }
       }
       onClose();
     } catch (error) {
