@@ -565,10 +565,10 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
         const response = await get().addNote(parentId, content);
 
         if (response?.id) {
-          if (note.time) await get().toggleTime(response.id, note.time);
-          if (note.youtube) await get().setYoutubeUrl(response.id, note.youtube);
-          if (note.discussion === 'true') await get().toggleDiscussion(response.id, true);
-          if (note.url) await get().setUrl(response.id, note.url, note['url-text']);
+          if (note.$.time) await get().toggleTime(response.id, note.$.time);
+          if (note.$.youtube) await get().setYoutubeUrl(response.id, note.$.youtube);
+          if (note.$.discussion === 'true') await get().toggleDiscussion(response.id, true);
+          if (note.$.url) await get().setUrl(response.id, note.$.url, note.$['url-text']);
 
           // Process children if they exist
           if (note.children?.note) {
