@@ -83,11 +83,10 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
       if (text.trim().startsWith('<?xml')) {
         // Handle XML import
         const parsedNotes = parseXML(text);
-        const bulletText = parsedNotes.map(note => note.notes.join(' ')).join('\n');
-        await importNotes(bulletText);
+        await importNotes(parsedNotes);
       } else {
         // Handle regular bullet-point import
-        await importNotes(text);
+        await importNotes([{ notes: text.split('\n'), level: 0 }]);
       }
       onClose();
     } catch (error) {
