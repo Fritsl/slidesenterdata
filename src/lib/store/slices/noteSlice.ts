@@ -545,135 +545,50 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
     return result;
   },
 
-  importNotes: async (parsedNotes: { notes: string[], level: number, parentContent?: string }[]) => {
+  importNotes: async (parsedNotes: any) => {
     try {
-      if (!parsedNotes || parsedNotes.length === 0) {
+      if (!parsedNotes || !parsedNotes.project || !parsedNotes.project.notes) {
         throw new Error('No valid notes to import');
       }
 
-      try {
-        set({ isImporting: true });
-        
-        const contentToIdMap = new Map<string, string>();
-        const processedContent = new Set<string>();
+      set({ isImporting: true });
 
-        // Function to process a note and its children recursively
-        const processNote = async (note: any, parentId?: string) => {
-          if (!note.content) return;
-          
-          const content = note.content;
-          if (processedContent.has(content)) return;
+      const processNote = async (note: any, parentId?: string) => {
+        if (!note?.content?.[0]) return;
 
-          console.log('Creating note:', { 
-            content, 
-            parentId,
-            time: note.time,
-            youtube: note.youtube,
-            url: note.url,
-            isDiscussion: note.discussion === 'true'
-          });
+        const content = note.content[0];
+        console.log('Creating note:', { content, parentId });
 
-          const response = await get().addNote(parentId, content);
-          
-          if (response?.id) {
-            if (note.time) await get().toggleTime(response.id, note.time);
-            if (note.youtube) await get().setYoutubeUrl(response.id, note.youtube);
-            if (note.discussion === 'true') await get().toggleDiscussion(response.id, true);
-            if (note.url) await get().setUrl(response.id, note.url, note['url-text']);
-            
-            contentToIdMap.set(content, response.id);
-            processedContent.add(content);
+        const response = await get().addNote(parentId, content);
 
-            // Process children if they exist
-            if (note.children?.note) {
-              const children = Array.isArray(note.children.note) ? note.children.note : [note.children.note];
-              for (const child of children) {
-                await processNote(child, response.id);
-              }
+        if (response?.id) {
+          if (note.$.time) await get().toggleTime(response.id, note.$.time);
+          if (note.$.youtube) await get().setYoutubeUrl(response.id, note.$.youtube);
+          if (note.$.discussion === 'true') await get().toggleDiscussion(response.id, true);
+          if (note.$.url) await get().setUrl(response.id, note.$.url, note.$['url-text']);
+
+          // Process children if they exist
+          if (note.children?.note) {
+            const childNotes = Array.isArray(note.children.note) ? note.children.note : [note.children.note];
+            for (const childNote of childNotes) {
+              await processNote(childNote, response.id);
             }
-          } else {
-            console.error('Failed to create note:', { content, parentId });
-          }
-        };
-
-        // Start processing from root notes
-        const rootNotes = Array.isArray(parsedNotes.note) ? parsedNotes.note : [parsedNotes.note];
-        for (const note of rootNotes) {
-          await processNote(note);
-        }
-
-        console.log('Import completed successfully');
-        return { success: true };
-      } catch (error) {
-        console.error('Error during import:', error);
-        throw error;
-      }
-
-      const maxLevel = Math.max(...Object.keys(notesByLevel).map(Number));
-      
-      for (let level = 0; level <= maxLevel; level++) {
-        const notesAtLevel = notesByLevel[level] || [];
-        
-        for (const { notes, parentContent } of notesAtLevel) {
-          for (const content of notes) {
-            if (!content || typeof content !== 'string') continue;
-            const trimmedContent = content.trim();
-            
-            // Filter out debug messages and invalid content
-            if (!trimmedContent 
-                || processedContent.has(trimmedContent)
-                || trimmedContent.startsWith('{')
-                || trimmedContent.startsWith('[')
-                || trimmedContent.startsWith('"')
-                || trimmedContent.includes('console.log')
-                || trimmedContent.includes('Created root note')
-                || trimmedContent.includes('Import completed')
-                || trimmedContent.includes('Starting')
-                || /^[\[\]{}",]+$/.test(trimmedContent)) continue;
-            
-            const parentId = parentContent ? contentToIdMap.get(parentContent) : null;
-            const addNoteResponse = await get().addNote(parentId, trimmedContent);
-            if (!addNoteResponse?.id) throw new Error('Failed to create note');
-            
-            contentToIdMap.set(trimmedContent, addNoteResponse.id);
-            processedContent.add(trimmedContent);
           }
         }
+      };
+
+      // Process root notes from project structure
+      const rootNotes = parsedNotes.project.notes.note;
+      const notes = Array.isArray(rootNotes) ? rootNotes : [rootNotes];
+
+      for (const note of notes) {
+        await processNote(note);
       }
 
-      // Process notes by level and maintain hierarchy
-      for (const level of Object.keys(notesByLevel).sort((a, b) => Number(a) - Number(b))) {
-        for (const { notes, parentContent } of notesByLevel[level]) {
-          for (const content of notes) {
-            if (!content || typeof content !== 'string') continue;
-            const trimmedContent = content.trim();
-            
-            if (!trimmedContent 
-                || processedContent.has(trimmedContent)
-                || trimmedContent.startsWith('{')
-                || trimmedContent.startsWith('[')
-                || trimmedContent.startsWith('"')
-                || trimmedContent.includes('console.log')
-                || trimmedContent.includes('Created root note')
-                || trimmedContent.includes('Import completed')
-                || trimmedContent.includes('Starting')
-                || /^[\[\]{}",]+$/.test(trimmedContent)) continue;
-            
-            const parentId = parentContent ? contentToIdMap.get(parentContent) : null;
-            const addNoteResponse = await get().addNote(parentId, trimmedContent);
-            if (!addNoteResponse?.id) throw new Error('Failed to create note');
-            
-            contentToIdMap.set(trimmedContent, addNoteResponse.id);
-            processedContent.add(trimmedContent);
-            console.log('Created note', addNoteResponse);
-          }
-        }
-      }
-      
-      console.log('Import completed');
+      console.log('Import completed successfully');
       return { success: true };
     } catch (error) {
-      console.log('Error importing notes:', error);
+      console.error('Error during import:', error);
       throw error;
     } finally {
       set({ isImporting: false }); // Reset import flag after import
