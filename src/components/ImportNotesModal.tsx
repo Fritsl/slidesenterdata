@@ -84,10 +84,10 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
         // Handle XML import
         console.log('Starting XML import process');
         console.log('Raw XML text:', text.substring(0, 100) + '...');
-        
+
         const parsedNotes = parseXML(text);
         console.log('Parsed notes:', parsedNotes);
-        
+
         if (parsedNotes && parsedNotes.length > 0) {
           console.log('Attempting to import', parsedNotes.length, 'notes');
           try {
