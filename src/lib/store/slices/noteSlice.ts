@@ -130,17 +130,17 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
     }
   },
 
-  addNote: async (parentId: string | null = null) => {
+  addNote: async (parentId: string | null = null, content: string = '') => {
     try {
       const user = await database.auth.getCurrentUser();
       const projectId = await database.projects.getCurrentProjectId();
       if (!projectId) return;
 
-      const noteId = await database.notes.create(user.id, projectId, parentId);
+      const noteId = await database.notes.create(user.id, projectId, parentId, content);
 
       const newNote = {
         id: noteId,
-        content: '',
+        content: content,
         children: [],
         isEditing: true,
         unsavedContent: '',
@@ -167,6 +167,7 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
 
         return { notes: updateChildren(state.notes) };
       });
+      return newNote;
     } catch (error) {
       throw handleDatabaseError(error, 'Failed to add note');
     }
@@ -539,46 +540,31 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
   },
 
   importNotes: async (parsedNotes: { notes: string[], level: number }[]) => {
-    console.log('Starting importNotes with:', parsedNotes);
+    const log = (msg: string, data?: any) => {
+      const logEl = document.getElementById('debug-log');
+      if (logEl) {
+        const message = data ? `${msg}: ${JSON.stringify(data, null, 2)}` : msg;
+        logEl.textContent = message + '\n' + (logEl.textContent || '');
+      }
+    };
 
     try {
-      // Create all notes in a single batch
-      const notesToCreate = parsedNotes
-        .filter(({ notes }) => {
-          const valid = Array.isArray(notes) && notes.length > 0;
-          if (!valid) console.log('Filtered out invalid note:', notes);
-          return valid;
-        })
-        .map(({ notes }) => ({
-          content: notes.join(' ').trim().replace(/^[•]\s*/, ''),
-          parent_id: null
-        }))
-        .filter(note => {
-          const valid = Boolean(note.content);
-          if (!valid) console.log('Filtered out empty note');
-          return valid;
-        });
+      log('Starting importNotes');
 
-      console.log('Prepared notes for creation:', notesToCreate);
+      // Create all notes directly with content
+      for (const { notes, level } of parsedNotes) {
+        const content = notes.join(' ').trim().replace(/^[•]\s*/, '');
+        if (!content) continue;
 
-      // Add all notes at once to avoid UI popping
-      for (const note of notesToCreate) {
-        const { content, parent_id } = note;
-        console.log('Creating note:', { content, parent_id });
-        try {
-          const newNote = await get().addNote(parent_id); //Removed content parameter
-          newNote.content = content; // Set content after creation
-          console.log('Successfully created note:', newNote);
-        } catch (err) {
-          console.error('Failed to create note:', err);
-          throw err;
-        }
+        log('Creating note with content', content);
+        const addNoteResponse = await get().addNote(null, content);
+        log('Note creation response', addNoteResponse);
       }
 
-      console.log('Import completed successfully');
-    } catch (err) {
-      console.error('Import failed:', err);
-      throw err;
+      log('Import completed');
+    } catch (error) {
+      log('Import failed', error);
+      throw error;
     }
   }
 });

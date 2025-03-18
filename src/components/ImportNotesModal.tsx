@@ -36,13 +36,34 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
     const log = (msg: string, data?: any) => {
       const logEl = document.getElementById('debug-log');
       if (logEl) {
-        const message = data ? `${msg}: ${JSON.stringify(data)}` : msg;
+        const message = data ? `${msg}: ${JSON.stringify(data, null, 2)}` : msg;
         logEl.textContent = message + '\n' + (logEl.textContent || '');
       }
     };
 
     log('Starting XML parsing');
-    log('Full XML content', xmlText);
+    
+    try {
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(xmlText, "text/xml");
+      
+      const notes = xmlDoc.getElementsByTagName("note");
+      const result: { notes: string[], level: number }[] = [];
+      
+      for (let i = 0; i < notes.length; i++) {
+        const note = notes[i];
+        const content = note.getElementsByTagName("content")[0]?.textContent || '';
+        if (content) {
+          result.push({ notes: [content], level: 0 });
+        }
+      }
+      
+      log('Parsed notes', result);
+      return result;
+    } catch (error) {
+      log('XML parsing failed', error);
+      throw error;
+    }
     
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xmlText, "text/xml");
