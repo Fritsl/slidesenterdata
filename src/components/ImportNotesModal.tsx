@@ -44,7 +44,7 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
         const time = noteElement.getAttribute("time") || '';
         const youtube = noteElement.getAttribute("youtube") || '';
         const url = noteElement.getAttribute("url") || '';
-        const urlDisplayText = noteElement.getAttribute("url_display_text") || '';
+        const urlText = noteElement.getAttribute("url-text") || '';
         const discussion = noteElement.getAttribute("discussion") === "true";
 
         if (content) {
@@ -52,7 +52,7 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
           if (time) note.push(`[time=${time}]`);
           if (youtube) note.push(`[youtube=${youtube}]`);
           if (url) note.push(`[url=${url}]`);
-          if (urlDisplayText) note.push(`[url_display_text=${urlDisplayText}]`);
+          if (urlText) note.push(`[url_display_text=${urlText}]`);
           if (discussion) note.push(`[discussion=true]`);
 
           result.push({ notes: note, level, parentContent });
