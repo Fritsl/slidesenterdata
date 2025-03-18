@@ -1,0 +1,769 @@
+Import completed
+Starting importNotes
+Parsed notes: [
+  {
+    "notes": [
+      "Introduktion"
+    ],
+    "level": 0
+  },
+  {
+    "notes": [
+      "Introduktion og hvordan bruger I kunstig intelligens idag?"
+    ],
+    "level": 1,
+    "parentContent": "Introduktion"
+  },
+  {
+    "notes": [
+      "Forventningsafstemning"
+    ],
+    "level": 1,
+    "parentContent": "Introduktion"
+  },
+  {
+    "notes": [
+      "Vi kan ikke nå det hele, I bliver ikke AI eksperter"
+    ],
+    "level": 2,
+    "parentContent": "Forventningsafstemning"
+  },
+  {
+    "notes": [
+      "Forståelse - \"Hvad er det der sker?\""
+    ],
+    "level": 3,
+    "parentContent": "Vi kan ikke nå det hele, I bliver ikke AI eksperter"
+  },
+  {
+    "notes": [
+      "Inspiration - \"Hvordan kan vi udnytte det her?\""
+    ],
+    "level": 3,
+    "parentContent": "Vi kan ikke nå det hele, I bliver ikke AI eksperter"
+  },
+  {
+    "notes": [
+      "Retning og strategi - \"Hvad gør vi, og hvad skal vi være opmærksomme på?\""
+    ],
+    "level": 3,
+    "parentContent": "Vi kan ikke nå det hele, I bliver ikke AI eksperter"
+  },
+  {
+    "notes": [
+      "Forståelse - \"Hvad er det der sker?\""
+    ],
+    "level": 2,
+    "parentContent": "Forventningsafstemning"
+  },
+  {
+    "notes": [
+      "Inspiration - \"Hvordan kan vi udnytte det her?\""
+    ],
+    "level": 2,
+    "parentContent": "Forventningsafstemning"
+  },
+  {
+    "notes": [
+      "Retning og strategi - \"Hvad gør vi, og hvad skal vi være opmærksomme på?\""
+    ],
+    "level": 2,
+    "parentContent": "Forventningsafstemning"
+  },
+  {
+    "notes": [
+      "Vi kan ikke nå det hele, I bliver ikke AI eksperter"
+    ],
+    "level": 1,
+    "parentContent": "Introduktion"
+  },
+  {
+    "notes": [
+      "Forståelse - \"Hvad er det der sker?\""
+    ],
+    "level": 2,
+    "parentContent": "Vi kan ikke nå det hele, I bliver ikke AI eksperter"
+  },
+  {
+    "notes": [
+      "Inspiration - \"Hvordan kan vi udnytte det her?\""
+    ],
+    "level": 2,
+    "parentContent": "Vi kan ikke nå det hele, I bliver ikke AI eksperter"
+  },
+  {
+    "notes": [
+      "Retning og strategi - \"Hvad gør vi, og hvad skal vi være opmærksomme på?\""
+    ],
+    "level": 2,
+    "parentContent": "Vi kan ikke nå det hele, I bliver ikke AI eksperter"
+  },
+  {
+    "notes": [
+      "Forståelse - \"Hvad er det der sker?\""
+    ],
+    "level": 1,
+    "parentContent": "Introduktion"
+  },
+  {
+    "notes": [
+      "Inspiration - \"Hvordan kan vi udnytte det her?\""
+    ],
+    "level": 1,
+    "parentContent": "Introduktion"
+  },
+  {
+    "notes": [
+      "Retning og strategi - \"Hvad gør vi, og hvad skal vi være opmærksomme på?\""
+    ],
+    "level": 1,
+    "parentContent": "Introduktion"
+  },
+  {
+    "notes": [
+      "Obstructive technologies "
+    ],
+    "level": 1,
+    "parentContent": "Introduktion"
+  },
+  {
+    "notes": [
+      "Frits Lyneborg Karriere"
+    ],
+    "level": 2,
+    "parentContent": "Obstructive technologies "
+  },
+  {
+    "notes": [
+      "1983: Computer"
+    ],
+    "level": 3,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "1989: Multimedia og tekstbehandling"
+    ],
+    "level": 3,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "1995: Universitet uddanner forældet"
+    ],
+    "level": 3,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "1997: Pladeselskab"
+    ],
+    "level": 3,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "1999: IT-chef uden IT uddannelse "
+    ],
+    "level": 3,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "2000: dot com boblen sprang"
+    ],
+    "level": 3,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "2001: Open source / Gratis software "
+    ],
+    "level": 3,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "2002: Web 2.0 / folket er stemmen"
+    ],
+    "level": 3,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "2007: Recession "
+    ],
+    "level": 3,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "1983: Computer"
+    ],
+    "level": 2,
+    "parentContent": "Obstructive technologies "
+  },
+  {
+    "notes": [
+      "1989: Multimedia og tekstbehandling"
+    ],
+    "level": 2,
+    "parentContent": "Obstructive technologies "
+  },
+  {
+    "notes": [
+      "1995: Universitet uddanner forældet"
+    ],
+    "level": 2,
+    "parentContent": "Obstructive technologies "
+  },
+  {
+    "notes": [
+      "1997: Pladeselskab"
+    ],
+    "level": 2,
+    "parentContent": "Obstructive technologies "
+  },
+  {
+    "notes": [
+      "1999: IT-chef uden IT uddannelse "
+    ],
+    "level": 2,
+    "parentContent": "Obstructive technologies "
+  },
+  {
+    "notes": [
+      "2000: dot com boblen sprang"
+    ],
+    "level": 2,
+    "parentContent": "Obstructive technologies "
+  },
+  {
+    "notes": [
+      "2001: Open source / Gratis software "
+    ],
+    "level": 2,
+    "parentContent": "Obstructive technologies "
+  },
+  {
+    "notes": [
+      "2002: Web 2.0 / folket er stemmen"
+    ],
+    "level": 2,
+    "parentContent": "Obstructive technologies "
+  },
+  {
+    "notes": [
+      "2007: Recession "
+    ],
+    "level": 2,
+    "parentContent": "Obstructive technologies "
+  },
+  {
+    "notes": [
+      "Frits Lyneborg Karriere"
+    ],
+    "level": 1,
+    "parentContent": "Introduktion"
+  },
+  {
+    "notes": [
+      "1983: Computer"
+    ],
+    "level": 2,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "1989: Multimedia og tekstbehandling"
+    ],
+    "level": 2,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "1995: Universitet uddanner forældet"
+    ],
+    "level": 2,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "1997: Pladeselskab"
+    ],
+    "level": 2,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "1999: IT-chef uden IT uddannelse "
+    ],
+    "level": 2,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "2000: dot com boblen sprang"
+    ],
+    "level": 2,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "2001: Open source / Gratis software "
+    ],
+    "level": 2,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "2002: Web 2.0 / folket er stemmen"
+    ],
+    "level": 2,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "2007: Recession "
+    ],
+    "level": 2,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "1983: Computer"
+    ],
+    "level": 1,
+    "parentContent": "Introduktion"
+  },
+  {
+    "notes": [
+      "1989: Multimedia og tekstbehandling"
+    ],
+    "level": 1,
+    "parentContent": "Introduktion"
+  },
+  {
+    "notes": [
+      "1995: Universitet uddanner forældet"
+    ],
+    "level": 1,
+    "parentContent": "Introduktion"
+  },
+  {
+    "notes": [
+      "1997: Pladeselskab"
+    ],
+    "level": 1,
+    "parentContent": "Introduktion"
+  },
+  {
+    "notes": [
+      "1999: IT-chef uden IT uddannelse "
+    ],
+    "level": 1,
+    "parentContent": "Introduktion"
+  },
+  {
+    "notes": [
+      "2000: dot com boblen sprang"
+    ],
+    "level": 1,
+    "parentContent": "Introduktion"
+  },
+  {
+    "notes": [
+      "2001: Open source / Gratis software "
+    ],
+    "level": 1,
+    "parentContent": "Introduktion"
+  },
+  {
+    "notes": [
+      "2002: Web 2.0 / folket er stemmen"
+    ],
+    "level": 1,
+    "parentContent": "Introduktion"
+  },
+  {
+    "notes": [
+      "2007: Recession "
+    ],
+    "level": 1,
+    "parentContent": "Introduktion"
+  },
+  {
+    "notes": [
+      "Introduktion og hvordan bruger I kunstig intelligens idag?"
+    ],
+    "level": 0
+  },
+  {
+    "notes": [
+      "Forventningsafstemning"
+    ],
+    "level": 0
+  },
+  {
+    "notes": [
+      "Vi kan ikke nå det hele, I bliver ikke AI eksperter"
+    ],
+    "level": 1,
+    "parentContent": "Forventningsafstemning"
+  },
+  {
+    "notes": [
+      "Forståelse - \"Hvad er det der sker?\""
+    ],
+    "level": 2,
+    "parentContent": "Vi kan ikke nå det hele, I bliver ikke AI eksperter"
+  },
+  {
+    "notes": [
+      "Inspiration - \"Hvordan kan vi udnytte det her?\""
+    ],
+    "level": 2,
+    "parentContent": "Vi kan ikke nå det hele, I bliver ikke AI eksperter"
+  },
+  {
+    "notes": [
+      "Retning og strategi - \"Hvad gør vi, og hvad skal vi være opmærksomme på?\""
+    ],
+    "level": 2,
+    "parentContent": "Vi kan ikke nå det hele, I bliver ikke AI eksperter"
+  },
+  {
+    "notes": [
+      "Forståelse - \"Hvad er det der sker?\""
+    ],
+    "level": 1,
+    "parentContent": "Forventningsafstemning"
+  },
+  {
+    "notes": [
+      "Inspiration - \"Hvordan kan vi udnytte det her?\""
+    ],
+    "level": 1,
+    "parentContent": "Forventningsafstemning"
+  },
+  {
+    "notes": [
+      "Retning og strategi - \"Hvad gør vi, og hvad skal vi være opmærksomme på?\""
+    ],
+    "level": 1,
+    "parentContent": "Forventningsafstemning"
+  },
+  {
+    "notes": [
+      "Vi kan ikke nå det hele, I bliver ikke AI eksperter"
+    ],
+    "level": 0
+  },
+  {
+    "notes": [
+      "Forståelse - \"Hvad er det der sker?\""
+    ],
+    "level": 1,
+    "parentContent": "Vi kan ikke nå det hele, I bliver ikke AI eksperter"
+  },
+  {
+    "notes": [
+      "Inspiration - \"Hvordan kan vi udnytte det her?\""
+    ],
+    "level": 1,
+    "parentContent": "Vi kan ikke nå det hele, I bliver ikke AI eksperter"
+  },
+  {
+    "notes": [
+      "Retning og strategi - \"Hvad gør vi, og hvad skal vi være opmærksomme på?\""
+    ],
+    "level": 1,
+    "parentContent": "Vi kan ikke nå det hele, I bliver ikke AI eksperter"
+  },
+  {
+    "notes": [
+      "Forståelse - \"Hvad er det der sker?\""
+    ],
+    "level": 0
+  },
+  {
+    "notes": [
+      "Inspiration - \"Hvordan kan vi udnytte det her?\""
+    ],
+    "level": 0
+  },
+  {
+    "notes": [
+      "Retning og strategi - \"Hvad gør vi, og hvad skal vi være opmærksomme på?\""
+    ],
+    "level": 0
+  },
+  {
+    "notes": [
+      "Obstructive technologies "
+    ],
+    "level": 0
+  },
+  {
+    "notes": [
+      "Frits Lyneborg Karriere"
+    ],
+    "level": 1,
+    "parentContent": "Obstructive technologies "
+  },
+  {
+    "notes": [
+      "1983: Computer"
+    ],
+    "level": 2,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "1989: Multimedia og tekstbehandling"
+    ],
+    "level": 2,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "1995: Universitet uddanner forældet"
+    ],
+    "level": 2,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "1997: Pladeselskab"
+    ],
+    "level": 2,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "1999: IT-chef uden IT uddannelse "
+    ],
+    "level": 2,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "2000: dot com boblen sprang"
+    ],
+    "level": 2,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "2001: Open source / Gratis software "
+    ],
+    "level": 2,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "2002: Web 2.0 / folket er stemmen"
+    ],
+    "level": 2,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "2007: Recession "
+    ],
+    "level": 2,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "1983: Computer"
+    ],
+    "level": 1,
+    "parentContent": "Obstructive technologies "
+  },
+  {
+    "notes": [
+      "1989: Multimedia og tekstbehandling"
+    ],
+    "level": 1,
+    "parentContent": "Obstructive technologies "
+  },
+  {
+    "notes": [
+      "1995: Universitet uddanner forældet"
+    ],
+    "level": 1,
+    "parentContent": "Obstructive technologies "
+  },
+  {
+    "notes": [
+      "1997: Pladeselskab"
+    ],
+    "level": 1,
+    "parentContent": "Obstructive technologies "
+  },
+  {
+    "notes": [
+      "1999: IT-chef uden IT uddannelse "
+    ],
+    "level": 1,
+    "parentContent": "Obstructive technologies "
+  },
+  {
+    "notes": [
+      "2000: dot com boblen sprang"
+    ],
+    "level": 1,
+    "parentContent": "Obstructive technologies "
+  },
+  {
+    "notes": [
+      "2001: Open source / Gratis software "
+    ],
+    "level": 1,
+    "parentContent": "Obstructive technologies "
+  },
+  {
+    "notes": [
+      "2002: Web 2.0 / folket er stemmen"
+    ],
+    "level": 1,
+    "parentContent": "Obstructive technologies "
+  },
+  {
+    "notes": [
+      "2007: Recession "
+    ],
+    "level": 1,
+    "parentContent": "Obstructive technologies "
+  },
+  {
+    "notes": [
+      "Frits Lyneborg Karriere"
+    ],
+    "level": 0
+  },
+  {
+    "notes": [
+      "1983: Computer"
+    ],
+    "level": 1,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "1989: Multimedia og tekstbehandling"
+    ],
+    "level": 1,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "1995: Universitet uddanner forældet"
+    ],
+    "level": 1,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "1997: Pladeselskab"
+    ],
+    "level": 1,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "1999: IT-chef uden IT uddannelse "
+    ],
+    "level": 1,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "2000: dot com boblen sprang"
+    ],
+    "level": 1,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "2001: Open source / Gratis software "
+    ],
+    "level": 1,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "2002: Web 2.0 / folket er stemmen"
+    ],
+    "level": 1,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "2007: Recession "
+    ],
+    "level": 1,
+    "parentContent": "Frits Lyneborg Karriere"
+  },
+  {
+    "notes": [
+      "1983: Computer"
+    ],
+    "level": 0
+  },
+  {
+    "notes": [
+      "1989: Multimedia og tekstbehandling"
+    ],
+    "level": 0
+  },
+  {
+    "notes": [
+      "1995: Universitet uddanner forældet"
+    ],
+    "level": 0
+  },
+  {
+    "notes": [
+      "1997: Pladeselskab"
+    ],
+    "level": 0
+  },
+  {
+    "notes": [
+      "1999: IT-chef uden IT uddannelse "
+    ],
+    "level": 0
+  },
+  {
+    "notes": [
+      "2000: dot com boblen sprang"
+    ],
+    "level": 0
+  },
+  {
+    "notes": [
+      "2001: Open source / Gratis software "
+    ],
+    "level": 0
+  },
+  {
+    "notes": [
+      "2002: Web 2.0 / folket er stemmen"
+    ],
+    "level": 0
+  },
+  {
+    "notes": [
+      "2007: Recession "
+    ],
+    "level": 0
+  }
+]
+Starting XML parsing
+Raw XML text: <?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="https://aiworkshop.dev/notes/1.0">
+  <title><...
+Starting XML import process...
+Logging initialized...
