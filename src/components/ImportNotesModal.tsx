@@ -111,10 +111,12 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
       if (!file) return;
 
       const text = await file.text();
+      console.log('XML Content:', text);
       const notes = parseXML(text);
+      console.log('Parsed Notes:', notes);
       
-      if (notes.length === 0) {
-        throw new Error('No valid notes to import');
+      if (!notes || notes.length === 0) {
+        throw new Error('No valid notes found in XML');
       }
       
       await importNotes(notes);
