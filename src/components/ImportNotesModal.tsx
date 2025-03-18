@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, Upload } from 'lucide-react';
-import { useNoteStore } from '../lib/store';
+import { useNoteStore } from '../store';
 
 interface ImportNotesModalProps {
   onClose: () => void;

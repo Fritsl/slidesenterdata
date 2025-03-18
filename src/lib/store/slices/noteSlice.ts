@@ -536,5 +536,21 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
     
     notes.forEach(note => formatNote(note));
     return result;
+  },
+
+  importNotes: async (parsedNotes: { notes: string[], level: number }[]) => {
+    const addNotesRecursively = async (notes: string[], level: number, parentId: string | null = null) => {
+      for (const content of notes) {
+        await get().addNote(parentId);
+        const newNote = get().notes.find(n => !n.content && (!parentId ? !n.parent_id : n.parent_id === parentId));
+        if (newNote) {
+          await get().updateNote(newNote.id, content);
+        }
+      }
+    };
+
+    for (const { notes, level } of parsedNotes) {
+      await addNotesRecursively(notes, level);
+    }
   }
 });
