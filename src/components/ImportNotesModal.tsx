@@ -6,12 +6,96 @@ interface ImportNotesModalProps {
   onClose: () => void;
 }
 
+interface XMLNote {
+  $: {
+    id?: string;
+    discussion?: string;
+    time?: string;
+    youtube?: string;
+    url?: string;
+    url_display_text?: string;
+  };
+  content: string[];
+  children?: { note: XMLNote[] };
+}
+
+interface XMLProject {
+  project: {
+    title: string[];
+    notes: { note: XMLNote[] };
+  };
+}
+
 export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
   const [text, setText] = useState('');
   const [isImporting, setIsImporting] = useState(false);
   const { importNotes } = useNoteStore();
 
+  const parseXML = (xmlText: string): { notes: string[], level: number }[] => {
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xmlText, "text/xml");
+    
+    if (xmlDoc.getElementsByTagName("parsererror").length > 0) {
+      throw new Error("Invalid XML format");
+    }
+
+    const result: { notes: string[], level: number }[] = [];
+    
+    const processNote = (noteElement: Element, level: number) => {
+      const id = noteElement.getAttribute("id") || '';
+      const content = noteElement.getElementsByTagName("content")[0]?.textContent || '';
+      const time = noteElement.getAttribute("time") || '';
+      const youtube = noteElement.getAttribute("youtube") || '';
+      const url = noteElement.getAttribute("url") || '';
+      const urlDisplayText = noteElement.getAttribute("url_display_text") || '';
+      
+      const note = ['•'.padStart((level * 2) + 1, ' ')];
+      note.push(content);
+      if (time) note.push(`[time=${time}]`);
+      if (youtube) note.push(`[youtube=${youtube}]`);
+      if (url) note.push(`[url=${url}]`);
+      if (urlDisplayText) note.push(`[url_display_text=${urlDisplayText}]`);
+      
+      result.push({ notes: note, level });
+      
+      const children = noteElement.getElementsByTagName("children")[0];
+      if (children) {
+        Array.from(children.getElementsByTagName("note")).forEach(child => {
+          processNote(child, level + 1);
+        });
+      }
+    };
+    
+    const notes = xmlDoc.getElementsByTagName("notes")[0];
+    if (notes) {
+      Array.from(notes.getElementsByTagName("note")).forEach(note => {
+        processNote(note, 0);
+      });
+    }
+    
+    return result;
+  };
+
   const handleImport = async () => {
+    try {
+      setIsImporting(true);
+      if (text.trim().startsWith('<?xml')) {
+        // Handle XML import
+        const parsedNotes = parseXML(text);
+        const bulletText = parsedNotes.map(note => note.notes.join(' ')).join('\n');
+        await importNotes(bulletText);
+      } else {
+        // Handle regular bullet-point import
+        await importNotes(text);
+      }
+      onClose();
+    } catch (error) {
+      console.error('Error importing notes:', error);
+      alert('Failed to import notes. Please check the format and try again.');
+    } finally {
+      setIsImporting(false);
+    }
+  };
     try {
       setIsImporting(true);
       await importNotes(text);
@@ -38,7 +122,9 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
         </div>
         <div className="p-4">
           <p className="text-sm text-gray-600 mb-4">
-            Paste your notes below. Each line should start with bullets (•) and use spaces for indentation to indicate hierarchy.
+            Paste your notes below in either:<br/>
+            • Bullet format: Each line starts with (•) and uses spaces for indentation<br/>
+            • XML format: Exported from this app's XML export feature
           </p>
           <textarea
             value={text}
