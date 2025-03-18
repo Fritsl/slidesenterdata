@@ -547,25 +547,28 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
 
   importNotes: async (parsedNotes: any) => {
     try {
-      if (!parsedNotes || !parsedNotes.project || !parsedNotes.project.notes) {
+      if (!parsedNotes?.project?.notes?.note) {
         throw new Error('No valid notes to import');
       }
 
       set({ isImporting: true });
 
       const processNote = async (note: any, parentId?: string) => {
-        if (!note?.content?.[0]) return;
+        if (!note?.content?.[0] && typeof note.content !== 'string') return;
 
-        const content = note.content[0];
+        const content = typeof note.content === 'string' ? note.content : note.content[0];
+        if (content.startsWith('![CDATA[')) {
+          content = content.substring(8, content.length - 2);
+        }
+        
         console.log('Creating note:', { content, parentId });
-
         const response = await get().addNote(parentId, content);
 
         if (response?.id) {
-          if (note.$.time) await get().toggleTime(response.id, note.$.time);
-          if (note.$.youtube) await get().setYoutubeUrl(response.id, note.$.youtube);
-          if (note.$.discussion === 'true') await get().toggleDiscussion(response.id, true);
-          if (note.$.url) await get().setUrl(response.id, note.$.url, note.$['url-text']);
+          if (note.time) await get().toggleTime(response.id, note.time);
+          if (note.youtube) await get().setYoutubeUrl(response.id, note.youtube);
+          if (note.discussion === 'true') await get().toggleDiscussion(response.id, true);
+          if (note.url) await get().setUrl(response.id, note.url, note['url-text']);
 
           // Process children if they exist
           if (note.children?.note) {
@@ -577,11 +580,11 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
         }
       };
 
-      // Process root notes from project structure
-      const rootNotes = parsedNotes.project.notes.note;
-      const notes = Array.isArray(rootNotes) ? rootNotes : [rootNotes];
+      const rootNotes = Array.isArray(parsedNotes.project.notes.note) ? 
+        parsedNotes.project.notes.note : 
+        [parsedNotes.project.notes.note];
 
-      for (const note of notes) {
+      for (const note of rootNotes) {
         await processNote(note);
       }
 
@@ -591,7 +594,7 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
       console.error('Error during import:', error);
       throw error;
     } finally {
-      set({ isImporting: false }); // Reset import flag after import
+      set({ isImporting: false });
     }
   }
 });
