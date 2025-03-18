@@ -33,29 +33,31 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
   const importNotes = store.importNotes;
 
   const parseXML = (xmlText: string): { notes: string[], level: number, parentContent?: string }[] => {
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xmlText, "text/xml");
+    const result: { notes: string[], level: number, parentContent?: string }[] = [];
 
-    try {
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(xmlText, "text/xml");
-      const result: { notes: string[], level: number, parentContent?: string }[] = [];
+    const processNote = (noteElement: Element, level: number, parentContent?: string) => {
+      const content = noteElement.querySelector("content")?.textContent?.trim();
+      if (!content) return;
 
-      const processNote = (noteElement: Element, level: number, parentContent?: string) => {
-        const content = noteElement.getElementsByTagName("content")[0]?.textContent || '';
-        const time = noteElement.getAttribute("time") || '';
-        const youtube = noteElement.getAttribute("youtube") || '';
-        const url = noteElement.getAttribute("url") || '';
-        const urlText = noteElement.getAttribute("url-text") || '';
-        const discussion = noteElement.getAttribute("discussion") === "true";
+      const note = [content];
+      const attrs = ['time', 'youtube', 'url', 'url-text', 'discussion'];
+      
+      attrs.forEach(attr => {
+        const value = noteElement.getAttribute(attr);
+        if (value) {
+          if (attr === 'discussion' && value === 'true') {
+            note.push('[discussion=true]');
+          } else if (attr === 'url-text') {
+            note.push(`[url_display_text=${value}]`);
+          } else {
+            note.push(`[${attr}=${value}]`);
+          }
+        }
+      });
 
-        if (content) {
-          const note = [content];
-          if (time) note.push(`[time=${time}]`);
-          if (youtube) note.push(`[youtube=${youtube}]`);
-          if (url) note.push(`[url=${url}]`);
-          if (urlText) note.push(`[url_display_text=${urlText}]`);
-          if (discussion) note.push(`[discussion=true]`);
-
-          result.push({ notes: note, level, parentContent });
+      result.push({ notes: note, level, parentContent });
 
           const children = noteElement.getElementsByTagName("children")[0];
           if (children) {
