@@ -15,7 +15,9 @@ const generateXML = (title: string, notes: Note[]): string => {
       `id="${note.sequence_number || ''}"`,
       note.is_discussion ? 'discussion="true"' : '',
       note.time_set ? `time="${note.time_set}"` : '',
-      note.youtube_url ? `youtube="${note.youtube_url}"` : ''
+      note.youtube_url ? `youtube="${note.youtube_url}"` : '',
+      note.url ? `url="${note.url}"` : '',
+      note.url_display_text ? `url_display_text="${note.url_display_text}"` : ''
     ].filter(Boolean).join(' ');
 
     const childNotes = note.children.length > 0
