@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="https://aiworkshop.dev/notes/1.0">
+  <title><![CDATA[Optimering er intet, Automatisering er alt]]></title>
+  <notes>
+    <note id="0" time="09:00:00">
+      <content><![CDATA[Introduktion]]></content>
+      <children>
+        <note id="0" discussion="true">
+          <content><![CDATA[Introduktion og hvordan bruger I kunstig intelligens idag?]]></content>
+        </note>
+        <note id="1">
+          <content><![CDATA[Forventningsafstemning]]></content>
+          <children>
+            <note id="0" youtube="https://youtube.com/shorts/2FLqOI9jw-E">
+              <content><![CDATA[Vi kan ikke nå det hele, I bliver ikke AI eksperter]]></content>
+              <children>
+                <note id="0" discussion="true">
+                  <content><![CDATA[Forståelse - "Hvad er det der sker?"]]></content>
+                </note>
+                <note id="1" discussion="true">
+                  <content><![CDATA[Inspiration - "Hvordan kan vi udnytte det her?"]]></content>
+                </note>
+                <note id="2" discussion="true">
+                  <content><![CDATA[Retning og strategi - "Hvad gør vi, og hvad skal vi være opmærksomme på?"]]></content>
+                </note>
+              </children>
+            </note>
+          </children>
+        </note>
+        <note id="2" time="09:30:00" url="https://dr.dk" url-text="DR">
+          <content><![CDATA[Obstructive technologies ]]></content>
+          <children>
+            <note id="0">
+              <content><![CDATA[Frits Lyneborg Karriere]]></content>
+              <children>
+                <note id="0">
+                  <content><![CDATA[1983: Computer]]></content>
+                </note>
+                <note id="1">
+                  <content><![CDATA[1989: Multimedia og tekstbehandling]]></content>
+                </note>
+                <note id="2">
+                  <content><![CDATA[1995: Universitet uddanner forældet]]></content>
+                </note>
+                <note id="3">
+                  <content><![CDATA[1997: Pladeselskab]]></content>
+                </note>
+                <note id="4">
+                  <content><![CDATA[1999: IT-chef uden IT uddannelse ]]></content>
+                </note>
+                <note id="5">
+                  <content><![CDATA[2000: dot com boblen sprang]]></content>
+                </note>
+                <note id="6">
+                  <content><![CDATA[2001: Open source / Gratis software ]]></content>
+                </note>
+                <note id="7">
+                  <content><![CDATA[2002: Web 2.0 / folket er stemmen]]></content>
+                </note>
+                <note id="8">
+                  <content><![CDATA[2007: Recession ]]></content>
+                </note>
+                <note id="9" url="https://trends.google.com/trends/explore?date=all&q=how%20to%20make%20a%20robot&hl=en" url-text="Søgninger på &quot;How to make a robot&quot;">
+                  <content><![CDATA[2008: STEM / LetsMakeRobots.com]]></content>
+                </note>
+                <note id="10">
+                  <content><![CDATA[2009: Smartphones]]></content>
+                </note>
+                <note id="11" youtube="https://youtu.be/YWhO2vP2n9U?t=11">
+                  <content><![CDATA[2011: Droner]]></content>
+                </note>
+                <note id="12">
+                  <content><![CDATA[11 år senere..]]></content>
+                </note>
+                <note id="13">
+                  <content><![CDATA[2017: Unity, Unreal, Blender]]></content>
+                </note>
+                <note id="14" youtube="https://youtu.be/QCAdBnMZWuQ">
+                  <content><![CDATA[2022: Nord Stream]]></content>
+                </note>
+                <note id="15" youtube="https://youtu.be/3zG5BszEm0I">
+                  <content><![CDATA[2022: LLM AI ]]></content>
+                </note>
+                <note id="16" url="https://trends.google.com/trends/explore?date=today%205-y&q=ai%20agent,agentic%20ai,ai%20agents,agentic&hl=en" url-text="Interesse for &quot;Agentic AI&quot;">
+                  <content><![CDATA[2024: Agenter]]></content>
+                </note>
+                <note id="17" youtube="https://www.youtube.com/watch?v=k9WrU6uR2YM&t=45s">
+                  <content><![CDATA[2025: Vibe coding]]></content>
+                </note>
+                <note id="18" url="https://trends.google.com/trends/explore?date=today%205-y&q=Quantum%20computing&hl=en-US" url-text="Interesse for &quot;Quantum Computing&quot;">
+                  <content><![CDATA[Coming up: Quantum computing]]></content>
+                </note>
+              </children>
+            </note>
+          </children>
+        </note>
+        <note id="3" time="09:45:00">
+          <content><![CDATA[10 Minutters pause ]]></content>
+        </note>
+      </children>
+    </note>
+    <note id="1" time="10:00:00">
+      <content><![CDATA[Teori og viden]]></content>
+      <children>
+        <note id="0">
+          <content><![CDATA[Hvad er Python]]></content>
+        </note>
+        <note id="1">
+          <content><![CDATA[Definition af "En App"]]></content>
+        </note>
+        <note id="2">
+          <content><![CDATA[Sikkerhed]]></content>
+          <children>
+            <note id="0">
+              <content><![CDATA[Skal man køre sin egen LLM?]]></content>
+            </note>
+          </children>
+        </note>
+        <note id="3">
+          <content><![CDATA[Hvad er kunstig intelligens?]]></content>
+          <children>
+            <note id="0">
+              <content><![CDATA[Finite State Machine (FSM)]]></content>
+            </note>
+            <note id="1">
+              <content><![CDATA[Ekspert systemer]]></content>
+            </note>
+            <note id="2">
+              <content><![CDATA[Large Language Model]]></content>
+            </note>
+            <note id="3">
+              <content><![CDATA[Generative AI]]></content>
+            </note>
+          </children>
+        </note>
+        <note id="4">
+          <content><![CDATA[Agentic AI]]></content>
+        </note>
+        <note id="5">
+          <content><![CDATA[Forbundne systemer, API og webhook]]></content>
+          <children>
+            <note id="0">
+              <content><![CDATA[XML]]></content>
+            </note>
+            <note id="1">
+              <content><![CDATA[JSON]]></content>
+            </note>
+            <note id="2">
+              <content><![CDATA[CSV]]></content>
+            </note>
+            <note id="3">
+              <content><![CDATA[MCP]]></content>
+            </note>
+          </children>
+        </note>
+        <note id="6">
+          <content><![CDATA[De 3 vigtigste spørgsmål]]></content>
+          <children>
+            <note id="0">
+              <content><![CDATA[Hvad kan ikke automatiseres med AI?]]></content>
+              <children>
+                <note id="0" discussion="true">
+                  <content><![CDATA[Opgaver der kræver Kreativitet, Håndværk, Security, Omsorg, Etik og moral, Fysisk interaktion, Ledelse og strategi, Emotionel intelligens.. 
+
+.. skriv det ned.]]></content>
+                </note>
+              </children>
+            </note>
+            <note id="1">
+              <content><![CDATA[Hvad kan automatiseres med AI?]]></content>
+            </note>
+            <note id="2">
+              <content><![CDATA[Hvordan automatiseres med AI?]]></content>
+            </note>
+          </children>
+        </note>
+        <note id="7">
+          <content><![CDATA[Data persistence]]></content>
+        </note>
+        <note id="8">
+          <content><![CDATA[Driftsomkostninger for LLM]]></content>
+          <children>
+            <note id="0">
+              <content><![CDATA[Hvad betyder prisen for de gratis eller billige output?]]></content>
+            </note>
+            <note id="1">
+              <content><![CDATA[Grafikkort?!]]></content>
+            </note>
+            <note id="2">
+              <content><![CDATA[Tokens?]]></content>
+            </note>
+          </children>
+        </note>
+        <note id="9">
+          <content><![CDATA[Multi Modal AI]]></content>
+        </note>
+        <note id="10">
+          <content><![CDATA[AGI - Artificial General Intelligence]]></content>
+        </note>
+        <note id="11">
+          <content><![CDATA[LLM Enterprise]]></content>
+          <children>
+            <note id="0">
+              <content><![CDATA[Time compression]]></content>
+            </note>
+          </children>
+        </note>
+        <note id="12" time="12:00:00">
+          <content><![CDATA[Frokostpause]]></content>
+        </note>
+      </children>
+    </note>
+    <note id="2" time="12:30:00">
+      <content><![CDATA[Eksempler]]></content>
+      <children>
+        <note id="0" youtube="https://youtu.be/K27diMbCsuw?si=pWtPbto1HaXypkJs" url="https://manusai.ai/" url-text="Website">
+          <content><![CDATA[Manusai.ai]]></content>
+        </note>
+        <note id="1">
+          <content><![CDATA[Denne slide]]></content>
+          <children>
+            <note id="0">
+              <content><![CDATA[Vibe coding]]></content>
+            </note>
+          </children>
+        </note>
+        <note id="2">
+          <content><![CDATA[Bolt.new, Lovable.dev, Replit.com, Co.dev..]]></content>
+          <children>
+            <note id="0">
+              <content><![CDATA[Hvad gør versionsstyring ved udviklingsprocesser - når brugt med AI?]]></content>
+              <children>
+                <note id="0">
+                  <content><![CDATA["Prøv lige at udføre 10 måneders arbejde"]]></content>
+                </note>
+                <note id="1">
+                  <content><![CDATA["Hmm, nej, jeg har fortrudt"]]></content>
+                </note>
+              </children>
+            </note>
+          </children>
+        </note>
+        <note id="3">
+          <content><![CDATA[Automation workflow n8n.io, make.com etc]]></content>
+        </note>
+        <note id="4">
+          <content><![CDATA[Google on screen help]]></content>
+          <children>
+            <note id="0">
+              <content><![CDATA[(Alle kan alt)]]></content>
+            </note>
+          </children>
+        </note>
+        <note id="5" time="14:00:00">
+          <content><![CDATA[10 minutters pause]]></content>
+        </note>
+        <note id="6">
+          <content><![CDATA[Din digitale avatar]]></content>
+        </note>
+      </children>
+    </note>
+    <note id="3" time="14:10:00">
+      <content><![CDATA[Implementering]]></content>
+      <children>
+        <note id="0" discussion="true">
+          <content><![CDATA[Gruppeøvelse: 1 menneske, en afdeling, en industri ]]></content>
+          <children>
+            <note id="0">
+              <content><![CDATA[5 minutter: skriv så mange titler, funktioner, afdelinger og hele forretninger ned som muligt ]]></content>
+            </note>
+            <note id="1">
+              <content><![CDATA[Gå sammen 2-3 stykker, 1 terning hver:
+Alle slår en terning i hver runde 
+Slå lige og du har Ja hatten på, ulige og du har Nej hatten på. 
+På omgang "er man den", og vælger 1 emne fra makkerens sæt
+
+30 minutters ja/nej hat samtaler om emnet kan automatiseres]]></content>
+            </note>
+          </children>
+        </note>
+        <note id="1" discussion="true">
+          <content><![CDATA[Fremlægning og diskussion ]]></content>
+          <children>
+            <note id="0">
+              <content><![CDATA[Headcount: Ingen vil tale om det..]]></content>
+              <children>
+                <note id="0" discussion="true">
+                  <content><![CDATA[Hvem saver Musk af?]]></content>
+                </note>
+              </children>
+            </note>
+            <note id="1">
+              <content><![CDATA[Feedback loop i virksomhedens viden]]></content>
+            </note>
+            <note id="2" discussion="true">
+              <content><![CDATA[Hvordan vælges hvor der skal sættes ind?]]></content>
+            </note>
+            <note id="3">
+              <content><![CDATA[Hvem kan erstatte eksperter? (Hvem skal du hyre, hvordan skal du træne og udvikle dit hold)?]]></content>
+              <children>
+                <note id="0">
+                  <content><![CDATA[1) Generalister med adgang til konfirmeret viden]]></content>
+                </note>
+                <note id="1">
+                  <content><![CDATA[2) System arkitekter, produktudviklere, nytænkende]]></content>
+                </note>
+              </children>
+            </note>
+          </children>
+        </note>
+        <note id="2">
+          <content><![CDATA[Sikkerhedsrisikoen ved at overlade hele processerne udelukkende til AI]]></content>
+          <children>
+            <note id="0">
+              <content><![CDATA[Løsningen er delegering – mennesket i loopet]]></content>
+            </note>
+            <note id="1">
+              <content><![CDATA["Let it write the letter" - "You press Send"]]></content>
+            </note>
+            <note id="2">
+              <content><![CDATA["Let it aim the missile" - "You press Fire"]]></content>
+            </note>
+          </children>
+        </note>
+        <note id="3" discussion="true">
+          <content><![CDATA[Hvad betyder det hele i kroner og dollar?]]></content>
+        </note>
+      </children>
+    </note>
+    <note id="4" time="16:00:00">
+      <content><![CDATA[Værktøjer at tage med hjem]]></content>
+      <children>
+        <note id="0">
+          <content><![CDATA[ Værktøjer til automatisering - ikke optimering ]]></content>
+          <children>
+            <note id="0">
+              <content><![CDATA[Brug værktøjer til optimering når du betjener dig af værktøjer til automatisering]]></content>
+            </note>
+          </children>
+        </note>
+        <note id="1">
+          <content><![CDATA[Den typiske "AI specialist" .. Hr "Vi sætter strøm på din virksomhed med AI" .. ved nok mindre end dig, og vil typisk optimere - fordi det er et lettere salg end automatisering.]]></content>
+        </note>
+        <note id="2">
+          <content><![CDATA[AI First]]></content>
+          <children>
+            <note id="0">
+              <content><![CDATA[Når man har ansat 6 mand til at varetage en opgave, og derefter er der en som nævner at "det kan automatiseres".. !]]></content>
+            </note>
+          </children>
+        </note>
+        <note id="3">
+          <content><![CDATA[Din liste af "hvad kan ikke automatiseres" som lakmus test af alle processer]]></content>
+        </note>
+      </children>
+    </note>
+    <note id="5" time="16:45:00">
+      <content><![CDATA[Afrunding]]></content>
+      <children>
+        <note id="0" discussion="true">
+          <content><![CDATA[Spørgsmål og kommentarer ]]></content>
+        </note>
+      </children>
+    </note>
+  </notes>
+</project>
