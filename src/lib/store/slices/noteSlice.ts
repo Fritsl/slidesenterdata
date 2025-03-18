@@ -551,25 +551,33 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
         throw new Error('No valid notes to import');
       }
 
-      set({ isImporting: true });
+      try {
+    set({ isImporting: true });
       
-      const contentToIdMap = new Map<string, string>();
-      const processedContent = new Set<string>();
+    const contentToIdMap = new Map<string, string>();
+    const processedContent = new Set<string>();
       
-      // Sort notes by level to ensure parents are created before children
-      const sortedNotes = [...parsedNotes].sort((a, b) => a.level - b.level);
+    // Sort notes by level to ensure parents are created before children
+    const sortedNotes = [...parsedNotes].sort((a, b) => a.level - b.level);
       
-      // Process each note
-      for (const note of sortedNotes) {
-        if (processedContent.has(note.notes[0])) continue;
+    console.log('Starting import of sorted notes:', sortedNotes);
+      
+    // Process each note
+    for (const note of sortedNotes) {
+      if (!note.notes?.[0] || processedContent.has(note.notes[0])) continue;
         
-        const parentId = note.parentContent ? contentToIdMap.get(note.parentContent) : undefined;
-        const noteId = await supabase.createNote(note.notes[0], parentId);
+      const parentId = note.parentContent ? contentToIdMap.get(note.parentContent) : undefined;
+      console.log('Creating note:', { content: note.notes[0], parentId });
+      const response = await get().addNote(parentId, note.notes[0]);
         
-        if (noteId) {
-          contentToIdMap.set(note.notes[0], noteId);
-          processedContent.add(note.notes[0]);
-        }
+      if (response?.id) {
+        console.log('Created note:', { id: response.id, content: note.notes[0] });
+        contentToIdMap.set(note.notes[0], response.id);
+        processedContent.add(note.notes[0]);
+      } else {
+        console.error('Failed to create note:', { content: note.notes[0], parentId });
+      }
+    }
       };
 
       const maxLevel = Math.max(...Object.keys(notesByLevel).map(Number));
