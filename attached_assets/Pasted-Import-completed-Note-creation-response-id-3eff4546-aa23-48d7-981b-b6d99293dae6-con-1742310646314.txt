@@ -1,0 +1,384 @@
+Import completed
+Note creation response: {
+  "id": "3eff4546-aa23-48d7-981b-b6d99293dae6",
+  "content": "Another parent in the root with no children",
+  "children": [],
+  "isEditing": false,
+  "unsavedContent": "",
+  "user_id": "c888c6a3-8250-42b0-8156-bd4803158e6f",
+  "project_id": "691b344f-723f-4deb-abb1-d82ddf864719",
+  "is_discussion": false,
+  "parent_id": null,
+  "images": []
+}
+Note creation response: {
+  "id": "8c712ea7-0be8-40b4-992e-2babd7e87198",
+  "content": "A single gran child",
+  "children": [],
+  "isEditing": false,
+  "unsavedContent": "",
+  "user_id": "c888c6a3-8250-42b0-8156-bd4803158e6f",
+  "project_id": "691b344f-723f-4deb-abb1-d82ddf864719",
+  "is_discussion": false,
+  "parent_id": null,
+  "images": []
+}
+Note creation response: {
+  "id": "9a8966f0-ceb0-45e0-bb55-7e2051050f64",
+  "content": "A single gran child",
+  "children": [],
+  "isEditing": false,
+  "unsavedContent": "",
+  "user_id": "c888c6a3-8250-42b0-8156-bd4803158e6f",
+  "project_id": "691b344f-723f-4deb-abb1-d82ddf864719",
+  "is_discussion": false,
+  "parent_id": "dc96fe87-9e8a-42d5-bfab-4f74d97e8ccd",
+  "images": []
+}
+Note creation response: {
+  "id": "dc96fe87-9e8a-42d5-bfab-4f74d97e8ccd",
+  "content": "Cghild 2",
+  "children": [],
+  "isEditing": false,
+  "unsavedContent": "",
+  "user_id": "c888c6a3-8250-42b0-8156-bd4803158e6f",
+  "project_id": "691b344f-723f-4deb-abb1-d82ddf864719",
+  "is_discussion": false,
+  "parent_id": null,
+  "images": []
+}
+Note creation response: {
+  "id": "6a6f8ce3-ecad-49e7-b5fa-3096fb98119c",
+  "content": "Child 1",
+  "children": [],
+  "isEditing": false,
+  "unsavedContent": "",
+  "user_id": "c888c6a3-8250-42b0-8156-bd4803158e6f",
+  "project_id": "691b344f-723f-4deb-abb1-d82ddf864719",
+  "is_discussion": false,
+  "parent_id": null,
+  "images": []
+}
+Note creation response: {
+  "id": "b1bd967a-ee7c-4824-8939-9a504fadead9",
+  "content": "A single gran child",
+  "children": [],
+  "isEditing": false,
+  "unsavedContent": "",
+  "user_id": "c888c6a3-8250-42b0-8156-bd4803158e6f",
+  "project_id": "691b344f-723f-4deb-abb1-d82ddf864719",
+  "is_discussion": false,
+  "parent_id": "15304159-5973-4a04-8a83-f5d2d1f76992",
+  "images": []
+}
+Note creation response: {
+  "id": "6c696596-6ba3-47e6-a247-1d8d90fe5f35",
+  "content": "A single gran child",
+  "children": [],
+  "isEditing": false,
+  "unsavedContent": "",
+  "user_id": "c888c6a3-8250-42b0-8156-bd4803158e6f",
+  "project_id": "691b344f-723f-4deb-abb1-d82ddf864719",
+  "is_discussion": false,
+  "parent_id": "fabd573b-8a5b-4b54-bda0-68b693e8900a",
+  "images": []
+}
+Note creation response: {
+  "id": "fabd573b-8a5b-4b54-bda0-68b693e8900a",
+  "content": "Cghild 2",
+  "children": [],
+  "isEditing": false,
+  "unsavedContent": "",
+  "user_id": "c888c6a3-8250-42b0-8156-bd4803158e6f",
+  "project_id": "691b344f-723f-4deb-abb1-d82ddf864719",
+  "is_discussion": false,
+  "parent_id": "15304159-5973-4a04-8a83-f5d2d1f76992",
+  "images": []
+}
+Note creation response: {
+  "id": "a8a6cd50-7d04-4c4f-9a80-8fe7163bb237",
+  "content": "Child 1",
+  "children": [],
+  "isEditing": false,
+  "unsavedContent": "",
+  "user_id": "c888c6a3-8250-42b0-8156-bd4803158e6f",
+  "project_id": "691b344f-723f-4deb-abb1-d82ddf864719",
+  "is_discussion": false,
+  "parent_id": "15304159-5973-4a04-8a83-f5d2d1f76992",
+  "images": []
+}
+Note creation response: {
+  "id": "15304159-5973-4a04-8a83-f5d2d1f76992",
+  "content": "Child",
+  "children": [],
+  "isEditing": false,
+  "unsavedContent": "",
+  "user_id": "c888c6a3-8250-42b0-8156-bd4803158e6f",
+  "project_id": "691b344f-723f-4deb-abb1-d82ddf864719",
+  "is_discussion": false,
+  "parent_id": null,
+  "images": []
+}
+Note creation response: {
+  "id": "a27d4014-28ab-4422-b2ea-c29773063f6f",
+  "content": "A single gran child",
+  "children": [],
+  "isEditing": false,
+  "unsavedContent": "",
+  "user_id": "c888c6a3-8250-42b0-8156-bd4803158e6f",
+  "project_id": "691b344f-723f-4deb-abb1-d82ddf864719",
+  "is_discussion": false,
+  "parent_id": "12b0588c-e29b-493d-8fd9-bf942ef82f53",
+  "images": []
+}
+Note creation response: {
+  "id": "4ec4650d-b700-4a91-b027-f953a3b23544",
+  "content": "A single gran child",
+  "children": [],
+  "isEditing": false,
+  "unsavedContent": "",
+  "user_id": "c888c6a3-8250-42b0-8156-bd4803158e6f",
+  "project_id": "691b344f-723f-4deb-abb1-d82ddf864719",
+  "is_discussion": false,
+  "parent_id": "797d1445-2d38-4ca5-8a9e-2676cae3d44b",
+  "images": []
+}
+Note creation response: {
+  "id": "797d1445-2d38-4ca5-8a9e-2676cae3d44b",
+  "content": "Cghild 2",
+  "children": [],
+  "isEditing": false,
+  "unsavedContent": "",
+  "user_id": "c888c6a3-8250-42b0-8156-bd4803158e6f",
+  "project_id": "691b344f-723f-4deb-abb1-d82ddf864719",
+  "is_discussion": false,
+  "parent_id": "12b0588c-e29b-493d-8fd9-bf942ef82f53",
+  "images": []
+}
+Note creation response: {
+  "id": "364e8127-b03d-4442-85e2-8f62a64e5a3c",
+  "content": "Child 1",
+  "children": [],
+  "isEditing": false,
+  "unsavedContent": "",
+  "user_id": "c888c6a3-8250-42b0-8156-bd4803158e6f",
+  "project_id": "691b344f-723f-4deb-abb1-d82ddf864719",
+  "is_discussion": false,
+  "parent_id": "12b0588c-e29b-493d-8fd9-bf942ef82f53",
+  "images": []
+}
+Note creation response: {
+  "id": "357985e1-75b2-4f4b-888b-0f7bca3cd820",
+  "content": "A single gran child",
+  "children": [],
+  "isEditing": false,
+  "unsavedContent": "",
+  "user_id": "c888c6a3-8250-42b0-8156-bd4803158e6f",
+  "project_id": "691b344f-723f-4deb-abb1-d82ddf864719",
+  "is_discussion": false,
+  "parent_id": "94cdb8d8-2929-487e-84b4-40decc67ed17",
+  "images": []
+}
+Note creation response: {
+  "id": "f727484d-4380-44eb-8aef-b22deb5dc51f",
+  "content": "A single gran child",
+  "children": [],
+  "isEditing": false,
+  "unsavedContent": "",
+  "user_id": "c888c6a3-8250-42b0-8156-bd4803158e6f",
+  "project_id": "691b344f-723f-4deb-abb1-d82ddf864719",
+  "is_discussion": false,
+  "parent_id": "a5fa1ab1-b15c-48e9-813f-c2b1af817189",
+  "images": []
+}
+Note creation response: {
+  "id": "a5fa1ab1-b15c-48e9-813f-c2b1af817189",
+  "content": "Cghild 2",
+  "children": [],
+  "isEditing": false,
+  "unsavedContent": "",
+  "user_id": "c888c6a3-8250-42b0-8156-bd4803158e6f",
+  "project_id": "691b344f-723f-4deb-abb1-d82ddf864719",
+  "is_discussion": false,
+  "parent_id": "94cdb8d8-2929-487e-84b4-40decc67ed17",
+  "images": []
+}
+Note creation response: {
+  "id": "437bd51d-6d28-4217-ba42-ec31784a160c",
+  "content": "Child 1",
+  "children": [],
+  "isEditing": false,
+  "unsavedContent": "",
+  "user_id": "c888c6a3-8250-42b0-8156-bd4803158e6f",
+  "project_id": "691b344f-723f-4deb-abb1-d82ddf864719",
+  "is_discussion": false,
+  "parent_id": "94cdb8d8-2929-487e-84b4-40decc67ed17",
+  "images": []
+}
+Note creation response: {
+  "id": "94cdb8d8-2929-487e-84b4-40decc67ed17",
+  "content": "Child",
+  "children": [],
+  "isEditing": false,
+  "unsavedContent": "",
+  "user_id": "c888c6a3-8250-42b0-8156-bd4803158e6f",
+  "project_id": "691b344f-723f-4deb-abb1-d82ddf864719",
+  "is_discussion": false,
+  "parent_id": "12b0588c-e29b-493d-8fd9-bf942ef82f53",
+  "images": []
+}
+Note creation response: {
+  "id": "12b0588c-e29b-493d-8fd9-bf942ef82f53",
+  "content": "Parent",
+  "children": [],
+  "isEditing": false,
+  "unsavedContent": "",
+  "user_id": "c888c6a3-8250-42b0-8156-bd4803158e6f",
+  "project_id": "691b344f-723f-4deb-abb1-d82ddf864719",
+  "is_discussion": false,
+  "parent_id": null,
+  "images": []
+}
+Starting importNotes
+Parsed notes: [
+  {
+    "notes": [
+      "Parent"
+    ],
+    "level": 0
+  },
+  {
+    "notes": [
+      "Child"
+    ],
+    "level": 1,
+    "parentContent": "Parent"
+  },
+  {
+    "notes": [
+      "Child 1"
+    ],
+    "level": 2,
+    "parentContent": "Child"
+  },
+  {
+    "notes": [
+      "Cghild 2"
+    ],
+    "level": 2,
+    "parentContent": "Child"
+  },
+  {
+    "notes": [
+      "A single gran child"
+    ],
+    "level": 3,
+    "parentContent": "Cghild 2"
+  },
+  {
+    "notes": [
+      "A single gran child"
+    ],
+    "level": 2,
+    "parentContent": "Child"
+  },
+  {
+    "notes": [
+      "Child 1"
+    ],
+    "level": 1,
+    "parentContent": "Parent"
+  },
+  {
+    "notes": [
+      "Cghild 2"
+    ],
+    "level": 1,
+    "parentContent": "Parent"
+  },
+  {
+    "notes": [
+      "A single gran child"
+    ],
+    "level": 2,
+    "parentContent": "Cghild 2"
+  },
+  {
+    "notes": [
+      "A single gran child"
+    ],
+    "level": 1,
+    "parentContent": "Parent"
+  },
+  {
+    "notes": [
+      "Child"
+    ],
+    "level": 0
+  },
+  {
+    "notes": [
+      "Child 1"
+    ],
+    "level": 1,
+    "parentContent": "Child"
+  },
+  {
+    "notes": [
+      "Cghild 2"
+    ],
+    "level": 1,
+    "parentContent": "Child"
+  },
+  {
+    "notes": [
+      "A single gran child"
+    ],
+    "level": 2,
+    "parentContent": "Cghild 2"
+  },
+  {
+    "notes": [
+      "A single gran child"
+    ],
+    "level": 1,
+    "parentContent": "Child"
+  },
+  {
+    "notes": [
+      "Child 1"
+    ],
+    "level": 0
+  },
+  {
+    "notes": [
+      "Cghild 2"
+    ],
+    "level": 0
+  },
+  {
+    "notes": [
+      "A single gran child"
+    ],
+    "level": 1,
+    "parentContent": "Cghild 2"
+  },
+  {
+    "notes": [
+      "A single gran child"
+    ],
+    "level": 0
+  },
+  {
+    "notes": [
+      "Another parent in the root with no children"
+    ],
+    "level": 0
+  }
+]
+Starting XML parsing
+Raw XML text: <?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="https://aiworkshop.dev/notes/1.0">
+  <title><...
+Starting XML import process...
+Logging initialized...
