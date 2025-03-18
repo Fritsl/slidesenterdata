@@ -34,13 +34,13 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
   const parseXML = (xmlText: string): { notes: string[], level: number }[] => {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xmlText, "text/xml");
-    
+
     if (xmlDoc.getElementsByTagName("parsererror").length > 0) {
       throw new Error("Invalid XML format");
     }
 
     const result: { notes: string[], level: number }[] = [];
-    
+
     const processNote = (noteElement: Element, level: number) => {
       const id = noteElement.getAttribute("id") || '';
       const content = noteElement.getElementsByTagName("content")[0]?.textContent || '';
@@ -48,16 +48,16 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
       const youtube = noteElement.getAttribute("youtube") || '';
       const url = noteElement.getAttribute("url") || '';
       const urlDisplayText = noteElement.getAttribute("url_display_text") || '';
-      
+
       const note = ['•'.padStart((level * 2) + 1, ' ')];
       note.push(content);
       if (time) note.push(`[time=${time}]`);
       if (youtube) note.push(`[youtube=${youtube}]`);
       if (url) note.push(`[url=${url}]`);
       if (urlDisplayText) note.push(`[url_display_text=${urlDisplayText}]`);
-      
+
       result.push({ notes: note, level });
-      
+
       const children = noteElement.getElementsByTagName("children")[0];
       if (children) {
         Array.from(children.getElementsByTagName("note")).forEach(child => {
@@ -65,14 +65,14 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
         });
       }
     };
-    
+
     const notes = xmlDoc.getElementsByTagName("notes")[0];
     if (notes) {
       Array.from(notes.getElementsByTagName("note")).forEach(note => {
         processNote(note, 0);
       });
     }
-    
+
     return result;
   };
 
@@ -88,17 +88,6 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
         // Handle regular bullet-point import
         await importNotes(text);
       }
-      onClose();
-    } catch (error) {
-      console.error('Error importing notes:', error);
-      alert('Failed to import notes. Please check the format and try again.');
-    } finally {
-      setIsImporting(false);
-    }
-  };
-    try {
-      setIsImporting(true);
-      await importNotes(text);
       onClose();
     } catch (error) {
       console.error('Error importing notes:', error);
