@@ -59,8 +59,12 @@ export const DeletedProjectList: React.FC<DeletedProjectListProps> = ({
                 </button>
                 <button
                   onClick={() => {
+                    console.log('Debug: Trash delete button clicked for project:', project);
                     if (confirm('This will permanently delete the project. This action cannot be undone.')) {
-                      onDelete(project.id);
+                      console.log('Debug: User confirmed deletion for project:', project.id);
+                      onDelete(project.id).catch(err => {
+                        console.error('Debug: Error in onDelete:', err);
+                      });
                     }
                   }}
                   className="p-1 hover:bg-gray-200 rounded group"
