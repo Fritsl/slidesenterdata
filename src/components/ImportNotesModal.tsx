@@ -101,8 +101,8 @@ export function ImportNotesModal({ onClose }: ImportNotesModalProps) {
       }
       onClose();
     } catch (error) {
-      console.error('Error importing notes:', error);
-      alert('Failed to import notes. Please check the format and try again.');
+      console.error('Error importing notes:', error instanceof Error ? error.message : error);
+      alert(`Failed to import notes: ${error instanceof Error ? error.message : 'Unknown error occurred'}`);
     } finally {
       setIsImporting(false);
     }
