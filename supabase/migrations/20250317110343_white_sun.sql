@@ -97,18 +97,37 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION set_initial_position()
 RETURNS TRIGGER AS $$
 BEGIN
-  IF NEW.position IS NULL THEN
-    SELECT COALESCE(MAX(position) + 1, 0)
-    INTO NEW.position
-    FROM notes
-    WHERE project_id = NEW.project_id
-    AND parent_id IS NOT DISTINCT FROM NEW.parent_id;
-  END IF;
+  -- Always set position, even if it was provided
+  SELECT COALESCE(MAX(position) + 1, 0)
+  INTO NEW.position
+  FROM notes
+  WHERE project_id = NEW.project_id
+  AND parent_id IS NOT DISTINCT FROM NEW.parent_id;
+  
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
+-- Drop and recreate trigger
+DROP TRIGGER IF EXISTS ensure_note_position ON notes;
 CREATE TRIGGER ensure_note_position
 BEFORE INSERT ON notes
 FOR EACH ROW
 EXECUTE FUNCTION set_initial_position();
+
+-- Fix positions for existing notes
+WITH RECURSIVE ordered_notes AS (
+  SELECT 
+    id,
+    parent_id,
+    project_id,
+    ROW_NUMBER() OVER (
+      PARTITION BY project_id, parent_id 
+      ORDER BY created_at, id
+    ) - 1 as new_position
+  FROM notes
+)
+UPDATE notes n
+SET position = o.new_position
+FROM ordered_notes o
+WHERE n.id = o.id;
