@@ -33,19 +33,15 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
       const notes = await database.notes.loadNotes(user.id, projectId);
 
       // Update expanded states using the same level
-      console.log('Setting expanded states with level:', level);
 
       set(state => {
         const newExpandedNotes = new Set(state.expandedNotes);
         const updateExpanded = (notes: Store['notes'], depth = 0) => {
-          console.log('Updating expanded states at depth:', depth, 'target level:', level);
           notes.forEach(note => {
             if (note.children.length > 0) {
               if (depth < currentLevel) {
-                console.log('Adding note to expanded:', note.id);
                 newExpandedNotes.add(note.id);
               } else {
-                console.log('Removing note from expanded:', note.id);
                 newExpandedNotes.delete(note.id);
               }
               updateExpanded(note.children, depth + 1);
@@ -54,10 +50,6 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
         };
 
         updateExpanded(notes);
-        console.log('Final expanded state:', {
-          expandedNotes: Array.from(newExpandedNotes),
-          currentLevel: level
-        });
 
         return {
           notes,
@@ -82,7 +74,6 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
 
   deleteNote: async (id: string) => {
     try {
-      console.log('Starting deleteNote in store:', { noteId: id });
 
       // First get the note to check project_id
       const { data: note, error: noteError } = await supabase
@@ -91,26 +82,22 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
         .eq('id', id)
         .single();
 
-      console.log('Retrieved note data:', { note, noteError });
 
       if (noteError) throw noteError;
       if (!note) throw new Error('Note not found');
 
       // Call RPC function
-      console.log('Calling delete_note_safely RPC function');
+
       const { error: deleteError } = await supabase
         .rpc('delete_note_safely', { note_id: id });
 
-      console.log('RPC function response:', { deleteError });
       if (deleteError) throw deleteError;
 
-      console.log('Updating local state');
       set(state => ({
         notes: removeNoteById(state.notes, id)
       }));
 
       // Update project's note count in state
-      console.log('Updating project note count');
       set(state => ({
         projects: state.projects.map(p =>
           p.id === note.project_id
@@ -119,7 +106,6 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
         )
       }));
 
-      console.log('Note deletion completed successfully in store');
     } catch (error) {
       console.error('Error in deleteNote:', {
         error,
@@ -314,7 +300,6 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
   addImage: async (noteId: string, url: string) => {
     try {
       const image = await database.images.add(noteId, url);
-      console.log('Image added successfully:', image);
 
       set(state => {
         const updateNoteImages = (notes: Store['notes']): Store['notes'] => {
@@ -343,9 +328,7 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
 
   removeImage: async (noteId: string, imageId: string) => {
     try {
-      console.log('Starting image removal:', { noteId, imageId });
       await database.images.remove(imageId);
-      console.log('Image removed from database');
 
       set(state => {
         const updateNoteImages = (notes: Store['notes']): Store['notes'] => {
@@ -368,7 +351,6 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
         };
       });
 
-      console.log('Local state updated after image removal');
     } catch (error) {
       console.error('Error removing image:', error);
       throw handleDatabaseError(error, 'Failed to remove image');
@@ -560,8 +542,7 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
         if (content.startsWith('![CDATA[')) {
           content = content.substring(8, content.length - 2);
         }
-        
-        console.log('Creating note:', { content, parentId });
+
         const response = await get().addNote(parentId, content);
 
         if (response?.id) {
@@ -588,7 +569,6 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
         await processNote(note);
       }
 
-      console.log('Import completed successfully');
       return { success: true };
     } catch (error) {
       console.error('Error during import:', error instanceof Error ? error.stack : error);
