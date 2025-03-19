@@ -15,9 +15,10 @@ import { EditDescriptionModal } from './EditDescriptionModal'; // Imported EditD
 
 interface MenuProps {
   onSignOut: () => void;
+  onError: (error: Error) => void;
 }
 
-export function Menu({ onSignOut }: MenuProps) {
+export function Menu({ onSignOut, onError }: MenuProps) {
   const { loadProjects, projects, title, copyProject, deleteProject, switchProject, printNotes, notes, loadDeletedProjects, restoreProject, permanentlyDeleteProject } = useNoteStore();
   const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
@@ -124,8 +125,14 @@ export function Menu({ onSignOut }: MenuProps) {
           onPrint={() => setIsPrintModalOpen(true)}
           onSignOut={onSignOut}
           onClose={() => setIsOpen(false)}
-          onEditDescription={handleEditDescription} // Added prop
+          onEditDescription={handleEditDescription}
+          onExportJson={() => {
+            const jsonData = exportNotesAsJson();
+            navigator.clipboard.writeText(jsonData);
+            alert('Project exported as JSON and copied to clipboard!');
+          }}
           userEmail={user?.email}
+          notes={notes}
         />
       )}
 
