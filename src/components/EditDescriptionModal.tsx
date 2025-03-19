@@ -43,14 +43,30 @@ export function EditDescriptionModal({ onClose }: EditDescriptionModalProps) {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Not authenticated');
 
-      const { error: upsertError } = await supabase
+      // Check if settings exist
+      const { data: existingSettings } = await supabase
         .from('settings')
-        .upsert({ 
-          user_id: user.id,
-          description: description.trim()
-        });
+        .select('*')
+        .eq('user_id', user.id)
+        .single();
 
-      if (upsertError) throw upsertError;
+      let error;
+      if (existingSettings) {
+        // Update existing settings
+        const { error: updateError } = await supabase
+          .from('settings')
+          .update({ description: description.trim() })
+          .eq('user_id', user.id);
+        error = updateError;
+      } else {
+        // Insert new settings
+        const { error: insertError } = await supabase
+          .from('settings')
+          .insert({ user_id: user.id, description: description.trim() });
+        error = insertError;
+      }
+
+      if (error) throw error;
       onClose();
     } catch (err) {
       console.error('Failed to update description:', err);
