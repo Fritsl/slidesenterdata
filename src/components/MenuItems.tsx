@@ -69,25 +69,8 @@ export const MenuItems: React.FC<MenuItemsProps> = ({
     </button>
     <button
       onClick={() => {
-        const jsonData = {
-          notes: notes.map(note => ({
-            id: note.id,
-            content: note.content,
-            position: note.position,
-            is_discussion: note.is_discussion,
-            time_set: note.time_set,
-            youtube_url: note.youtube_url,
-            url: note.url,
-            url_display_text: note.url_display_text,
-            children: note.children.map(child => ({
-              id: child.id,
-              content: child.content,
-              position: child.position,
-              is_discussion: child.is_discussion
-            }))
-          }))
-        };
-        navigator.clipboard.writeText(JSON.stringify(jsonData, null, 2));
+        const { exportNotesAsJson } = require('../lib/utils/exportUtils');
+        navigator.clipboard.writeText(exportNotesAsJson(notes));
         onClose();
         alert('Project exported as JSON and copied to clipboard!');
       }}
