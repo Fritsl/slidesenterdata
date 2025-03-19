@@ -10,7 +10,6 @@ import { DeleteNoteModal } from './DeleteNoteModal';
 import { NoteContent } from './NoteContent';
 import { NoteActions } from './NoteActions';
 import { useDragDrop } from '../hooks/useDragDrop';
-import { ChevronRight, ChevronDown, MoreVertical, Timer, Youtube, Link, Clock, ChevronUp, ChevronDown as MoveDown } from 'lucide-react';
 
 interface NoteProps {
   note: NoteType;
@@ -19,7 +18,7 @@ interface NoteProps {
 }
 
 export const Note: React.FC<NoteProps> = ({ note, level, onError }) => {
-  const { updateNote, toggleEdit, addNote, saveNote, setEditMode, deleteNote, expandedNotes, moveNote, notes } = useNoteStore();
+  const { updateNote, toggleEdit, addNote, saveNote, setEditMode, deleteNote, expandedNotes, moveNote } = useNoteStore();
   const [isSelected, setIsSelected] = useState(false);
   const [isMoveMenuOpen, setIsMoveMenuOpen] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -43,9 +42,6 @@ export const Note: React.FC<NoteProps> = ({ note, level, onError }) => {
       setIsSelected(false);
     }
   }, [isSelected]);
-
-  const isDiscussionThread = note.is_discussion;
-  const isLastChild = !notes.some(n => n.parent_id === note.parent_id && n.position > note.position);
 
   return (
     <div className="group relative" id={note.id} ref={noteRef}>
@@ -112,31 +108,6 @@ export const Note: React.FC<NoteProps> = ({ note, level, onError }) => {
                         setIsSelected(false);
                       }}
                     />
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
-                      {note.position > 0 && (
-                        <button 
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            moveNote(note.id, note.parent_id, note.position - 1);
-                          }}
-                          className="p-1 hover:bg-gray-700 rounded"
-                        >
-                          <ChevronUp className="w-4 h-4" />
-                        </button>
-                      )}
-                      {!isLastChild && (
-                        <button 
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            moveNote(note.id, note.parent_id, note.position + 1);
-                          }}
-                          className="p-1 hover:bg-gray-700 rounded cursor-pointer"
-                        >
-                          <MoveDown className="w-4 h-4" />
-                        </button>
-                      )}
-                    </div>
                   </div>
                 </div>
               </div>
