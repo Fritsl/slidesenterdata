@@ -88,8 +88,15 @@ export function Menu({ onSignOut }: MenuProps) {
     setShowEditDescriptionModal(true);
   };
 
+  const handleCloseEditDescription = () => {
+    setShowEditDescriptionModal(false);
+  }
+
   return (
     <div className="relative z-50" ref={menuRef}>
+      {showEditDescriptionModal && (
+        <EditDescriptionModal onClose={handleCloseEditDescription} />
+      )}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="p-2 hover:bg-gray-800 rounded-lg transition-colors text-white"
@@ -202,7 +209,7 @@ export function Menu({ onSignOut }: MenuProps) {
         <TimedNotesView onClose={() => setShowTimedNotesModal(false)} />
       )}
       {showEditDescriptionModal && (
-        <EditDescriptionModal onClose={() => setShowEditDescriptionModal(false)} />
+        <EditDescriptionModal onClose={handleCloseEditDescription} />
       )}
     </div>
   );

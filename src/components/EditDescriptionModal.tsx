@@ -1,58 +1,17 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { X } from 'lucide-react';
-import { supabase } from '../lib/supabase';
 
 interface EditDescriptionModalProps {
   onClose: () => void;
 }
 
 export function EditDescriptionModal({ onClose }: EditDescriptionModalProps) {
-  console.log('EditDescriptionModal mounted');
   const [description, setDescription] = useState('');
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    console.log('Loading description from database');
-    const loadDescription = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-
-      const { data: settings } = await supabase
-        .from('settings')
-        .select('description')
-        .eq('user_id', user.id)
-        .single();
-
-      if (settings?.description) {
-        setDescription(settings.description);
-      }
-    };
-    loadDescription();
-  }, []);
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
-    setIsLoading(true);
-
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('Not authenticated');
-
-      const { error: updateError } = await supabase
-        .from('settings')
-        .update({ description: description.trim() })
-        .eq('user_id', user.id);
-
-      if (updateError) throw updateError;
-      onClose();
-    } catch (err) {
-      setError('Failed to update description');
-    } finally {
-      setIsLoading(false);
-    }
+    console.log('Description submitted:', description);
+    onClose();
   };
 
   return (
@@ -87,12 +46,6 @@ export function EditDescriptionModal({ onClose }: EditDescriptionModalProps) {
                 {description.length}/500 characters
               </div>
             </div>
-
-            {error && (
-              <div className="text-sm text-red-600 bg-red-50 p-3 rounded-lg">
-                {error}
-              </div>
-            )}
           </div>
 
           <div className="mt-6 flex justify-end gap-3">
@@ -105,10 +58,9 @@ export function EditDescriptionModal({ onClose }: EditDescriptionModalProps) {
             </button>
             <button
               type="submit"
-              disabled={isLoading}
-              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors disabled:opacity-50"
+              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
             >
-              {isLoading ? 'Saving...' : 'Save Changes'}
+              Save
             </button>
           </div>
         </form>
