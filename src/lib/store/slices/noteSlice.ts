@@ -38,14 +38,17 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
 
       const notes = await database.notes.loadNotes(user.id, projectId);
 
-      // Update expanded states using the same level
-
+      // Correct the level after move (subtract 1, minimum 0)
       set(state => {
         const newExpandedNotes = new Set(state.expandedNotes);
+        const currentLevel = Math.max(0, state.currentLevel - 1);
+
+        // Update expanded states using the same level
+
         const updateExpanded = (notes: Store['notes'], depth = 0) => {
           notes.forEach(note => {
             if (note.children.length > 0) {
-              if (depth < newLevel) {
+              if (depth < currentLevel) {
                 newExpandedNotes.add(note.id);
               } else {
                 newExpandedNotes.delete(note.id);
@@ -60,8 +63,8 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
         return {
           notes,
           expandedNotes: newExpandedNotes,
-          currentLevel: newLevel,
-          canExpandMore: newLevel < Math.max(...notes.map(note => {
+          currentLevel: currentLevel,
+          canExpandMore: currentLevel < Math.max(...notes.map(note => {
             let depth = 0;
             const traverse = (note: Store['notes'][0], currentDepth = 0) => {
               depth = Math.max(depth, currentDepth);
@@ -70,7 +73,7 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
             traverse(note);
             return depth;
           })),
-          canCollapseMore: newLevel > 0
+          canCollapseMore: currentLevel > 0
         };
       });
     } catch (error) {
