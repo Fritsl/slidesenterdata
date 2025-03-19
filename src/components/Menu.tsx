@@ -83,6 +83,10 @@ export function Menu({ onSignOut }: MenuProps) {
     setShowProjectsMenu(false);
   };
 
+  const handleEditDescription = () => {
+    setShowEditDescriptionModal(true);
+  };
+
   return (
     <div className="relative z-50" ref={menuRef}>
       <button
@@ -112,7 +116,7 @@ export function Menu({ onSignOut }: MenuProps) {
           onPrint={() => setIsPrintModalOpen(true)}
           onSignOut={onSignOut}
           onClose={() => setIsOpen(false)}
-          onEditDescription={() => setShowEditDescriptionModal(true)} // Added prop
+          onEditDescription={handleEditDescription} // Added prop
           userEmail={user?.email}
         />
       )}
