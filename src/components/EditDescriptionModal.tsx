@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { supabase } from '../lib/supabase';
@@ -15,17 +14,18 @@ export function EditDescriptionModal({ onClose }: EditDescriptionModalProps) {
   useEffect(() => {
     const loadDescription = async () => {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
+        const urlParams = new URLSearchParams(window.location.search);
+        const projectId = urlParams.get('project');
+        if (!projectId) return; // Handle case where projectId is missing
 
-        const { data: settings } = await supabase
-          .from('settings')
+        const { data: project } = await supabase
+          .from('projects')
           .select('description')
-          .eq('user_id', user.id)
+          .eq('id', projectId)
           .single();
 
-        if (settings?.description) {
-          setDescription(settings.description);
+        if (project?.description) {
+          setDescription(project.description);
         }
       } catch (err) {
         console.error('Failed to load description:', err);
@@ -40,33 +40,16 @@ export function EditDescriptionModal({ onClose }: EditDescriptionModalProps) {
     setIsLoading(true);
 
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('Not authenticated');
+      const urlParams = new URLSearchParams(window.location.search);
+      const projectId = urlParams.get('project');
+      if (!projectId) throw new Error('No project selected');
 
-      // Check if settings exist
-      const { data: existingSettings } = await supabase
-        .from('settings')
-        .select('*')
-        .eq('user_id', user.id)
-        .single();
+      const { error: updateError } = await supabase
+        .from('projects')
+        .update({ description: description.trim() })
+        .eq('id', projectId);
 
-      let error;
-      if (existingSettings) {
-        // Update existing settings
-        const { error: updateError } = await supabase
-          .from('settings')
-          .update({ description: description.trim() })
-          .eq('user_id', user.id);
-        error = updateError;
-      } else {
-        // Insert new settings
-        const { error: insertError } = await supabase
-          .from('settings')
-          .insert({ user_id: user.id, description: description.trim() });
-        error = insertError;
-      }
-
-      if (error) throw error;
+      if (updateError) throw updateError;
       onClose();
     } catch (err) {
       console.error('Failed to update description:', err);
