@@ -8,10 +8,10 @@ interface MenuItemsProps {
   onNewProject: () => void;
   onShowTimedNotes: () => void;
   onCopyNotes: () => void;
+  onExport: () => void;
   onSignOut: () => void;
   onClose: () => void;
   onEditDescription: () => void;
-  notes: any[];
 }
 
 export const MenuItems: React.FC<MenuItemsProps> = ({
@@ -20,6 +20,7 @@ export const MenuItems: React.FC<MenuItemsProps> = ({
   onNewProject,
   onShowTimedNotes,
   onCopyNotes,
+  onExport,
   onSignOut,
   userEmail,
   onClose,
@@ -66,40 +67,6 @@ export const MenuItems: React.FC<MenuItemsProps> = ({
     >
       <FileText className="w-4 h-4" />
       <span>Copy as Text</span>
-    </button>
-    <button
-      onClick={async () => {
-        try {
-          const exportData = {
-            notes: notes.map(note => ({
-              id: note.id,
-              content: note.content,
-              position: note.position,
-              is_discussion: note.is_discussion,
-              time_set: note.time_set,
-              youtube_url: note.youtube_url,
-              url: note.url,
-              url_display_text: note.url_display_text,
-              children: note.children.map(child => ({
-                id: child.id,
-                content: child.content,
-                position: child.position,
-                is_discussion: child.is_discussion
-              }))
-            }))
-          };
-          await navigator.clipboard.writeText(JSON.stringify(exportData, null, 2));
-          alert('Project successfully exported as JSON and copied to clipboard!');
-          onClose();
-        } catch (error) {
-          console.error('Failed to export JSON:', error);
-          alert('Failed to export project. Please try again.');
-        }
-      }}
-      className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 transition-colors"
-    >
-      <FileText className="w-4 h-4" />
-      <span>Export as JSON</span>
     </button>
     <div className="border-t border-gray-700 my-1"></div>
 
