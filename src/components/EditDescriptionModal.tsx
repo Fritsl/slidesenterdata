@@ -16,21 +16,28 @@ export function EditDescriptionModal({ onClose }: EditDescriptionModalProps) {
       try {
         const urlParams = new URLSearchParams(window.location.search);
         const projectId = urlParams.get('project');
-        if (!projectId) return; // Handle case where projectId is missing
+        if (!projectId) {
+          console.error('No project ID found');
+          return;
+        }
 
-        const { data: project } = await supabase
-          .from('projects')
+        const { data: settings, error } = await supabase
+          .from('settings')
           .select('description')
           .eq('id', projectId)
           .single();
 
-        if (project?.description) {
-          setDescription(project.description);
+        if (error) {
+          console.error('Error loading description:', error);
+          return;
         }
+
+        setDescription(settings?.description || '');
       } catch (err) {
         console.error('Failed to load description:', err);
       }
     };
+
     loadDescription();
   }, []);
 
@@ -45,7 +52,7 @@ export function EditDescriptionModal({ onClose }: EditDescriptionModalProps) {
       if (!projectId) throw new Error('No project selected');
 
       const { error: updateError } = await supabase
-        .from('projects')
+        .from('settings')
         .update({ description: description.trim() })
         .eq('id', projectId);
 
