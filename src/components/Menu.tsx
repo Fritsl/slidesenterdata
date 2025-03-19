@@ -111,7 +111,6 @@ export function Menu({ onSignOut }: MenuProps) {
             }
           }}
           onPrint={() => setIsPrintModalOpen(true)}
-          onExport={() => setShowExportModal(true)}
           onImport={() => setShowImportModal(true)} // Added import handler
           onSignOut={onSignOut}
           onClose={() => setIsOpen(false)}
@@ -174,7 +173,7 @@ export function Menu({ onSignOut }: MenuProps) {
         />
       )}
 
-      
+
 
       {showImportModal && (
         <ImportNotesModal

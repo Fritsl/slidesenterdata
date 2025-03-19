@@ -92,17 +92,7 @@ export const MenuItems: React.FC<MenuItemsProps> = ({
       <FileUp className="w-4 h-4" />
       <span>Import</span>
     </button>
-    <button
-      onClick={() => {
-        onExport();
-        onClose();
-      }}
-      className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 transition-colors"
-    >
-      <FileDown className="w-4 h-4" />
-      <span>Export as XML</span>
-    </button>
-    <div className="border-t border-gray-700 my-1"></div>
+    
     <button
       onClick={() => {
         onShowTrash();
