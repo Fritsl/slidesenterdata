@@ -32,6 +32,8 @@ export function Menu({ onSignOut }: MenuProps) {
   const projectsMenuRef = useRef<HTMLDivElement>(null);
   const trashMenuRef = useRef<HTMLDivElement>(null);
   const [isLoadingProjects, setIsLoadingProjects] = useState(false);
+  const [showEditDescriptionModal, setShowEditDescriptionModal] = useState(false); // Added state for edit description modal
+
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -109,6 +111,7 @@ export function Menu({ onSignOut }: MenuProps) {
           onPrint={() => setIsPrintModalOpen(true)}
           onSignOut={onSignOut}
           onClose={() => setIsOpen(false)}
+          onEditDescription={() => setShowEditDescriptionModal(true)} // Added prop
           userEmail={user?.email}
         />
       )}
