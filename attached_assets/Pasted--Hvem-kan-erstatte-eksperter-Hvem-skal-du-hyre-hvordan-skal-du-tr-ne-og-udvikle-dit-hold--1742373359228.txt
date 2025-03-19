@@ -1,0 +1,88 @@
+• Hvem kan erstatte eksperter? (Hvem skal du hyre, hvordan skal du træne og udvikle dit hold)?
+    • "Ja, vi bruger da AI (copilot, chatbots osv)", vi har optimeret hele vejen og holder øje med de nye værktøjer
+        • Når maskinen kan sammenligne pærer og bananer bliver eksperter til lommeregnere
+            • Hvordan vælges hvor der skal sættes ind?
+                • Fremlægning og diskussion
+                    • 1 menneske, en afdeling, en industri
+    • Google on screen help
+    • 2) System arkitekter, produktudviklere, nytænkende
+        • Den typiske "AI specialist" .. Hr "Vi sætter strøm på din virksomhed med AI" .. ved nok mindre end dig, og vil typisk optimere - fordi det er et lettere salg end automatisering.
+            • Brug værktøjer til optimering når du betjener dig af værktøjer til automatisering (og gør kun det)
+                • Afrunding
+                    • Subscribe på nogen der er fascinerende af nyt. (Fascination: Automatiseret ✅)
+        • 1) Generalister med adgang til konfirmeret viden
+    • I mellemtiden hos konkurrenten: "Vi har automatiseret opgaven"
+• Bolt.new, Lovable.dev, Replit.com, Co.dev..
+• Din digitale avatar
+• “You have to have the taste and enough training to know that an LLM is spitting bad stuff or good stuff. In order to do good ‘vibe coding,’ you still need to have taste and knowledge to judge good versus bad,”
+• Vibe coding
+• Denne slide
+• Eksempler
+• Frokostpause
+• Definition af "En App"
+• Hvad er Python
+• "Hmm, nej, jeg har fortrudt"
+• "Prøv lige at udføre 10 måneders arbejde"
+• Hvad gør versionsstyring ved udviklingsprocesser - når brugt med AI?
+• Time compression
+• LLM Enterprise
+• Data persistence
+• Hvad kan automatiseres med AI?
+• AGI - Artificial General Intelligence
+• "Let it write the letter" - "You press Send"
+• "Let it aim the missile" - "You press Fire"
+• Løsningen er delegering – mennesket i loopet
+• Sikkerhedsrisikoen ved at overlade hele processerne udelukkende til AI
+• Sikkerhed
+• Multi Modal AI
+.. skriv det ned.
+    • Opgaver der kræver Kreativitet, Håndværk, Security, Omsorg, Etik og moral, Fysisk interaktion, Ledelse og strategi, Emotionel intelligens..
+• Hvad kan ikke automatiseres med AI?
+• Tokens?
+• Skal man køre sin egen LLM?
+• Grafikkort?!
+• Hvad betyder prisen for de gratis eller billige output?
+• Driftsomkostninger for LLM
+• Agentic AI
+• Hvordan automatiseres med AI?
+• MCP
+• CSV
+• JSON
+• XML
+• Forbundne systemer, API og webhook
+• Recap: Teori
+• Generative AI
+• Large Language Model
+• Ekspert systemer
+• Finite State Machine (FSM)
+• Hvad er kunstig intelligens?
+• Teori og viden
+• Retning og strategi - "Hvad gør vi, og hvad skal vi være opmærksomme på?"
+• Inspiration - "Hvordan kan vi udnytte det her?"
+• Forståelse - "Hvad er det der sker?"
+• Vi kan ikke nå det hele, I bliver ikke AI eksperter
+• Forventningsafstemning
+• 2025: Vibe coding
+• 2000: dot com boblen sprang
+• 2008: STEM / LetsMakeRobots.com
+• Coming up: Quantum computing
+• 2002: Web 2.0 / folket er stemmen
+• 2024: Agenter
+• 2022: LLM AI
+• 11 år senere..
+• 2022: Nord Stream
+• 2017: Unity, Unreal, Blender
+• 2009: Smartphones
+• 2007: Recession
+• 1995: Universitet uddanner forældet
+• 1999: IT-chef uden IT uddannelse
+• 2011: Droner
+• 1997: Pladeselskab
+• 2001: Open source / Gratis software
+• 1989: Multimedia og tekstbehandling
+• Frits Lyneborg Karriere
+    • Obstructive technologies
+        • 10 minutters pause
+            • Introduktion
+                • 1983: Computer
+                • Introduktion og hvordan bruger I kunstig intelligens idag?
