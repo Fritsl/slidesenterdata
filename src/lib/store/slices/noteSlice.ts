@@ -16,7 +16,13 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
 
   moveNote: async (id: string, parentId: string | null, position: number, level: number) => {
     try {
-      const currentLevel = Math.max(0, level);
+      console.log('moveNote called:', {id, parentId, position});
+      console.log('Stack trace:', new Error().stack);
+      const state = get();
+      const currentLevel = state.currentLevel;
+      console.log('Current level before move:', currentLevel);
+
+      const newLevel = Math.max(0, level);
 
       // Validate position
       const siblings = get().notes.filter(n => n.parent_id === parentId);
@@ -39,7 +45,7 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
         const updateExpanded = (notes: Store['notes'], depth = 0) => {
           notes.forEach(note => {
             if (note.children.length > 0) {
-              if (depth < currentLevel) {
+              if (depth < newLevel) {
                 newExpandedNotes.add(note.id);
               } else {
                 newExpandedNotes.delete(note.id);
@@ -54,8 +60,8 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
         return {
           notes,
           expandedNotes: newExpandedNotes,
-          currentLevel,
-          canExpandMore: currentLevel < Math.max(...notes.map(note => {
+          currentLevel: newLevel,
+          canExpandMore: newLevel < Math.max(...notes.map(note => {
             let depth = 0;
             const traverse = (note: Store['notes'][0], currentDepth = 0) => {
               depth = Math.max(depth, currentDepth);
@@ -64,7 +70,7 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
             traverse(note);
             return depth;
           })),
-          canCollapseMore: currentLevel > 0
+          canCollapseMore: newLevel > 0
         };
       });
     } catch (error) {
@@ -235,6 +241,8 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
   },
 
   setCurrentLevel: (level: number) => {
+    console.log('setCurrentLevel called with level:', level);
+    console.log('Stack trace:', new Error().stack);
     const state = get();
     const treeDepth = Math.max(...state.notes.map(note => {
       let depth = 0;
@@ -247,6 +255,7 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
     }));
 
     const newLevel = Math.max(0, Math.min(level, treeDepth));
+    console.log('Setting level to:', newLevel, 'from original:', level);
     const newExpandedNotes = new Set(state.expandedNotes);
 
     const updateExpanded = (notes: Store['notes'], currentDepth = 0) => {
