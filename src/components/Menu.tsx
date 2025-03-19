@@ -126,11 +126,6 @@ export function Menu({ onSignOut, onError }: MenuProps) {
           onSignOut={onSignOut}
           onClose={() => setIsOpen(false)}
           onEditDescription={handleEditDescription}
-          onExportJson={() => {
-            const jsonData = exportNotesAsJson();
-            navigator.clipboard.writeText(jsonData);
-            alert('Project exported as JSON and copied to clipboard!');
-          }}
           userEmail={user?.email}
           notes={notes}
         />
