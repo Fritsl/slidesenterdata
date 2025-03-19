@@ -24,19 +24,18 @@ export const useDragDrop = (note: Note, onError: (error: Error) => void) => {
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
-    const target = e.target as HTMLElement;
-    const rect = target.getBoundingClientRect();
-    const isParentZone = target.classList.contains('parent-drop-zone');
+    const rect = e.currentTarget.getBoundingClientRect();
+    const isParentZone = e.clientX > rect.right - rect.width * 0.3;
     const mouseY = e.clientY;
     const relativeY = mouseY - rect.top;
 
     setIsParentTarget(isParentZone);
     setIsDragOver(true);
 
-    if (!isParentZone) {
-      setDropZone(relativeY < rect.height / 2 ? 'above' : 'below');
-    } else {
+    if (isParentZone) {
       setDropZone('child');
+    } else {
+      setDropZone(relativeY < rect.height / 2 ? 'above' : 'below');
     }
   };
 

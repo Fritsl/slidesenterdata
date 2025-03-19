@@ -116,19 +116,16 @@ export const Note: React.FC<NoteProps> = ({ note, level, onError }) => {
         </div>
       </div>
 
-      {isDragOver && (
-        <>
-          {dropZone === 'child' ? (
-            <div className="absolute inset-y-0 w-1 bg-purple-400 transition-all duration-200" 
-                 style={{ right: '-2px' }} />
-          ) : (
-            <div className="absolute inset-x-0 h-1 bg-blue-400 transition-all duration-200" 
-                 style={{ 
-                   top: dropZone === 'above' ? '-2px' : 'auto',
-                   bottom: dropZone === 'below' ? '-2px' : 'auto',
-                 }} />
-          )}
-        </>
+      {isDragOver && dropZone === 'child' && (
+        <div className="absolute inset-y-0 w-1 bg-purple-400 transition-all duration-200" 
+             style={{ right: '-2px' }} />
+      )}
+      {isDragOver && dropZone !== 'child' && (
+        <div className="absolute inset-x-0 h-1 bg-blue-400 transition-all duration-200" 
+             style={{ 
+               top: dropZone === 'above' ? '-2px' : 'auto',
+               bottom: dropZone === 'below' ? '-2px' : 'auto',
+             }} />
       )}
 
       {isMoveMenuOpen && (
