@@ -59,10 +59,10 @@ export const useDragDrop = (note: Note, onError: (error: Error) => void) => {
 
     try {
       if (isParentZone) {
-        await moveNote(draggedId, note.id, 0);
+        await moveNote(draggedId, note.id, 0, currentLevel);
       } else {
         const newPosition = dropZone === 'above' ? note.position : note.position + 1;
-        await moveNote(draggedId, note.parent_id, newPosition);
+        await moveNote(draggedId, note.parent_id, newPosition, currentLevel);
       }
     } catch (error) {
       console.error('Drop error:', error);
