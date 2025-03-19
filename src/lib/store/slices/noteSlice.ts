@@ -555,37 +555,10 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
           if (note.$.discussion === 'true') await get().toggleDiscussion(response.id, true);
           if (note.$.url) await get().setUrl(response.id, note.$.url, note.$['url-text']);
 
-          // Process children if they exist
-          if (note.children?.note) {
-            const childNotes = Array.isArray(note.children.note) ? note.children.note : [note.children.note];
-            for (const childNote of childNotes) {
-              await processNote(childNote, response.id);
-            }
-          }
-        }
-      };
-
-      const rootNotes = Array.isArray(parsedNotes.project.notes.note) ? 
-        parsedNotes.project.notes.note : 
-        [parsedNotes.project.notes.note];
-
-      for (const note of rootNotes) {
-        await processNote(note);
-      }
-
-      return { success: true };
-    } catch (error) {
-      console.error('Error during import:', error instanceof Error ? error.stack : error);
-      throw new Error(`Import failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
-    } finally {
-      set({ isImporting: false });
-    }
-  }
-});
+          });
 
 export interface Store {
   notes: Note[];
   title: string;
   isEditMode: boolean;
-  isImporting: boolean; // Added import flag
 }
