@@ -68,11 +68,16 @@ export const MenuItems: React.FC<MenuItemsProps> = ({
       <span>Copy as Text</span>
     </button>
     <button
-      onClick={() => {
-        const { exportNotesAsJson } = require('../lib/utils/exportUtils');
-        navigator.clipboard.writeText(exportNotesAsJson(notes));
-        onClose();
-        alert('Project exported as JSON and copied to clipboard!');
+      onClick={async () => {
+        try {
+          const jsonData = exportNotesAsJson(notes);
+          await navigator.clipboard.writeText(jsonData);
+          alert('Project successfully exported as JSON and copied to clipboard!');
+          onClose();
+        } catch (error) {
+          console.error('Failed to export JSON:', error);
+          alert('Failed to export project. Please try again.');
+        }
       }}
       className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 transition-colors"
     >
