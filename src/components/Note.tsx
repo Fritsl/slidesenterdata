@@ -128,9 +128,10 @@ export const Note: React.FC<NoteProps> = ({ note, level, onError }) => {
                         <button 
                           onClick={(e) => {
                             e.stopPropagation();
+                            e.preventDefault();
                             moveNote(note.id, note.parent_id, note.position + 1);
                           }}
-                          className="p-1 hover:bg-gray-700 rounded"
+                          className="p-1 hover:bg-gray-700 rounded cursor-pointer"
                         >
                           <MoveDown className="w-4 h-4" />
                         </button>
