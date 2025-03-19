@@ -45,7 +45,7 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
         const updateExpanded = (notes: Store['notes'], depth = 0) => {
           notes.forEach(note => {
             if (note.children.length > 0) {
-              if (depth < newLevel) {
+              if (depth < currentLevel) {
                 newExpandedNotes.add(note.id);
               } else {
                 newExpandedNotes.delete(note.id);
