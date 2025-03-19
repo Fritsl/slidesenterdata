@@ -5,7 +5,7 @@ export { EditableTitle } from './EditableTitle';
 export { ErrorBoundary } from './ErrorBoundary';
 export { ErrorContainer } from './ErrorContainer';
 export { ErrorMessage } from './ErrorMessage';
-export { ExportXMLModal } from './ExportXMLModal';
+
 export { FullscreenEditor } from './FullscreenEditor';
 export { ImportNotesModal } from './ImportNotesModal';
 export { Menu } from './Menu';

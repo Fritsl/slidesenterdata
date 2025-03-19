@@ -6,7 +6,7 @@ import { useAuth } from '../hooks/useAuth';
 import { DeleteProjectModal } from './DeleteProjectModal';
 import { NewProjectModal } from './NewProjectModal';
 import { PrintAllNotes } from './PrintAllNotes';
-import { ExportXMLModal } from './ExportXMLModal';
+
 import { TimedNotesView } from './TimedNotesView';
 import { MenuItems } from './MenuItems';
 import { ProjectList } from './ProjectList';
@@ -174,13 +174,7 @@ export function Menu({ onSignOut }: MenuProps) {
         />
       )}
 
-      {showExportModal && (
-        <ExportXMLModal
-          notes={notes}
-          title={title}
-          onClose={() => setShowExportModal(false)}
-        />
-      )}
+      
 
       {showImportModal && (
         <ImportNotesModal
