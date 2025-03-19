@@ -8,11 +8,13 @@ interface EditDescriptionModalProps {
 }
 
 export function EditDescriptionModal({ onClose }: EditDescriptionModalProps) {
+  console.log('EditDescriptionModal mounted');
   const [description, setDescription] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    console.log('Loading description from database');
     const loadDescription = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;

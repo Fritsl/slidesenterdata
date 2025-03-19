@@ -84,7 +84,10 @@ export function Menu({ onSignOut }: MenuProps) {
   };
 
   const handleEditDescription = () => {
+    console.log('Edit description button clicked');
+    console.log('Current showEditDescriptionModal state:', showEditDescriptionModal);
     setShowEditDescriptionModal(true);
+    console.log('Updated showEditDescriptionModal state to true');
   };
 
   return (
