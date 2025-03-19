@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 interface EditDescriptionModalProps {
   onClose: () => void;
@@ -7,11 +9,55 @@ interface EditDescriptionModalProps {
 
 export function EditDescriptionModal({ onClose }: EditDescriptionModalProps) {
   const [description, setDescription] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    const loadDescription = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        const { data: settings } = await supabase
+          .from('settings')
+          .select('description')
+          .eq('user_id', user.id)
+          .single();
+
+        if (settings?.description) {
+          setDescription(settings.description);
+        }
+      } catch (err) {
+        console.error('Failed to load description:', err);
+      }
+    };
+    loadDescription();
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Description submitted:', description);
-    onClose();
+    setError(null);
+    setIsLoading(true);
+
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
+      const { error: upsertError } = await supabase
+        .from('settings')
+        .upsert({ 
+          user_id: user.id,
+          description: description.trim()
+        });
+
+      if (upsertError) throw upsertError;
+      onClose();
+    } catch (err) {
+      console.error('Failed to update description:', err);
+      setError('Failed to update description');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -41,11 +87,18 @@ export function EditDescriptionModal({ onClose }: EditDescriptionModalProps) {
                 rows={3}
                 placeholder="Enter project description"
                 maxLength={500}
+                disabled={isLoading}
               />
               <div className="mt-1 text-sm text-gray-500">
                 {description.length}/500 characters
               </div>
             </div>
+
+            {error && (
+              <div className="text-sm text-red-600 bg-red-50 p-3 rounded-lg">
+                {error}
+              </div>
+            )}
           </div>
 
           <div className="mt-6 flex justify-end gap-3">
@@ -53,14 +106,16 @@ export function EditDescriptionModal({ onClose }: EditDescriptionModalProps) {
               type="button"
               onClick={onClose}
               className="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+              disabled={isLoading}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+              disabled={isLoading}
+              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors disabled:opacity-50"
             >
-              Save
+              {isLoading ? 'Saving...' : 'Save Changes'}
             </button>
           </div>
         </form>
