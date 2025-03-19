@@ -38,10 +38,10 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
 
       const notes = await database.notes.loadNotes(user.id, projectId);
 
-      // Update expanded states using the same level
-
+      // Maintain current level after move
       set(state => {
         const newExpandedNotes = new Set(state.expandedNotes);
+        const currentLevel = state.currentLevel;
         const updateExpanded = (notes: Store['notes'], depth = 0) => {
           notes.forEach(note => {
             if (note.children.length > 0) {
