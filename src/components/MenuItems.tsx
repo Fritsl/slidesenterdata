@@ -8,10 +8,11 @@ interface MenuItemsProps {
   onNewProject: () => void;
   onShowTimedNotes: () => void;
   onCopyNotes: () => void;
-  onExport: () => void;
+  onExportJson: () => void; // Added for JSON export
   onSignOut: () => void;
   onClose: () => void;
   onEditDescription: () => void;
+  notes: any[]; // Added to pass notes data
 }
 
 export const MenuItems: React.FC<MenuItemsProps> = ({
@@ -20,11 +21,12 @@ export const MenuItems: React.FC<MenuItemsProps> = ({
   onNewProject,
   onShowTimedNotes,
   onCopyNotes,
-  onExport,
+  onExportJson, // Added for JSON export
   onSignOut,
   userEmail,
   onClose,
   onEditDescription,
+  notes, // Added to receive notes data
 }) => (
   <div className="fixed right-4 mt-2 w-48 bg-gray-800 rounded-lg shadow-lg py-1">
     <button
@@ -67,6 +69,16 @@ export const MenuItems: React.FC<MenuItemsProps> = ({
     >
       <FileText className="w-4 h-4" />
       <span>Copy as Text</span>
+    </button>
+    <button
+      onClick={() => {
+        onExportJson(notes); // Pass notes data to export function
+        onClose();
+      }}
+      className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 transition-colors"
+    >
+      <Printer className="w-4 h-4" />
+      <span>Export as JSON</span>
     </button>
     <div className="border-t border-gray-700 my-1"></div>
 

@@ -80,6 +80,25 @@ function App() {
     );
   }
 
+  const exportNotesAsJson = () => {
+    return JSON.stringify({ notes: notes.map(note => ({
+      id: note.id,
+      content: note.content,
+      position: note.position,
+      is_discussion: note.is_discussion,
+      time_set: note.time_set,
+      youtube_url: note.youtube_url,
+      url: note.url,
+      url_display_text: note.url_display_text,
+      children: note.children.map(child => ({
+        id: child.id,
+        content: child.content,
+        position: child.position,
+        is_discussion: child.is_discussion
+      }))
+    }))}, null, 2);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black">
       <header className="bg-gray-950 shadow-lg sticky top-0 z-10 border-b border-gray-800">
@@ -112,7 +131,11 @@ function App() {
               </button>
             </div>
             <SearchBar />
-            <Menu onSignOut={signOut} onError={handleError} />
+            <Menu onSignOut={signOut} onError={handleError} onExportJson={() => {
+              const jsonData = exportNotesAsJson();
+              navigator.clipboard.writeText(jsonData);
+              alert('Project exported as JSON and copied to clipboard!');
+            }} />
           </div>
         </div>
       </header>

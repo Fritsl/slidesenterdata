@@ -526,6 +526,26 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
     }
   },
 
+  exportNotesAsJson: () => {
+    const { notes } = get();
+    
+    const formatNote = (note: Note) => {
+      return {
+        id: note.id,
+        content: note.content,
+        position: note.position || 0,
+        is_discussion: note.is_discussion,
+        time_set: note.time_set,
+        youtube_url: note.youtube_url,
+        url: note.url,
+        url_display_text: note.url_display_text,
+        children: note.children.map(child => formatNote(child))
+      };
+    };
+
+    return JSON.stringify({ notes: notes.map(note => formatNote(note)) }, null, 2);
+  },
+
   printNotes: () => {
     const { notes, expandedNotes } = get();
     let result = '';
