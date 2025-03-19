@@ -62,7 +62,7 @@ export const Note: React.FC<NoteProps> = ({ note, level, onError }) => {
           ${isDragging ? 'opacity-50' : ''}
           ${isDragOver ? (dropZone === 'above' ? 'border-t-2 border-t-blue-500' : dropZone === 'below' ? 'border-b-2 border-b-blue-500' : '') : ''}
           ${isSelected ? 'ring-2 ring-blue-500' : ''}
-          border-r-4 ${isDragOver && isParentTarget ? 'border-r-green-500' : isDragOver && dropZone === 'child' ? 'border-r-purple-500' : 'border-r-gray-300'}
+          ${isDragOver && (isParentTarget || dropZone === 'child') ? 'border-r-4 border-r-purple-500' : ''}
         `}
       >
         <div className="w-full">
