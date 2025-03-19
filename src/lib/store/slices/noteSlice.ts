@@ -545,12 +545,7 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
       set({ isImporting: true });
 
       const processNote = async (note: any, parentId?: string) => {
-        if (!note?.content?.[0] && typeof note.content !== 'string') return;
-
         const content = typeof note.content === 'string' ? note.content : note.content[0];
-        if (content.startsWith('![CDATA[')) {
-          content = content.substring(8, content.length - 2);
-        }
 
         const response = await get().addNote(parentId, content);
 

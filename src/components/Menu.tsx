@@ -11,8 +11,6 @@ import { TimedNotesView } from './TimedNotesView';
 import { MenuItems } from './MenuItems';
 import { ProjectList } from './ProjectList';
 import { DeletedProjectList } from './DeletedProjectList';
-// Placeholder component - replace with actual implementation
-import { ImportNotesModal } from './ImportNotesModal';
 
 interface MenuProps {
   onSignOut: () => void;
@@ -31,7 +29,6 @@ export function Menu({ onSignOut }: MenuProps) {
   const [showExportModal, setShowExportModal] = useState(false);
   const [showNewProjectModal, setShowNewProjectModal] = useState(false);
   const [showTimedNotesModal, setShowTimedNotesModal] = useState(false);
-  const [showImportModal, setShowImportModal] = useState(false); // Added import modal state
   const projectsMenuRef = useRef<HTMLDivElement>(null);
   const trashMenuRef = useRef<HTMLDivElement>(null);
   const [isLoadingProjects, setIsLoadingProjects] = useState(false);
@@ -43,7 +40,6 @@ export function Menu({ onSignOut }: MenuProps) {
           setIsOpen(false);
           setShowProjectsMenu(false);
           setShowTrashMenu(false);
-          setShowImportModal(false); // Added to close import modal on click outside
         }
       }
     };
@@ -111,7 +107,6 @@ export function Menu({ onSignOut }: MenuProps) {
             }
           }}
           onPrint={() => setIsPrintModalOpen(true)}
-          onImport={() => setShowImportModal(true)} // Added import handler
           onSignOut={onSignOut}
           onClose={() => setIsOpen(false)}
           userEmail={user?.email}
@@ -170,14 +165,6 @@ export function Menu({ onSignOut }: MenuProps) {
         <PrintAllNotes
           notes={notes}
           onClose={() => setIsPrintModalOpen(false)}
-        />
-      )}
-
-
-
-      {showImportModal && (
-        <ImportNotesModal
-          onClose={() => setShowImportModal(false)}
         />
       )}
 

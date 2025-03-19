@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { Folder, Trash, FolderPlus, Clock, ExternalLink, FileText, Printer, FileDown, FileUp } from 'lucide-react';
+import { Folder, Trash, FolderPlus, Clock, ExternalLink, FileText, Printer } from 'lucide-react';
 
 interface MenuItemsProps {
   onShowProjects: () => void;
@@ -12,7 +11,6 @@ interface MenuItemsProps {
   onPrint: () => void;
   onExport: () => void;
   onSignOut: () => void;
-  onImport: () => void;
   onClose: () => void;
 }
 
@@ -27,7 +25,6 @@ export const MenuItems: React.FC<MenuItemsProps> = ({
   onSignOut,
   userEmail,
   onClose,
-  onImport
 }) => (
   <div className="fixed right-4 mt-2 w-48 bg-gray-800 rounded-lg shadow-lg py-1">
     <button
@@ -82,17 +79,7 @@ export const MenuItems: React.FC<MenuItemsProps> = ({
       <span>Print Notes</span>
     </button>
     <div className="border-t border-gray-700 my-1"></div>
-    <button
-      onClick={() => {
-        onImport();
-        onClose();
-      }}
-      className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 transition-colors"
-    >
-      <FileUp className="w-4 h-4" />
-      <span>Import</span>
-    </button>
-    
+
     <button
       onClick={() => {
         onShowTrash();
