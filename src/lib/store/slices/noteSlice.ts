@@ -5,6 +5,12 @@ import { database } from '../../database';
 import { supabase } from '../../supabase';
 import { handleDatabaseError } from '../../errors';
 
+export interface Store {
+  notes: Note[];
+  title: string;
+  isEditMode: boolean;
+}
+
 export const createNoteSlice: StateCreator<Store> = (set, get) => ({
   notes: [],
   isEditMode: false,
@@ -552,8 +558,19 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
         if (response?.id) {
           if (note.$.time) await get().toggleTime(response.id, note.$.time);
           if (note.$.youtube) await get().setYoutubeUrl(response.id, note.$.youtube);
-          export interface Store {
-  notes: Note[];
-  title: string;
-  isEditMode: boolean;
-}
+          if (note.$.discussion === 'true') await get().toggleDiscussion(response.id, true);
+          if (note.$.url) await get().setUrl(response.id, note.$.url, note.$['url-text']);
+        }
+        if (note.note) {
+          await Promise.all(note.note.map(child => processNote(child, response?.id)));
+        }
+      };
+
+      await Promise.all(parsedNotes.project.notes.note.map(note => processNote(note)));
+      set({ isImporting: false });
+    } catch (error) {
+      set({ isImporting: false });
+      throw handleDatabaseError(error, 'Failed to import notes');
+    }
+  }
+});
