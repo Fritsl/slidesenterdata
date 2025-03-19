@@ -6,7 +6,7 @@ export const useDragDrop = (note: Note, onError: (error: Error) => void) => {
   const [isDragging, setIsDragging] = useState(false);
   const [isDragOver, setIsDragOver] = useState(false);
   const [isParentTarget, setIsParentTarget] = useState(false);
-  const [dropZone, setDropZone] = useState<'above' | 'below' | null>(null); // Added dropZone state
+  const [dropZone, setDropZone] = useState<'above' | 'below' | 'child' | null>(null); // Added dropZone state and 'child' option
   const { moveNote, currentLevel } = useNoteStore();
 
   const handleDragStart = (e: React.DragEvent) => {
@@ -36,7 +36,7 @@ export const useDragDrop = (note: Note, onError: (error: Error) => void) => {
     if (!isParentZone) {
       setDropZone(relativeY < rect.height / 2 ? 'above' : 'below');
     } else {
-      setDropZone(null);
+      setDropZone('child');
     }
   };
 

@@ -60,7 +60,7 @@ export const Note: React.FC<NoteProps> = ({ note, level, onError }) => {
         className={`flex items-start gap-2 p-3 rounded-lg shadow-md hover:shadow-lg transition-all cursor-move bg-opacity-90 hover:bg-opacity-100
           ${LEVEL_COLORS[Math.min(level, LEVEL_COLORS.length - 1)]} 
           ${isDragging ? 'opacity-50' : ''}
-          ${isDragOver ? (isParentTarget ? 'border-r-4 border-green-500' : 'border-2 border-blue-500') : ''}
+          ${isDragOver ? (isParentTarget ? 'border-r-4 border-green-500' : dropZone === 'child' ? 'border-r-4 border-purple-500' : dropZone === 'above' ? 'border-t-2 border-t-blue-500' : 'border-b-2 border-b-blue-500') : ''}
           ${isSelected ? 'ring-2 ring-blue-500' : ''}
         `}
       >
