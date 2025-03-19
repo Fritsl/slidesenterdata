@@ -11,6 +11,7 @@ import { TimedNotesView } from './TimedNotesView';
 import { MenuItems } from './MenuItems';
 import { ProjectList } from './ProjectList';
 import { DeletedProjectList } from './DeletedProjectList';
+import { EditDescriptionModal } from './EditDescriptionModal'; // Imported EditDescriptionModal
 
 interface MenuProps {
   onSignOut: () => void;
@@ -194,6 +195,9 @@ export function Menu({ onSignOut }: MenuProps) {
 
       {showTimedNotesModal && (
         <TimedNotesView onClose={() => setShowTimedNotesModal(false)} />
+      )}
+      {showEditDescriptionModal && (
+        <EditDescriptionModal onClose={() => setShowEditDescriptionModal(false)} />
       )}
     </div>
   );

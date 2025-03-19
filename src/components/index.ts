@@ -17,3 +17,4 @@ export { NoteContent } from './NoteContent';
 export { NoteImage } from './NoteImage';
 export { PrintAllNotes } from './PrintAllNotes';
 export { SearchBar } from './SearchBar';
+export * from './EditDescriptionModal';
