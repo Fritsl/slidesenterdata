@@ -525,8 +525,8 @@ export const createNoteSlice: StateCreator<Store> = (set, get) => ({
     let result = '';
 
     const formatNote = (note: Store['notes'][0], level = 0) => {
-      const indent = '  '.repeat(level);
-      result += `${indent}• ${note.content || 'Empty note...'}\n`;
+      const indent = '    '.repeat(level);
+      result += `${indent}${note.content || 'Empty note...'}\n`;
       if (note.children.length > 0 && expandedNotes.has(note.id)) {
         note.children.forEach(child => formatNote(child, level + 1));
       }
